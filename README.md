@@ -1,3 +1,3 @@
 # charz
 
-An object origented terminal game engine
+An object oriented terminal game engine
