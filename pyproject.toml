@@ -1,6 +1,6 @@
 [project]
 name = "charz"
-version = "0.1.0"
+dynamic = ["version"]
 description = "An object oriented terminal game engine"
 authors = [
     { name = "FloatingInt", email = "knutolaihelgesen@gmail.com" }
@@ -18,6 +18,9 @@ managed = true
 dev-dependencies = [
     "mypy>=1.10.0",
 ]
+
+[tool.hatch.version]
+path="src/charz/__init__.py"
 
 [tool.hatch.metadata]
 allow-direct-references = true
