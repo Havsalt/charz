@@ -20,10 +20,10 @@ dev-dependencies = [
 ]
 
 [tool.hatch.version]
-path="src/charz/__init__.py"
+path = "charz/__init__.py"
 
 [tool.hatch.metadata]
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/charz"]
+packages = ["charz"]
