@@ -8,3 +8,5 @@
 #   with-sources: false
 
 -e file:.
+linflex==0.1.3
+    # via charz
