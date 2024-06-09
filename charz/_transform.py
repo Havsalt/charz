@@ -1,6 +1,6 @@
 from __future__ import annotations as _annotations
 
-from .vec2 import Vec2 as _Vec2
+from linflex import Vec2 as _Vec2
 
 
 class Transform:
