@@ -14,7 +14,7 @@ class Clock:
             tps (float): ticks per second
         """
         self.tps = tps
-        self.delta_time = 1.0 / tps # average delta time
+        self._delta_time = 1.0 / tps # average delta time
     
     @property
     def tps(self) -> float:
@@ -23,6 +23,14 @@ class Clock:
     @tps.setter
     def tps(self, value: float) -> None:
         self._tps = value
+    
+    def get_delta(self) -> float:
+        """Gets the time it took until tick was called again
+
+        Returns:
+            float: delta time until last fram
+        """
+        return self._delta_time
     
     def tick(self) -> None:
         """Does nothing. Exists for better coupling, when extending the `Clock` class
@@ -40,8 +48,8 @@ class DeltaClock(Clock):
         Args:
             tps (float): ticks per second
         """
-        self.tps = tps
-        self.delta_time = 1.0 / tps # initial delta time (optimal scenario)
+        self.tps = tps # calls property setter
+        self._delta_time = 1.0 / tps # initial delta time (optimal scenario)
         self._last_tick = _time.perf_counter()
     
     @property
@@ -64,4 +72,4 @@ class DeltaClock(Clock):
             self._last_tick = _time.perf_counter()
         else:
             self._last_tick = current_time
-        self.delta_time = max(0, sleep_time)
+        self._delta_time = max(0, sleep_time)
