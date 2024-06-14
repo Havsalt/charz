@@ -3,7 +3,7 @@ name = "charz"
 dynamic = ["version"]
 description = "An object oriented terminal game engine"
 authors = [
-    { name = "FloatingInt", email = "knutolaihelgesen@gmail.com" }
+    { name = "Havsalt", email = "knutolaihelgesen@gmail.com" }
 ]
 dependencies = [
     "linflex~=0.1.3",
