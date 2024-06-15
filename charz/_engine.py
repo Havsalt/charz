@@ -3,7 +3,6 @@ from __future__ import annotations as _annotations
 from ._clock import DeltaClock as _DeltaClock
 from ._screen import Screen as _Screen
 from ._node import Node as _Node
-from ._texture import Texture as _Texture
 
 
 class Engine:
@@ -29,9 +28,3 @@ class Engine:
             self.screen.refresh()
             self.clock.tick()
             delta = self.clock.get_delta()
-
-
-
-
-
-
