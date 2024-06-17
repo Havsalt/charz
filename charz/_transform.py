@@ -17,7 +17,7 @@ class Transform:
     _transform_instances: dict[int, _TransformNode] = {}
 
     @classmethod
-    def iter_nodes(cls) -> _Generator[_TransformNode, None, None]:
+    def iter_transform_nodes(cls) -> _Generator[_TransformNode, None, None]:
         yield from cls._transform_instances.values()
     
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:

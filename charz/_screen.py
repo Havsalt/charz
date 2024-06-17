@@ -77,6 +77,6 @@ class Screen:
     
     def refresh(self) -> None:
         self.clear()
-        for node in _Texture.iter_nodes():
+        for node in _Texture.iter_texture_nodes():
             self.render(node)
         self.show()

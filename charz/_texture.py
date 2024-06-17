@@ -15,7 +15,7 @@ class Texture:
     _texture_instances: dict[int, _TextureNode] = {}
 
     @classmethod
-    def iter_nodes(cls) -> _Generator[_TextureNode, None, None]:
+    def iter_texture_nodes(cls) -> _Generator[_TextureNode, None, None]:
         yield from cls._texture_instances.values()
     
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
