@@ -15,6 +15,7 @@ class CameraMode(_IntEnum):
 
 class Camera(_Transform, _Node):
     current: Camera
+    mode: CameraMode = CameraMode.FIXED
 
     def set_current(self) -> None:
         Camera.current = self
