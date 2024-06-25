@@ -1,20 +1,35 @@
 from __future__ import annotations as _annotations
 
+from types import UnionType as _UnionType
 from typing import (
     TypeVar as _TypeVar,
-    Protocol as _Protocol
+    TypeAlias as _TypeAlias,
+    Protocol as _Protocol,
+    TYPE_CHECKING as _TYPE_CHECKING
 )
 
 from linflex import Vec2 as _Vec2
 from colex import ColorValue as _ColorValue
 
-NodeType = _TypeVar("NodeType")
+if _TYPE_CHECKING:
+    from ._clock import DeltaClock as _DeltaClock
+    from ._screen import Screen as _Screen
+
+EngineType = _TypeVar("EngineType", bound="Engine", covariant=True)
+NodeType = _TypeVar("NodeType", bound="Node", covariant=True)
 _T_contra = _TypeVar("_T_contra", contravariant=True)
 
 
 class FileLike(_Protocol[_T_contra]):
     def write(self, stream: _T_contra, /) -> object: ...
     def flush(self, /) -> None: ...
+
+
+class Engine(_Protocol):
+    fps: float
+    clock: _DeltaClock
+    screen: _Screen
+    is_running: bool
 
 
 class Node(_Protocol):

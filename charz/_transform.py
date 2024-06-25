@@ -31,6 +31,22 @@ class Transform:
     z_index: int = 0
     is_top_level: bool = False
 
+    def with_position(self, position: _Vec2, /):
+        self.position = position
+        return self
+    
+    def with_rotation(self, rotation: float, /):
+        self.rotation = rotation
+        return self
+
+    def with_z_index(self, z_index: int, /):
+        self.z_index = z_index
+        return self
+    
+    def as_top_level(self, state: bool = True, /):
+        self.is_top_level = state
+        return self
+
     @property
     def global_position(self) -> _Vec2:
         """Computes the node's global position (world space)

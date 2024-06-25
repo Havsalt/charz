@@ -27,9 +27,22 @@ class Texture:
     texture: list[str]
     visible: bool = True
 
-    def __init__(self: _TextureNode, *args: _Any, **kwargs: _Any) -> None:
-        Texture._texture_instances[self.uid] = self
-        self.texture = []
+    def with_texture(self, texture_or_line: list[str] | str, /):
+        if isinstance(texture_or_line, str):
+            self.texture = [texture_or_line]
+            return self
+        self.texture = texture_or_line
+        return self
+
+    def as_visible(self, state: bool = True, /):
+        self.visible = state
+        return self
+    
+    def hide(self) -> None:
+        self.visible = False
+    
+    def show(self) -> None:
+        self.visible = True
 
     def is_globally_visible(self) -> bool: # global visibility
         """Checks whether the node and its ancestors are visible

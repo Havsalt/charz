@@ -6,7 +6,6 @@ import time as _time
 class Clock:
     """`Clock` base class, without delta time
     """
-
     def __init__(self, tps: float, /) -> None:
         """Initializes the clock with a given tps
 
@@ -15,6 +14,10 @@ class Clock:
         """
         self.tps = tps
         self._delta_time = 1.0 / tps # average delta time
+    
+    def with_tps(self, tps: float):
+        self.tps = tps
+        return self
     
     @property
     def tps(self) -> float:
@@ -36,12 +39,11 @@ class Clock:
         """Does nothing. Exists for better coupling, when extending the `Clock` class
         """
         return
-    
+
 
 class DeltaClock(Clock):
     """`DeltaClock` that pauses the program with adjusted `delta time` based on execution time of a timeframe
     """
-    
     def __init__(self, tps: float, /) -> None:
         """Initializes the delta clock with a given tps
 

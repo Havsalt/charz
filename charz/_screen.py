@@ -25,6 +25,22 @@ class Screen:
         self.height = height
         self._buffer: list[list[tuple[str, _ColorValue | None]]] = []
     
+    def with_stream(self, stream: _FileLike[str], /):
+        self.stream = stream
+        return self
+
+    def with_width(self, width: int, /):
+        self.width = width
+        return self
+
+    def with_height(self, height: int, /):
+        self.height = height
+        return self
+    
+    def with_size(self, size: _Vec2i, /):
+        self.size = size
+        return self
+    
     @property
     def size(self) -> _Vec2i:
         return _Vec2i(self.width, self.height)

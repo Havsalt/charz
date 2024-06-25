@@ -27,6 +27,10 @@ class Color:
 
     color: _ColorValue | None = None
 
+    def with_color(self, color: _ColorValue | None, /):
+        self.color = color
+        return self
+
     def free(self: _ColorNode) -> None:
         del Color._color_instances[self.uid]
         super().free()

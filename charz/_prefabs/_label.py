@@ -7,6 +7,10 @@ from .._color import Color as _Color
 
 
 class Label(_Color, _Texture, _Transform, _Node):
+    def with_text(self, text: str, /):
+        self.text = text
+        return self
+
     @property
     def text(self) -> str:
         return "\n".join(self.texture)
