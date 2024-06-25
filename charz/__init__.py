@@ -20,11 +20,12 @@ Includes:
 - `ColorValue` (annotation from `colex` package)
 - `Sprite` (prefabricated)
 - `Label` (prefabricated)
+- `text` (module for flipping strings)
 """
 
 from __future__ import annotations as _annotations
 
-__version__ = "0.0.4"
+__version__ = "0.0.7"
 __all__ = [
     "Engine",
     "Clock",
@@ -40,7 +41,8 @@ __all__ = [
     "Color",
     "ColorValue",
     "Sprite",
-    "Label"
+    "Label",
+    "text"
 ]
 
 from linflex import Vec2
@@ -57,3 +59,4 @@ from ._texture import Texture
 from ._color import Color
 from ._prefabs._sprite import Sprite
 from ._prefabs._label import Label
+from . import text
