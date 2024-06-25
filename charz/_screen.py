@@ -3,6 +3,7 @@ from __future__ import annotations as _annotations
 import os as _os
 import sys as _sys
 
+from linflex import Vec2i as _Vec2i
 from colex import (
     ColorValue as _ColorValue,
     RESET as _RESET
@@ -23,6 +24,18 @@ class Screen:
         self.width = width
         self.height = height
         self._buffer: list[list[tuple[str, _ColorValue | None]]] = []
+    
+    @property
+    def size(self) -> _Vec2i:
+        return _Vec2i(self.width, self.height)
+    
+    @size.setter
+    def size(self, value: _Vec2i) -> None:
+        width, height = value.to_tuple()
+        if any(isinstance(axis, int) for axis in (width, height)):
+            raise ValueError(f"value '{value}' requires all axes to be of type 'int'")
+        self.width = width
+        self.height = height
     
     def clear(self) -> None:
         self._buffer = [
