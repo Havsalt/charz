@@ -30,6 +30,7 @@ class NodeInitWrapperMeta(type):
             init(self, *args, **kwargs)
             self.setup() # calls method after __init__
         setattr(new_type, "__init__", _init_wrapper)
+        return new_type
 
 
 class NodeMeta(NodeInitWrapperMeta, NodeMixinSortMeta, type): ...

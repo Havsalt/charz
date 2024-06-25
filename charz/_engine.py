@@ -37,6 +37,7 @@ class EngineInitWrapperMeta(type):
             init(self, *args, **kwargs)
             self.setup() # calls method after __init__
         setattr(new_type, "__init__", _init_wrapper)
+        return new_type
 
 
 class EngineMeta(EngineInitWrapperMeta, EngineMixinSortMeta, type): ...
