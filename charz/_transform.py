@@ -28,7 +28,8 @@ class Transform:
 
     position: _Vec2
     rotation: float = 0
-    top_level: bool = False
+    z_index: int = 0
+    is_top_level: bool = False
 
     @property
     def global_position(self) -> _Vec2:
@@ -37,10 +38,14 @@ class Transform:
         Returns:
             _Vec2: global position
         """
+        if self.is_top_level:
+            return self.position
         global_position = self.position
         parent = self.parent # type: ignore
         while parent is not None and isinstance(parent, Transform):
             global_position = parent.position + global_position.rotated(parent.rotation)
+            if parent.is_top_level:
+                return global_position
             parent = parent.parent # type: ignore
         return global_position
     
@@ -58,10 +63,14 @@ class Transform:
         Returns:
             float: global rotation in radians
         """
+        if self.is_top_level:
+            return self.rotation
         global_rotation = self.rotation
         parent = self.parent # type: ignore
         while parent is not None and isinstance(parent, Transform):
             global_rotation += parent.rotation
+            if parent.is_top_level:
+                return global_rotation
             parent = parent.parent # type: ignore
         return global_rotation
 
@@ -71,3 +80,7 @@ class Transform:
         """
         diff = rotation - self.global_rotation
         self.rotation += diff
+    
+    def free(self: _TransformNode) -> None:
+        del Transform._transform_instances[self.uid]
+        super().free()

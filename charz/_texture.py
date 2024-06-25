@@ -47,3 +47,7 @@ class Texture:
                 return False
             parent = parent.parent # type: ignore
         return True
+    
+    def free(self: _TextureNode) -> None:
+        del Texture._texture_instances[self.uid]
+        super().free()

@@ -20,9 +20,12 @@ class Engine:
         ...
     
     def run(self) -> None:
-        delta = 1 / self.fps
+        delta = self.clock.get_delta()
         while self.is_running:
             self.update(delta)
+            for queued_node in _Node._queued_nodes:
+                queued_node.free()
+            _Node._queued_nodes *= 0 # faster way to do `.clear()`
             for node in _Node.iter_nodes():
                 node.update(delta)
             self.screen.refresh()

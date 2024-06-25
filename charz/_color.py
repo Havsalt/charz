@@ -23,7 +23,10 @@ class Color:
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
         instance = super().__new__(cls, *args, **kwargs) # type: _ColorNode  # type: ignore[reportAssignmentType]
         Color._color_instances[instance.uid] = instance
-        instance.texture = []
         return instance # type: ignore
 
     color: _ColorValue | None = None
+
+    def free(self: _ColorNode) -> None:
+        del Color._color_instances[self.uid]
+        super().free()
