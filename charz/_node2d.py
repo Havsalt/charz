@@ -4,4 +4,13 @@ from ._node import Node as _Node
 from ._transform import Transform as _Transform
 
 
-class Node2D(_Transform, _Node): ...
+class Node2D(_Transform, _Node):
+    def __str__(self) -> str:
+        return (
+            __class__.__name__
+            + "("
+            + f"#{self.uid}"
+            + f":{self.position}"
+            + f":{self.rotation}"
+            + ")"
+        )
