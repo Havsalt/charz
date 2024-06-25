@@ -53,10 +53,10 @@ from ._clock import Clock, DeltaClock
 from ._screen import Screen
 from ._camera import Camera, CameraMode
 from ._node import Node
-from ._node2d import Node2D
 from ._transform import Transform
 from ._texture import Texture
 from ._color import Color
+from ._prefabs._node2d import Node2D
 from ._prefabs._sprite import Sprite
 from ._prefabs._label import Label
 from . import text
