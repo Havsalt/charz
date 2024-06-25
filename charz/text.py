@@ -166,7 +166,8 @@ def rotate(char: str, angle: float, /) -> str:
     if char in _r_conversions:
         sector_count = len(_r_conversions[char])
         sector_rads = _TAU / sector_count
-        offset_angle = (angle + sector_rads/2) % _TAU
-        index = int(offset_angle / sector_rads) % sector_count
+        half_sector_rads = sector_rads / 2
+        total_rads = (angle + half_sector_rads) % _TAU
+        index = int(total_rads / sector_rads) % sector_count
         return _r_conversions[char][index]
     return char
