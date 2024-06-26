@@ -63,6 +63,14 @@ class Engine(metaclass=EngineMeta):
         self.fps = fps
         return self
     
+    def with_clock(self, clock: _Clock, /):
+        self.clock = clock
+        return self
+    
+    def with_screen(self, screen: _Screen, /):
+        self.screen = screen
+        return self
+    
     def setup(self) -> None:
         ...
     
