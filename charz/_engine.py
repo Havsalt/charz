@@ -43,7 +43,7 @@ class EngineInitWrapperMeta(type):
 class EngineMeta(EngineInitWrapperMeta, EngineMixinSortMeta, type): ...
 
 
-class Engine:
+class Engine(metaclass=EngineMeta):
     def __new__(cls: type[_EngineType], *args: _Any, **kwargs: _Any) -> _EngineType:
         instance = super().__new__(cls, *args, **kwargs) # type: _EngineType  # type: ignore[reportAssignmentType]
         instance.fps = cls.fps
