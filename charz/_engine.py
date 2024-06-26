@@ -71,6 +71,7 @@ class Engine:
     
     def run(self) -> None:
         delta = self.clock.get_delta()
+        self.is_running = True
         while self.is_running:
             self.update(delta)
             for queued_node in _Node._queued_nodes:
