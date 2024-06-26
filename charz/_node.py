@@ -52,7 +52,7 @@ class Node(metaclass=NodeMeta):
     def iter_nodes(cls) -> _Generator[Node, None, None]:
         yield from Node._node_instances.values()
 
-    uid: int
+    uid: int # is set in `Node.__new__`
     parent: Node | None = None
     process_priority: int = 0
     
@@ -61,6 +61,10 @@ class Node(metaclass=NodeMeta):
     
     def with_parent(self, parent: Node | None, /):
         self.parent = parent
+        return self
+    
+    def with_process_priority(self, process_priority: int, /):
+        self.process_priority = process_priority
         return self
     
     def __str__(self) -> str:
