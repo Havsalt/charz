@@ -8,7 +8,7 @@ from typing import (
 )
 
 
-class NodeMixinSortMeta(type):
+class _NodeMixinSortMeta(type):
     """Node metaclass for initializing `Node` subclass after other `mixin` classes
     """
     def __new__(cls, name: str, bases: tuple[type, ...], attrs: dict[str, object]):
@@ -18,7 +18,7 @@ class NodeMixinSortMeta(type):
         return new_type
 
 
-class NodeInitWrapperMeta(type):
+class _NodeInitWrapperMeta(type):
     """Wraps the `__init__` method with extra logic
     """
     def __new__(cls, name: str, bases: tuple[type, ...], attrs: dict[str, object]):
@@ -33,10 +33,10 @@ class NodeInitWrapperMeta(type):
         return new_type
 
 
-class NodeMeta(NodeInitWrapperMeta, NodeMixinSortMeta, type): ...
+class _NodeMeta(_NodeInitWrapperMeta, _NodeMixinSortMeta): ...
 
 
-class Node(metaclass=NodeMeta):
+class Node(metaclass=_NodeMeta):
     _node_instances: dict[int, Node] = {}
     _queued_nodes: list[Node] = []
     _uid_counter = 0

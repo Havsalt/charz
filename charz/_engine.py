@@ -15,7 +15,7 @@ from ._node import Node as _Node
 from ._annotations import EngineType as _EngineType
 
 
-class EngineMixinSortMeta(type):
+class _EngineMixinSortMeta(type):
     """Engine metaclass for initializing `Engine` subclass after other `mixin` classes
     """
     def __new__(cls, name: str, bases: tuple[type, ...], attrs: dict[str, object]):
@@ -25,7 +25,7 @@ class EngineMixinSortMeta(type):
         return new_type
 
 
-class EngineInitWrapperMeta(type):
+class _EngineInitWrapperMeta(type):
     """Wraps the `__init__` method with extra logic
     """
     def __new__(cls, name: str, bases: tuple[type, ...], attrs: dict[str, object]):
@@ -40,10 +40,10 @@ class EngineInitWrapperMeta(type):
         return new_type
 
 
-class EngineMeta(EngineInitWrapperMeta, EngineMixinSortMeta, type): ...
+class _EngineMeta(_EngineInitWrapperMeta, _EngineMixinSortMeta, type): ...
 
 
-class Engine(metaclass=EngineMeta):
+class Engine(metaclass=_EngineMeta):
     def __new__(cls: type[_EngineType], *args: _Any, **kwargs: _Any) -> _EngineType:
         instance = super().__new__(cls, *args, **kwargs) # type: _EngineType  # type: ignore[reportAssignmentType]
         instance.fps = cls.fps
