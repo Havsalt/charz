@@ -1,6 +1,7 @@
 from __future__ import annotations as _annotations
 
 from functools import wraps as _wraps
+from itertools import count as _count
 from typing import (
     Any as _Any,
     Generator as _Generator,
@@ -39,12 +40,11 @@ class _NodeMeta(_NodeInitWrapperMeta, _NodeMixinSortMeta): ...
 class Node(metaclass=_NodeMeta):
     _node_instances: dict[int, Node] = {}
     _queued_nodes: list[Node] = []
-    _uid_counter = 0
+    _uid_counter = _count(0, 1)
 
     def __new__(cls, *args: _Any, **kwargs: _Any):
         instance = super().__new__(cls, *args, **kwargs)
-        instance.uid = Node._uid_counter
-        Node._uid_counter += 1
+        instance.uid = next(Node._uid_counter)
         Node._node_instances[instance.uid] = instance
         return instance
 
