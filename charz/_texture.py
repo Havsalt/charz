@@ -1,5 +1,6 @@
 from __future__ import annotations as _annotations
 
+from pathlib import Path as _Path
 from typing import (
     Generator as _Generator,
     Any as _Any
@@ -9,6 +10,15 @@ from ._annotations import (
     NodeType as _NodeType,
     TextureNode as _TextureNode
 )
+
+
+def load_texture(file_path: _Path | str, /) -> list[str]:
+    return (
+        _Path.cwd()
+        .joinpath(str(file_path))
+        .read_text(encoding="utf-8")
+        .splitlines()
+    )
 
 
 class Texture:
