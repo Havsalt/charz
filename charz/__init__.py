@@ -18,14 +18,16 @@ Includes:
 - `Texture` (component)
 - `Color` (component)
 - `ColorValue` (annotation from `colex` package)
-- `Sprite` (prefabricated)
 - `Label` (prefabricated)
+- `Sprite` (prefabricated)
+- `AnimatedSprite` (prefabricated)
+- `Animation` (datastructure)
 - `text` (module for flipping strings)
 """
 
 from __future__ import annotations as _annotations
 
-__version__ = "0.0.8"
+__version__ = "0.0.9"
 __all__ = [
     "Engine",
     "Clock",
@@ -37,11 +39,14 @@ __all__ = [
     "Node2D",
     "Transform",
     "Vec2",
+    "load_texture",
     "Texture",
     "Color",
     "ColorValue",
-    "Sprite",
     "Label",
+    "Sprite",
+    "AnimatedSprite",
+    "Animation",
     "text"
 ]
 
@@ -54,9 +59,11 @@ from ._screen import Screen
 from ._camera import Camera, CameraMode
 from ._node import Node
 from ._transform import Transform
-from ._texture import Texture
+from ._texture import load_texture, Texture
 from ._color import Color
+from ._animation import Animation
 from ._prefabs._node2d import Node2D
-from ._prefabs._sprite import Sprite
 from ._prefabs._label import Label
+from ._prefabs._sprite import Sprite
+from ._prefabs._animated_sprite import AnimatedSprite
 from . import text
