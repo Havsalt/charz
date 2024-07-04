@@ -61,10 +61,11 @@ class Engine(metaclass=_EngineMeta):
     
     def with_fps(self, fps: float, /):
         self.fps = fps
+        self.clock.tps = fps
         return self
     
     def with_clock(self, clock: _Clock, /):
-        self.clock = clock
+        self.clock = clock.with_tps(self.fps)
         return self
     
     def with_screen(self, screen: _Screen, /):
