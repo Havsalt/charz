@@ -2,7 +2,8 @@ from __future__ import annotations as _annotations
 
 from typing import (
     Generator as _Generator,
-    Any as _Any
+    Any as _Any,
+    ClassVar as _ClassVar
 )
 
 from linflex import Vec2 as _Vec2
@@ -14,7 +15,7 @@ from ._annotations import (
 
 
 class Transform:
-    _transform_instances: dict[int, _TransformNode] = {}
+    _transform_instances: _ClassVar[dict[int, _TransformNode]] = {}
 
     @classmethod
     def iter_transform_nodes(cls) -> _Generator[_TransformNode, None, None]:
