@@ -2,6 +2,7 @@ from __future__ import annotations as _annotations
 
 import os as _os
 import sys as _sys
+import math as _math
 
 from linflex import Vec2i as _Vec2i
 from colex import (
@@ -9,7 +10,12 @@ from colex import (
     RESET as _RESET
 )
 
-from ._camera import Camera
+from . import text as _text
+from ._camera import (
+    Camera as _Camera,
+    CameraMode as _CameraMode
+)
+from ._transform import Transform as _Transform
 from ._texture import Texture as _Texture
 from ._annotations import (
     FileLike as _FileLike,
@@ -23,7 +29,7 @@ class Screen:
     def __init__(self, width: int = 16, height: int = 12) -> None:
         self.width = width
         self.height = height
-        self._buffer: list[list[tuple[str, _ColorValue | None]]] = []
+        self.buffer: list[list[tuple[str, _ColorValue | None]]] = []
     
     def with_stream(self, stream: _FileLike[str], /):
         self.stream = stream
@@ -54,33 +60,69 @@ class Screen:
         self.height = height
     
     def clear(self) -> None:
-        self._buffer = [
+        self.buffer = [
             [(" ", None) for _ in range(self.width)] # (char, color) group
             for _ in range(self.height)
         ]
 
-    def render(self, node: _Renderable) -> None:
-        color: _ColorValue | None = getattr(node, "color", None)
-        pos = node.global_position
-        rel_pos = pos - Camera.current.global_position
-        x, y = map(int, rel_pos.to_tuple())
-        size = _os.get_terminal_size()
-        actual_width = min(self.width, size.columns - 1)
-        actual_height = min(self.height, size.lines - 1)
-        for y_offset, texture_line in enumerate(node.texture):
+    def render(self, node: _Renderable, /) -> None:
+        if _Camera.current is None: # should never be None
+            raise TypeError(f"'Camera.current' cannot be of type '{type(_Camera.current)}' while rendering")
+
+        color: _ColorValue | None = getattr(node, "color")
+        node_global_rotation = node.global_rotation # TODO: implement
+        node_global_position = node.global_position
+
+        # determine whether to use use the parent of current camera or its parent as anchor for viewport
+        anchor = _Camera.current
+        if (
+            _Camera.current.mode & _CameraMode.FOLLOW
+            and _Camera.current.parent is not None
+            and isinstance(_Camera.current.parent, _Transform)
+        ):
+            anchor = _Camera.current.parent
+        relative_position = node_global_position - anchor.global_position
+        
+        if _Camera.current.mode & _CameraMode.CENTERED:
+            relative_position += self.size / 4
+        
+        # include half size of camera parent when including size
+        viewport_global_position = _Camera.current.global_position
+        if _Camera.current.mode & _CameraMode.INCLUDE_SIZE:
+            if (
+                _Camera.current.parent is not None
+                and isinstance(_Camera.current.parent, _Texture)
+            ):
+                # adds half of camera's parent's texture size
+                viewport_global_position += _Camera.current.parent.get_texture_size() / 2
+
+        terminal_size = _os.get_terminal_size()
+        actual_width = min(self.width, terminal_size.columns - 1)
+        actual_height = min(self.height, terminal_size.lines - 1)
+
+        texture_size = node.get_texture_size()
+        x = int(relative_position.x)
+        y = int(relative_position.y)
+        if node.centered:
+            x = int(relative_position.x - (texture_size.x / 2))
+            y = int(relative_position.y - (texture_size.y / 2))
+
+        # out of bounds
+        # TODO: consider nodes with rotation
+        if x + texture_size.x < 0 or x > actual_width:
+            return
+        if y + texture_size.y < 0 or y > actual_height:
+            return
+
+        for y_offset, line in enumerate(node.texture):
             y_final = y + y_offset
-            if y_final < 0:
-                continue
-            if y_final >= actual_height:
-                break
-            for x_offset, char in enumerate(texture_line):
+            for x_offset, char in enumerate(line):
                 x_final = x + x_offset
-                if x_final < 0:
-                    continue
-                if x_final >= actual_width:
-                    break
-                self._buffer[y_final][x_final] = (char, color)
-    
+                # insert char into screen buffer if visible
+                if 0 <= x_final < actual_width:
+                    self.buffer[y_final][x_final] = (char, color)
+        # TODO: implement render with rotation
+
     def show(self) -> None:
         size = _os.get_terminal_size()
         actual_width = min(self.width, size.columns - 1) # -1 is margin
@@ -91,13 +133,13 @@ class Screen:
             move_code = f"\u001b[{actual_height}A" + "\r"
             out += move_code
         # construct frame
-        for lino, row in enumerate(self._buffer[:actual_height], start=1):
+        for lino, row in enumerate(self.buffer[:actual_height], start=1):
             for char, color in row[:actual_width]:
                 if color is not None:
                     out += color + char
                 else:
                     out += _RESET + char
-            if lino != len(self._buffer): # not at end
+            if lino != len(self.buffer): # not at end
                 out += "\n"
         out += _RESET
         # write and flush
