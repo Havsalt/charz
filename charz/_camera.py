@@ -1,6 +1,10 @@
 from __future__ import annotations as _annotations
 
-from enum import IntEnum as _IntEnum, auto as _auto
+from enum import (
+    IntEnum as _IntEnum,
+    auto as _auto
+)
+from typing import ClassVar as _ClassVar
 
 from ._node import Node as _Node
 from ._transform import Transform as _Transform
@@ -14,7 +18,7 @@ class CameraMode(_IntEnum):
 
 
 class Camera(_Transform, _Node):
-    current: Camera
+    current: _ClassVar[Camera]
     mode: CameraMode = CameraMode.FIXED
 
     def set_current(self) -> None:
