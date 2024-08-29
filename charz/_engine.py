@@ -78,16 +78,18 @@ class Engine(metaclass=_EngineMeta):
     def update(self, delta: float) -> None:
         ...
     
-    def run(self) -> None:
+    def run(self):
         delta = self.clock.get_delta()
         self.is_running = True
         while self.is_running:
             self.update(delta)
             for queued_node in _Node._queued_nodes:
                 queued_node.free()
-            _Node._queued_nodes *= 0 # faster way to do `.clear()`
+            _Node._queued_nodes *= 0 # NOTE: faster way to do `.clear()`
             for node in _Node.iter_nodes():
                 node.update(delta)
             self.screen.refresh()
             self.clock.tick()
             delta = self.clock.get_delta()
+        
+        return self # this is for convenience if the desire to read the app state arise
