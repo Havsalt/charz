@@ -6,4 +6,15 @@ from .._texture import Texture as _Texture
 from .._color import Color as _Color
 
 
-class Sprite(_Color, _Texture, _Transform, _Node): ...
+class Sprite(_Color, _Texture, _Transform, _Node):
+    def __str__(self) -> str:
+        return (
+            self.__class__.__name__
+            + "("
+            + f"#{self.uid}"
+            + f":{self.position}"
+            + f":{round(self.rotation, 2)}R"
+            + f":{'{}x{}'.format(*self.get_texture_size().to_tuple())}"
+            + f":{repr(self.color)}"
+            + ")"
+        )

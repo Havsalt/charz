@@ -7,7 +7,7 @@ from .._transform import Transform as _Transform
 class Node2D(_Transform, _Node):
     def __str__(self) -> str:
         return (
-            __class__.__name__
+            self.__class__.__name__
             + "("
             + f"#{self.uid}"
             + f":{self.position}"
