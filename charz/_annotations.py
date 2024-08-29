@@ -1,23 +1,34 @@
 from __future__ import annotations as _annotations
 
+# ==( Custom Annotations )==
+# This file contains private annotations used across this package.
+# Whenever there is a "?" comment, it means that
+# a type may or may not implement that field or mixin class.
+
 from typing import (
     TypeVar as _TypeVar,
     Protocol as _Protocol,
-    Callable as _Callable,
     Any as _Any,
     TYPE_CHECKING as _TYPE_CHECKING
 )
 
-from linflex import Vec2 as _Vec2
+from linflex import (
+    Vec2 as _Vec2,
+    Vec2i as _Vec2i
+)
 from colex import ColorValue as _ColorValue
 
 if _TYPE_CHECKING:
     from ._clock import DeltaClock as _DeltaClock
     from ._screen import Screen as _Screen
-    from ._animation import Animation as _Animation
+    from ._animation import (
+        Animation as _Animation,
+        AnimationMapping as _AnimationMapping
+    )
 
 EngineType = _TypeVar("EngineType", bound="Engine", covariant=True)
 NodeType = _TypeVar("NodeType", bound="Node", covariant=True)
+T = _TypeVar("T")
 _Self = _TypeVar("_Self")
 _T_contra = _TypeVar("_T_contra", contravariant=True)
 
@@ -45,10 +56,21 @@ class Node(_Protocol):
 
 class TransformComponent(_Protocol):
     position: _Vec2
+    rotation: float
+    z_index: int
+    is_top_level: bool
+    def with_position(self: _Self, position: _Vec2, /) -> _Self: ...
+    def with_rotation(self: _Self, rotation: float, /) -> _Self: ...
+    def with_z_index(self: _Self, z_index: int, /) -> _Self: ...
+    def as_top_level(self: _Self, state: bool = True, /) -> _Self: ...
     @property
     def global_position(self) -> _Vec2: ...
     @global_position.setter
     def global_position(self, position: _Vec2) -> None: ...
+    @property
+    def global_rotation(self) -> float: ...
+    @global_rotation.setter
+    def global_rotation(self, rotation: float) -> None: ...
 
 
 class TransformNode(
@@ -60,6 +82,14 @@ class TransformNode(
 
 class TextureComponent(_Protocol):
     texture: list[str]
+    visible: bool
+    centered: bool
+    def with_texture(self: _Self, texture_or_line: list[str] | str, /) -> _Self: ...
+    def as_visible(self: _Self, state: bool = True, /) -> _Self: ...
+    def hide(self) -> None: ...
+    def show(self) -> None: ...
+    def is_globally_visible(self) -> bool: ...
+    def get_texture_size(self) -> _Vec2i: ...
 
 
 class TextureNode(
@@ -89,16 +119,17 @@ class ColorNode(
 
 
 class Renderable(
+    #ColorComponent?
     TextureComponent,
     TransformComponent,
     Node,
     _Protocol
 ): ...
-    # color?: _ColorValue
+    #color?: _ColorValue
 
 
-class Animated(_Protocol):
-    animations: dict[str, _Any]
+class AnimatedComponent(_Protocol):
+    animations: _AnimationMapping
     current_animation: _Animation | None = None
     _frame_index: int = 0
     def with_animations(self: _Self, animations: dict[str, _Any], /) -> _Self: ...
@@ -107,10 +138,10 @@ class Animated(_Protocol):
 
 
 class AnimatedNode(
-    Animated,
+    AnimatedComponent,
     TextureComponent,
     TransformComponent,
     Node,
     _Protocol
-    # Color?
+    #Color?
 ): ...
