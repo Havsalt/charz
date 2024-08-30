@@ -31,3 +31,64 @@ allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["charz"]
+
+[tool.ruff]
+output-format = "grouped"
+show-fixes = true
+line-length = 90 # +2 from default 88
+
+[tool.ruff.lint]
+select = [
+    # Rules I use across projects
+    "N",      # pep-8-naming
+    "E",      # pycodestyle :: error
+    "W",      # pycodestyle :: warning
+    "UP",     # pyupgrade
+    "PL",     # pylint
+    "D",      # pydocstye
+    "C901",   # mccabe :: complex-structure
+    "ISC",    # flake8-implicit-str-concat
+    "ANN",    # flake8-annotations
+    "FA",     # flake8-future-annotations
+    "PYI",    # flake8-pyi
+    "A",      # flake8-builtins
+    "B",      # flake8-bugbear
+    "PIE",    # flake8-pie
+    "COM818", # flake8-commas :: trailing-comma-on-bare-tuple
+    "COM819", # flake8-commas :: prohibited-trailing-comma
+    "SIM",    # flake8-simplify
+    "YTT"     # flake8-2020
+]
+ignore = [
+    # Project spesific rules to ignore
+    "ANN202",  # flake8-annotations :: missing-return-type-private-function :!: Disabled for `with_*` methods
+    "ANN204",  # flake8-annotations :: missing-return-type-special-method :!: __new__ in this project has to return special types
+    "PLC0105", # type-name-incorrect-variance :!: TypeVar is used instead of Self (py 3.11+ feature mimicked in 3.10)
+    # Rules that I do not know why it gives of a warning
+    "ISC001",  # single-line-implicit-string-concatenation
+    # Rules I ignore across projects
+    "ANN101",  # flake8-annotations :: missing-type-self
+    "ANN102",  # flake8-annotations :: missing-type-cls
+    "PYI019",  # flake8-pyi :: custom-type-var-return-type :!: Python 3.10 cannot use typing.Self
+    "D200",    # pydocstyle :: fits-on-one-line
+    "D203",    # pydocstyle :: one-blank-line-before-class
+    "D213",    # pydocstyle :: multi-line-summary-second-line
+    "D4",      # pydocstyle :: docstring spesific styling
+    "UP027",   # pyupgrade :: unpacked-list-comprehension
+    "UP040",   # pyupgrade :: non-pep695-type-alias
+    "UP035",   # pyupgrade :: depricated-import :!: Using typing.Generator instead of collections.abc.Generator
+    "N812"     # pep8-naming :: lowercase-imported-as-non-lowercase
+]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"__init__.py" = ["D205", "D212"] # Allow module docstring content to start at second line
+"annotations.py" = ["D205", "D212"] # Allow module docstring content to start at second line
+
+[tool.ruff.lint.mccabe]
+max-complexity = 6
+
+[tool.ruff.lint.isort]
+split-on-trailing-comma = false
+
+[tool.ruff.lint.flake8-annotations]
+allow-star-arg-any = true
