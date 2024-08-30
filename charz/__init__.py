@@ -47,7 +47,7 @@ __all__ = [
     "Sprite",
     "AnimatedSprite",
     "Animation",
-    "text"
+    "text",
 ]
 
 from linflex import Vec2
