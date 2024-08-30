@@ -9,10 +9,7 @@ Includes:
 
 from __future__ import annotations as _annotations
 
-from math import (
-    pi as _PI,
-    tau as _TAU
-)
+from math import tau as _TAU
 
 
 # IDEA: make TextTranslator (as in Transform props),
@@ -21,7 +18,7 @@ from math import (
 
 
 # predefined horizontal conversions
-_h_conversions: dict[str, str] = { # horizontal flip
+_h_conversions: dict[str, str] = {  # horizontal flip
     "/": "\\",
     "(": ")",
     "[": "]",
@@ -32,6 +29,7 @@ _h_conversions: dict[str, str] = { # horizontal flip
     "q": "p",
 }
 # mirroring `_h_conversions`
+# fmt: off
 _h_conversions.update({
     value: key
     for key, value in _h_conversions.items()
@@ -40,8 +38,9 @@ _h_conversions.update({
 _h_conversions.update({
     "7": "<"
 })
+# fmt: on
 # predefined vertical conversions
-_v_conversions: dict[str, str] = { # vertical flip
+_v_conversions: dict[str, str] = {  # vertical flip
     "/": "\\",
     ".": "'",
     ",": "`",
@@ -51,30 +50,34 @@ _v_conversions: dict[str, str] = { # vertical flip
     "w": "m",
     "W": "M",
     "v": "^",
-    "V": "A"
+    "V": "A",
 }
 # mirroring `_v_conversions`
+# fmt: off
 _v_conversions.update({
     value: key
     for key, value in _v_conversions.items()
 })
+# fmt: on
 # unmirrored `_v_conversions` for monodirectional translations
-_v_conversions.update({
-    # none for now...
-})
+# fmt: off
+# _v_conversions.update({
+#     # none for now...
+# })
+# fmt: on
 # predefined rotational conversions
-_r_conversions: dict[str, tuple[str, ...]] = { # rotational
+_r_conversions: dict[str, tuple[str, ...]] = {  # rotational
     "|": ("|", "\\", "-", "/"),
     ".": (".", "'"),
     "b": ("b", "p", "q", "d"),
-    "9": ("9", "6")
+    "9": ("9", "6"),
 }
 # (I marked vars with underscore as they are not for export, and this is a public module)
 # creating mirrored {char: variants} pairs, for pairs already defined in `_r_conversions`
 # mirror `_r_conversions` (adds variants as their own keys)
 for _options in list(_r_conversions.values()):
     for _idx, _value in enumerate(_options):
-        if _idx == 0: # does not need to re-add the initial pair
+        if _idx == 0:  # does not need to re-add the initial pair
             continue
         assert _value not in _r_conversions, "cannot add existing value: " + repr(_value)
         _before = _options[:_idx]
@@ -82,9 +85,11 @@ for _options in list(_r_conversions.values()):
         _new_values = (*_after, *_before)
         _r_conversions[_value] = _new_values
 # unmirrored `_r_conversions` for spesific lookup translations
-_r_conversions.update({
-    # none for now...
-})
+# fmt: off
+# _r_conversions.update({
+#     # none for now...
+# })
+# fmt: on
 
 
 def flip_h(line: str, /) -> str:
@@ -96,10 +101,7 @@ def flip_h(line: str, /) -> str:
     Returns:
         list[str]: flipped line or character
     """
-    return "".join(
-        _h_conversions.get(char, char)
-        for char in line
-    )[::-1]
+    return "".join(_h_conversions.get(char, char) for char in line)[::-1]
 
 
 def flip_v(line: str, /) -> str:
@@ -111,10 +113,12 @@ def flip_v(line: str, /) -> str:
     Returns:
         list[str]: flipped line or character
     """
+    # fmt: off
     return "".join(
         _v_conversions.get(char, char)
         for char in line
     )
+    # fmt: on
 
 
 def flip_lines_h(lines: list[str], /) -> list[str]:
@@ -126,6 +130,7 @@ def flip_lines_h(lines: list[str], /) -> list[str]:
     Returns:
         list[str]: flipped content
     """
+    # fmt: off
     return list(map(
         lambda line: "".join(
             _h_conversions.get(char, char)
@@ -133,6 +138,7 @@ def flip_lines_h(lines: list[str], /) -> list[str]:
         ),
         lines
     ))[::-1]
+    # fmt: on
 
 
 def flip_lines_v(lines: list[str], /) -> list[str]:
@@ -144,6 +150,7 @@ def flip_lines_v(lines: list[str], /) -> list[str]:
     Returns:
         list[str]: flipped content
     """
+    # fmt: off
     return list(map(
         lambda line: "".join(
             _v_conversions.get(char, char)
@@ -151,6 +158,7 @@ def flip_lines_v(lines: list[str], /) -> list[str]:
         ),
         lines
     ))
+    # fmt: on
 
 
 def rotate(char: str, angle: float, /) -> str:

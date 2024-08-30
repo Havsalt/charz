@@ -4,24 +4,19 @@ from pathlib import Path as _Path
 from typing import (
     Generator as _Generator,
     Any as _Any,
-    ClassVar as _ClassVar
+    ClassVar as _ClassVar,
 )
 
 from linflex import Vec2i as _Vec2i
 
 from ._annotations import (
     NodeType as _NodeType,
-    TextureNode as _TextureNode
+    TextureNode as _TextureNode,
 )
 
 
 def load_texture(file_path: _Path | str, /) -> list[str]:
-    return (
-        _Path.cwd()
-        .joinpath(str(file_path))
-        .read_text(encoding="utf-8")
-        .splitlines()
-    )
+    return _Path.cwd().joinpath(str(file_path)).read_text(encoding="utf-8").splitlines()
 
 
 class Texture:
@@ -30,13 +25,13 @@ class Texture:
     @classmethod
     def iter_texture_nodes(cls) -> _Generator[_TextureNode, None, None]:
         yield from cls._texture_instances.values()
-    
+
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
-        instance = super().__new__(cls, *args, **kwargs) # type: _TextureNode  # type: ignore[reportAssignmentType]
+        instance = super().__new__(cls, *args, **kwargs)  # type: _TextureNode  # type: ignore[reportAssignmentType]
         Texture._texture_instances[instance.uid] = instance
         instance.texture = []
-        return instance # type: ignore
-    
+        return instance  # type: ignore
+
     texture: list[str]
     visible: bool = True
     centered: bool = False
@@ -51,14 +46,14 @@ class Texture:
     def as_visible(self, state: bool = True, /):
         self.visible = state
         return self
-    
+
     def hide(self) -> None:
         self.visible = False
-    
+
     def show(self) -> None:
         self.visible = True
 
-    def is_globally_visible(self) -> bool: # global visibility
+    def is_globally_visible(self) -> bool:  # global visibility
         """Checks whether the node and its ancestors are visible
 
         Returns:
@@ -66,21 +61,21 @@ class Texture:
         """
         if not self.visible:
             return False
-        parent = self.parent # type: ignore
-        while parent != None:
+        parent = self.parent  # type: ignore
+        while parent is not None:
             if not isinstance(parent, Texture):
                 return True
             if not parent.visible:
                 return False
-            parent = parent.parent # type: ignore
+            parent = parent.parent  # type: ignore
         return True
 
     def get_texture_size(self) -> _Vec2i:
         return _Vec2i(
-            len(max(self.texture, key=len)), # size of longest line
-            len(self.texture)                # line count
+            len(max(self.texture, key=len)),  # size of longest line
+            len(self.texture),  # line count
         )
-    
+
     def free(self: _TextureNode) -> None:
         del Texture._texture_instances[self.uid]
         super().free()

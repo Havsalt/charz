@@ -15,15 +15,15 @@ class Label(_Color, _Texture, _Transform, _Node):
     def with_newline(self, newline: str, /):
         self.newline = newline
         return self
-    
+
     def with_tab_size(self, tab_size: int, /):
         self.tab_size = tab_size
         return self
-    
+
     def with_tab_char(self, tab_char: str, /):
         self.tab_char = tab_char
         return self
-    
+
     def with_tab_fill(self, tab_fill: str, /):
         self.tab_fill = tab_fill
         return self
@@ -36,7 +36,7 @@ class Label(_Color, _Texture, _Transform, _Node):
     def text(self) -> str:
         joined_lines = self.newline.join(self.texture)
         return joined_lines.replace(self.tab_fill * self.tab_size, self.tab_char)
-    
+
     @text.setter
     def text(self, value: str) -> None:
         tab_replaced = self.newline.replace(self.tab_char, self.tab_fill * self.tab_size)
