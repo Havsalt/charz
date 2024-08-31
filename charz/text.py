@@ -1,5 +1,4 @@
-"""
-### Text utility module
+"""### Text utility module
 
 Utility for flipping characters/lines. Support for rotating characters
 
