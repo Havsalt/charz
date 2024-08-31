@@ -1,6 +1,5 @@
 from __future__ import annotations as _annotations
 
-from functools import wraps as _wraps
 from typing import (
     Callable as _Callable,  # noqa: F401
     Any as _Any,
@@ -27,28 +26,7 @@ class _EngineMixinSortMeta(type):
         return new_type
 
 
-class _EngineInitWrapperMeta(type):
-    """Wraps the `__init__` method with extra logic"""
-
-    def __new__(cls, name: str, bases: tuple[type, ...], attrs: dict[str, object]):
-        new_type = super().__new__(cls, name, bases, attrs)
-        init = getattr(new_type, "__init__")  # type: _Callable[..., None]  # noqa: B009
-
-        # NOTE: local `init` is always defined,
-        # becuase of `Engine.__init__` + sorted bases
-        @_wraps(init)
-        def _init_wrapper(self: Engine, *args: _Any, **kwargs: _Any) -> None:
-            init(self, *args, **kwargs)
-            self.setup()  # calls method after __init__
-
-        setattr(new_type, "__init__", _init_wrapper)  # noqa: B010
-        return new_type
-
-
-class _EngineMeta(_EngineInitWrapperMeta, _EngineMixinSortMeta, type): ...
-
-
-class Engine(metaclass=_EngineMeta):
+class Engine(metaclass=_EngineMixinSortMeta):
     def __new__(cls: type[_EngineType], *args: _Any, **kwargs: _Any) -> _EngineType:
         instance = super().__new__(cls, *args, **kwargs)  # type: _EngineType  # type: ignore[reportAssignmentType]
         instance.fps = cls.fps
@@ -61,7 +39,8 @@ class Engine(metaclass=_EngineMeta):
     screen: _Screen = _Screen()
     is_running: bool = False
 
-    def __init__(self) -> None: ...
+    def __init__(self) -> None:
+        self.setup()
 
     def with_fps(self, fps: float, /):
         self.fps = fps
