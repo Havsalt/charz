@@ -122,7 +122,8 @@ class Screen:
                 x_final = x + x_offset
                 # insert char into screen buffer if visible
                 if 0 <= x_final < actual_width:
-                    self.buffer[y_final][x_final] = (char, color)
+                    if 0 <= y_final < actual_height:
+                        self.buffer[y_final][x_final] = (char, color)
         # TODO: implement render with rotation
 
     def show(self) -> None:
