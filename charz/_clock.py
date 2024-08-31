@@ -41,7 +41,7 @@ class Clock:
 
 
 class DeltaClock(Clock):
-    """`DeltaClock` sleeps based on execution time of timeframe (calculates `delta time`)"""
+    """`DeltaClock` calculating `delta time` and sleeps for maintaining desirerd `tps`"""
 
     def __init__(self, tps: float, /) -> None:
         """Initializes the delta clock with a given tps
