@@ -151,6 +151,9 @@ class Screen:
 
     def refresh(self) -> None:
         self.clear()
-        for node in _Texture.iter_texture_nodes():
+        for node in sorted(
+            _Texture.iter_texture_nodes(),
+            key=lambda node: node.z_index
+        ):
             self.render(node)
         self.show()
