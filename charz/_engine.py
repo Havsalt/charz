@@ -5,6 +5,8 @@ from typing import (
     Any as _Any,
 )
 
+from linflex import Vec2i as _Vec2i
+
 from ._clock import (
     Clock as _Clock,
     DeltaClock as _DeltaClock,
@@ -53,6 +55,26 @@ class Engine(metaclass=_EngineMixinSortMeta):
 
     def with_screen(self, screen: _Screen, /):
         self.screen = screen
+        return self
+
+    def with_screen_size(
+        self,
+        size: _Vec2i | None = None,
+        /,
+        width: int | None = None,
+        height: int | None = None,
+    ):
+        if size is None and width is None and height is None:
+            raise TypeError(f"not all arguments can be {None} at the same time")
+        if size is not None and (width is not None or height is not None):
+            raise TypeError(
+                "chose either positional argument 'size' "
+                "or keyword arguments 'width' and/or 'height', not all three"
+            )
+        if size is not None:
+            self.screen.size = size
+        if width is not None or height is not None:
+            self.screen.size = _Vec2i(width or 1, height or 1)
         return self
 
     def setup(self) -> None: ...
