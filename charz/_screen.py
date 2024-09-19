@@ -22,12 +22,36 @@ from ._annotations import (
 
 
 class Screen:
-    stream: _FileLike[str] = _sys.stdout
+    stream: _FileLike[str] = _sys.stdout  # Default stream, may be redirected
+    # Screen texture buffer with (char, color) tuple
+    buffer: list[list[tuple[str, _ColorValue | None]]]
 
-    def __init__(self, width: int = 16, height: int = 12) -> None:
-        self.width = width
-        self.height = height
-        self.buffer: list[list[tuple[str, _ColorValue | None]]] = []
+    def __init__(
+        self,
+        width: int | None = None,  # 16
+        height: int | None = None,  # 12
+        auto_resize: bool = False,
+    ) -> None:
+        self.width = width or 16
+        self.height = height or 12
+        self.buffer = []
+        self._auto_resize = auto_resize
+        self._resize_if_necessary()
+
+    @property
+    def auto_resize(self) -> bool:
+        return self._auto_resize
+
+    @auto_resize.setter
+    def auto_resize(self, state: bool) -> None:
+        self._auto_resize = state
+        self._resize_if_necessary()
+
+    def _resize_if_necessary(self) -> None:
+        if self.auto_resize:
+            terminal_size = _os.get_terminal_size(self.stream.fileno())
+            self.width = terminal_size.columns
+            self.height = terminal_size.lines
 
     def with_stream(self, stream: _FileLike[str], /):
         self.stream = stream
@@ -45,6 +69,10 @@ class Screen:
         self.size = size
         return self
 
+    def with_auto_resize(self, state: bool = True, /):
+        self.auto_resize = state
+        return self
+
     @property
     def size(self) -> _Vec2i:
         return _Vec2i(self.width, self.height)
@@ -52,10 +80,13 @@ class Screen:
     @size.setter
     def size(self, value: _Vec2i) -> None:
         width, height = value.to_tuple()
-        if any(isinstance(axis, int) for axis in (width, height)):
-            raise ValueError(f"value '{value}' requires all axes to be of type 'int'")
+        if not isinstance(width, int):
+            raise ValueError(f"width cannot be of type '{type(value)}', expected 'int'")
+        if not isinstance(height, int):
+            raise ValueError(f"height cannot be of type '{type(value)}', expected 'int'")
         self.width = width
         self.height = height
+        self._resize_if_necessary()
 
     def clear(self) -> None:
         self.buffer = [
