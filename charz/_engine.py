@@ -74,7 +74,7 @@ class Engine(metaclass=_EngineMixinSortMeta):
         if size is not None:
             self.screen.size = size
         if width is not None or height is not None:
-            self.screen.size = _Vec2i(width or 1, height or 1)
+            self.screen.size = _Vec2i(width or 16, height or 12)
         return self
 
     def setup(self) -> None: ...
