@@ -47,6 +47,10 @@ class Texture:
         self.visible = state
         return self
 
+    def as_centered(self, state: bool = True, /):
+        self.centered = state
+        return self
+
     def hide(self) -> None:
         self.visible = False
 
@@ -71,6 +75,8 @@ class Texture:
         return True
 
     def get_texture_size(self) -> _Vec2i:
+        if not self.texture:
+            return _Vec2i.ZERO
         return _Vec2i(
             len(max(self.texture, key=len)),  # size of longest line
             len(self.texture),  # line count
