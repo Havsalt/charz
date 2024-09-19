@@ -32,8 +32,25 @@ class Transform:
     z_index: int = 0
     is_top_level: bool = False
 
-    def with_position(self, position: _Vec2, /):
-        self.position = position
+    # TODO: Would be nice to figure out @overload with this function
+    def with_position(
+        self,
+        position: _Vec2 | None = None,
+        /,
+        x: float | None = None,
+        y: float | None = None,
+    ):
+        if position is None and x is None and y is None:
+            raise TypeError(f"not all arguments can be {None} at the same time")
+        if position is not None and (x is not None or y is not None):
+            raise TypeError(
+                "chose either positional argument 'position' "
+                "or keyword arguments 'x' and/or 'y', not all three"
+            )
+        if position is not None:
+            self.position = position
+        if x is not None or y is not None:
+            self.position = _Vec2(x or 0, y or 0)
         return self
 
     def with_rotation(self, rotation: float, /):
