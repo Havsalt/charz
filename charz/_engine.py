@@ -65,7 +65,7 @@ class Engine(metaclass=_EngineMixinSortMeta):
         height: int | None = None,
     ):
         if size is None and width is None and height is None:
-            raise TypeError(f"not all arguments can be {None} at the same time")
+            raise TypeError(f"not all arguments can be 'None' at the same time")
         if size is not None and (width is not None or height is not None):
             raise TypeError(
                 "chose either positional argument 'size' "
@@ -75,6 +75,10 @@ class Engine(metaclass=_EngineMixinSortMeta):
             self.screen.size = size
         if width is not None or height is not None:
             self.screen.size = _Vec2i(width or 16, height or 12)
+        return self
+
+    def with_auto_resize_screen(self, state: bool = True, /):
+        self.screen.auto_resize = state
         return self
 
     def setup(self) -> None: ...
