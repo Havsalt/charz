@@ -153,7 +153,7 @@ class Screen:
         self.clear()
         for node in sorted(
             _Texture.iter_texture_nodes(),
-            key=lambda node: node.z_index
+            key=lambda node: node.z_index,
         ):
             self.render(node)
         self.show()
