@@ -1,5 +1,6 @@
 from __future__ import annotations as _annotations
 
+from copy import deepcopy as _deepcopy
 from typing import (
     Callable as _Callable,  # noqa: F401
     Any as _Any,
@@ -29,13 +30,6 @@ class _EngineMixinSortMeta(type):
 
 
 class Engine(metaclass=_EngineMixinSortMeta):
-    def __new__(cls: type[_EngineType], *args: _Any, **kwargs: _Any) -> _EngineType:
-        instance = super().__new__(cls, *args, **kwargs)  # type: _EngineType  # type: ignore[reportAssignmentType]
-        instance.fps = cls.fps
-        instance.clock = cls.clock
-        instance.screen = cls.screen
-        return instance  # type: ignore
-
     fps: float = 16
     clock: _Clock = _DeltaClock(fps)
     screen: _Screen = _Screen()
