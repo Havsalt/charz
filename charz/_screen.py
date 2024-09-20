@@ -22,21 +22,24 @@ from ._annotations import (
 
 
 class Screen:
-    stream: _FileLike[str] = _sys.stdout  # Default stream, may be redirected
-    # Screen texture buffer with (char, color) tuple
+    stream: _FileLike[str] = _sys.stdout  # default stream, may be redirected
+    # screen texture buffer with (char, color) tuple
     buffer: list[list[tuple[str, _ColorValue | None]]]
 
     def __init__(
         self,
-        width: int | None = None,  # 16
-        height: int | None = None,  # 12
+        width: int = 16,
+        height: int = 12,
         auto_resize: bool = False,
+        transparancy_fill: str = " ",
     ) -> None:
-        self.width = width or 16
-        self.height = height or 12
-        self.buffer = []
+        self.width = width
+        self.height = height
         self._auto_resize = auto_resize
         self._resize_if_necessary()
+        self.transparancy_fill = transparancy_fill
+        self.buffer = []
+        self.clear()  # for populating the list with an empty screen
 
     @property
     def auto_resize(self) -> bool:
@@ -73,6 +76,15 @@ class Screen:
         self.auto_resize = state
         return self
 
+    def with_transparancy_fill(self, fill_char: str, /):
+        if len(fill_char) != 1:
+            raise ValueError(
+                "'transparancy_fill' cannot be a 'str' with length other than 1,"
+                f"got length {len(fill_char)}"
+            )
+        self.transparancy_fill = fill_char
+        return self
+
     @property
     def size(self) -> _Vec2i:
         return _Vec2i(self.width, self.height)
@@ -90,19 +102,21 @@ class Screen:
 
     def clear(self) -> None:
         self.buffer = [
-            [(" ", None) for _ in range(self.width)]  # (char, color) group
+            # (char, color) group
+            [(self.transparancy_fill, None) for _ in range(self.width)]
             for _ in range(self.height)
         ]
 
     def render(self, node: _Renderable, /) -> None:  # noqa: C901
-        if _Camera.current is None:  # should never be None
+        # current camera should never be None or other class than 'Camera', or subclass of it
+        if _Camera.current is None or not isinstance(_Camera.current, _Camera):
             raise TypeError(
                 "'Camera.current' cannot be of type "
                 f"'{type(_Camera.current)}' while rendering"
             )
 
         color: _ColorValue | None = getattr(node, "color")  # noqa: B009
-        # node_global_rotation = node.global_rotation # TODO: implement
+        # node_global_rotation = node.global_rotation # TODO: implement rotation when rendering
         node_global_position = node.global_position
 
         # determine whether to use use the parent of current camera
@@ -158,6 +172,7 @@ class Screen:
         # TODO: implement render with rotation
 
     def show(self) -> None:
+        # TODO: use better ANSI control codes to clear the screen better
         size = _os.get_terminal_size()
         actual_width = min(self.width, size.columns - 1)  # -1 is margin
         actual_height = min(self.height, size.lines - 1)
