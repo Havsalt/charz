@@ -57,6 +57,7 @@ class Engine(metaclass=_EngineMixinSortMeta):
         self.screen = screen
         return self
 
+    # TODO: Try implementing @overload for this method
     def with_screen_size(
         self,
         size: _Vec2i | None = None,
