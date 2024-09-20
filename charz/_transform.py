@@ -1,5 +1,6 @@
 from __future__ import annotations as _annotations
 
+from copy import deepcopy as _deepcopy
 from typing import (
     Generator as _Generator,
     Any as _Any,
@@ -24,7 +25,10 @@ class Transform:
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
         instance = super().__new__(cls, *args, **kwargs)  # type: _TransformNode  # type: ignore[reportAssignmentType]
         Transform._transform_instances[instance.uid] = instance
-        instance.position = _Vec2(0, 0)
+        if (class_position := getattr(instance, "position", None)) is not None:
+            instance.position = _deepcopy(class_position)
+        else:
+            instance.position = _Vec2.ZERO
         return instance  # type: ignore
 
     position: _Vec2

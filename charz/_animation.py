@@ -3,6 +3,7 @@ from __future__ import annotations as _annotations
 from types import SimpleNamespace as _SimpleNamespace
 from functools import wraps as _wraps
 from pathlib import Path as _Path
+from copy import deepcopy as _deepcopy
 from typing import (
     Generator as _Generator,
     Any as _Any,
@@ -60,7 +61,11 @@ class Animated:  # Component (mixin class)
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
         instance = super().__new__(cls, *args, **kwargs)  # type: _AnimatedNode  # type: ignore[reportAssignmentType]
         Animated._animated_instances[instance.uid] = instance
-        instance.animations = AnimationMapping()
+        if (class_animations := getattr(instance, "animations", None)) is not None:
+            instance.animations = _deepcopy(class_animations)
+        else:
+            instance.animations = AnimationMapping()
+
 
         # inject `._wrapped_update_animated()` into `.update()`
         def update_method_factory(instance: _AnimatedNode, bound_update):  # noqa: ANN001 ANN202

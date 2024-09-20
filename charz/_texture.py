@@ -1,6 +1,7 @@
 from __future__ import annotations as _annotations
 
 from pathlib import Path as _Path
+from copy import deepcopy as _deepcopy
 from typing import (
     Generator as _Generator,
     Any as _Any,
@@ -29,7 +30,10 @@ class Texture:
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
         instance = super().__new__(cls, *args, **kwargs)  # type: _TextureNode  # type: ignore[reportAssignmentType]
         Texture._texture_instances[instance.uid] = instance
-        instance.texture = []
+        if (class_texture := getattr(instance, "texture", None)) is not None:
+            instance.texture = _deepcopy(class_texture)
+        else:
+            instance.texture = []
         return instance  # type: ignore
 
     texture: list[str]
