@@ -35,9 +35,6 @@ class Engine(metaclass=_EngineMixinSortMeta):
     screen: _Screen = _Screen()
     is_running: bool = False
 
-    def __init__(self) -> None:
-        self.setup()
-
     def with_fps(self, fps: float, /):
         self.fps = fps
         self.clock.tps = fps
@@ -75,8 +72,6 @@ class Engine(metaclass=_EngineMixinSortMeta):
     def with_auto_resize_screen(self, state: bool = True, /):
         self.screen.auto_resize = state
         return self
-
-    def setup(self) -> None: ...
 
     def update(self, delta: float) -> None: ...
 

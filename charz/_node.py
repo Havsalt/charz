@@ -40,9 +40,6 @@ class Node(metaclass=_NodeMixinSortMeta):
     parent: Node | None = None
     process_priority: int = 0
 
-    def __init__(self) -> None:
-        self.setup()
-
     def with_parent(self, parent: Node | None, /):
         self.parent = parent
         return self
@@ -53,8 +50,6 @@ class Node(metaclass=_NodeMixinSortMeta):
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}(#{self.uid})"
-
-    def setup(self) -> None: ...
 
     def update(self, delta: float) -> None: ...
 
