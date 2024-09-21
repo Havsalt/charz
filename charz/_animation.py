@@ -66,7 +66,6 @@ class Animated:  # Component (mixin class)
         else:
             instance.animations = AnimationMapping()
 
-
         # inject `._wrapped_update_animated()` into `.update()`
         def update_method_factory(instance: _AnimatedNode, bound_update):  # noqa: ANN001 ANN202
             @_wraps(bound_update)
