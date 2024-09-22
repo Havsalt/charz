@@ -8,6 +8,7 @@ from __future__ import annotations as _annotations
 from typing import (
     TypeVar as _TypeVar,
     Protocol as _Protocol,
+    ClassVar as _ClassVar,
     Any as _Any,
     TYPE_CHECKING as _TYPE_CHECKING,
 )
@@ -47,6 +48,7 @@ class Engine(_Protocol):
 
 
 class Node(_Protocol):
+    node_instances: _ClassVar[dict[int, Node]]
     uid: int
 
     def __init__(self) -> None: ...
@@ -56,6 +58,7 @@ class Node(_Protocol):
 
 
 class TransformComponent(_Protocol):
+    transform_instances: _ClassVar[dict[int, TransformNode]]
     position: _Vec2
     rotation: float
     z_index: int
@@ -83,6 +86,7 @@ class TransformNode(
 
 
 class TextureComponent(_Protocol):
+    texture_instances: _ClassVar[dict[int, TextureNode]]
     texture: list[str]
     visible: bool
     centered: bool
@@ -104,6 +108,7 @@ class TextureNode(
 
 
 class ColorComponent(_Protocol):
+    color_instances: dict[int, ColorNode]
     color: _ColorValue | None
 
     def with_color(
@@ -133,6 +138,7 @@ class Renderable(  # possible base: `ColorComponent`
 
 
 class AnimatedComponent(_Protocol):
+    animated_instances: _ClassVar[dict[int, AnimatedNode]]
     animations: _AnimationMapping
     current_animation: _Animation | None = None
     _frame_index: int = 0

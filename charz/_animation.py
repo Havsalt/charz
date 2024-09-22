@@ -52,15 +52,11 @@ class AnimationMapping(_SimpleNamespace):
 
 
 class Animated:  # Component (mixin class)
-    _animated_instances: _ClassVar[dict[int, _AnimatedNode]] = {}
-
-    @classmethod
-    def iter_animated_nodes(cls) -> _Generator[_AnimatedNode, None, None]:
-        yield from cls._animated_instances.values()
+    animated_instances: _ClassVar[dict[int, _AnimatedNode]] = {}
 
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
         instance = super().__new__(cls, *args, **kwargs)  # type: _AnimatedNode  # type: ignore[reportAssignmentType]
-        Animated._animated_instances[instance.uid] = instance
+        Animated.animated_instances[instance.uid] = instance
         if (class_animations := getattr(instance, "animations", None)) is not None:
             instance.animations = _deepcopy(class_animations)
         else:
@@ -113,5 +109,5 @@ class Animated:  # Component (mixin class)
             self.is_playing = False
 
     def free(self: _AnimatedNode) -> None:
-        del Animated._animated_instances[self.uid]
+        del Animated.animated_instances[self.uid]
         super().free()

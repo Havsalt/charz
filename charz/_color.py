@@ -14,15 +14,11 @@ from ._annotations import (
 
 
 class Color:
-    _color_instances: dict[int, _ColorNode] = {}
-
-    @classmethod
-    def iter_color_nodes(cls) -> _Generator[_ColorNode, None, None]:
-        yield from cls._color_instances.values()
+    color_instances: dict[int, _ColorNode] = {}
 
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
         instance = super().__new__(cls, *args, **kwargs)  # type: _ColorNode  # type: ignore[reportAssignmentType]
-        Color._color_instances[instance.uid] = instance
+        Color.color_instances[instance.uid] = instance
         return instance  # type: ignore
 
     color: _ColorValue | None = None
@@ -32,5 +28,5 @@ class Color:
         return self
 
     def free(self: _ColorNode) -> None:
-        del Color._color_instances[self.uid]
+        del Color.color_instances[self.uid]
         super().free()

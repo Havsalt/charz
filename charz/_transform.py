@@ -16,15 +16,11 @@ from ._annotations import (
 
 
 class Transform:
-    _transform_instances: _ClassVar[dict[int, _TransformNode]] = {}
-
-    @classmethod
-    def iter_transform_nodes(cls) -> _Generator[_TransformNode, None, None]:
-        yield from cls._transform_instances.values()
+    transform_instances: _ClassVar[dict[int, _TransformNode]] = {}
 
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
         instance = super().__new__(cls, *args, **kwargs)  # type: _TransformNode  # type: ignore[reportAssignmentType]
-        Transform._transform_instances[instance.uid] = instance
+        Transform.transform_instances[instance.uid] = instance
         if (class_position := getattr(instance, "position", None)) is not None:
             instance.position = _deepcopy(class_position)
         else:
@@ -118,5 +114,5 @@ class Transform:
         self.rotation += diff
 
     def free(self: _TransformNode) -> None:
-        del Transform._transform_instances[self.uid]
+        del Transform.transform_instances[self.uid]
         super().free()

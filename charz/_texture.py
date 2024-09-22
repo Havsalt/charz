@@ -21,15 +21,11 @@ def load_texture(file_path: _Path | str, /) -> list[str]:
 
 
 class Texture:
-    _texture_instances: _ClassVar[dict[int, _TextureNode]] = {}
-
-    @classmethod
-    def iter_texture_nodes(cls) -> _Generator[_TextureNode, None, None]:
-        yield from cls._texture_instances.values()
+    texture_instances: _ClassVar[dict[int, _TextureNode]] = {}
 
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
         instance = super().__new__(cls, *args, **kwargs)  # type: _TextureNode  # type: ignore[reportAssignmentType]
-        Texture._texture_instances[instance.uid] = instance
+        Texture.texture_instances[instance.uid] = instance
         if (class_texture := getattr(instance, "texture", None)) is not None:
             instance.texture = _deepcopy(class_texture)
         else:
@@ -87,5 +83,5 @@ class Texture:
         )
 
     def free(self: _TextureNode) -> None:
-        del Texture._texture_instances[self.uid]
+        del Texture.texture_instances[self.uid]
         super().free()

@@ -22,19 +22,15 @@ class _NodeMixinSortMeta(type):
 
 
 class Node(metaclass=_NodeMixinSortMeta):
-    _node_instances: _ClassVar[dict[int, Node]] = {}
     _queued_nodes: _ClassVar[list[Node]] = []
     _uid_counter: _ClassVar[_count] = _count(0, 1)
+    node_instances: _ClassVar[dict[int, Node]] = {}
 
     def __new__(cls, *args: _Any, **kwargs: _Any):
         instance = super().__new__(cls, *args, **kwargs)
         instance.uid = next(Node._uid_counter)
-        Node._node_instances[instance.uid] = instance
+        Node.node_instances[instance.uid] = instance
         return instance
-
-    @classmethod
-    def iter_nodes(cls) -> _Generator[Node, None, None]:
-        yield from Node._node_instances.values()
 
     uid: int  # is set in `Node.__new__`
     parent: Node | None = None
@@ -57,4 +53,4 @@ class Node(metaclass=_NodeMixinSortMeta):
         Node._queued_nodes.append(self)
 
     def free(self) -> None:
-        del Node._node_instances[self.uid]
+        del Node.node_instances[self.uid]
