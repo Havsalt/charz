@@ -108,6 +108,8 @@ class Screen:
         ]
 
     def render(self, node: _Renderable, /) -> None:  # noqa: C901
+        if not node.is_globally_visible():  # skip if node is invisible
+            return
         # current camera should never be None or other class than 'Camera',
         # or subclass of it
         if _Camera.current is None or not isinstance(_Camera.current, _Camera):
