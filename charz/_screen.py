@@ -50,11 +50,11 @@ class Screen:
         self._auto_resize = state
         self._resize_if_necessary()
 
-    def _resize_if_necessary(self) -> None:
+    def _resize_if_necessary(self) -> None:  # NOTE: does not mutate screen buffer
         if self.auto_resize:
             terminal_size = _os.get_terminal_size(self.stream.fileno())
-            self.width = terminal_size.columns
-            self.height = terminal_size.lines
+            self.width = terminal_size.columns - 1
+            self.height = terminal_size.lines - 1
 
     def with_stream(self, stream: _FileLike[str], /):
         self.stream = stream
@@ -108,7 +108,8 @@ class Screen:
         ]
 
     def render(self, node: _Renderable, /) -> None:  # noqa: C901
-        # current camera should never be None or other class than 'Camera', or subclass of it
+        # current camera should never be None or other class than 'Camera',
+        # or subclass of it
         if _Camera.current is None or not isinstance(_Camera.current, _Camera):
             raise TypeError(
                 "'Camera.current' cannot be of type "
@@ -116,22 +117,21 @@ class Screen:
             )
 
         color: _ColorValue | None = getattr(node, "color")  # noqa: B009
-        # node_global_rotation = node.global_rotation # TODO: implement rotation when rendering
+        # TODO: implement rotation when rendering
+        # node_global_rotation = node.global_rotation
         node_global_position = node.global_position
 
         # determine whether to use use the parent of current camera
         # or its parent as anchor for viewport
         anchor = _Camera.current
-        if (
-            _Camera.current.mode & _CameraMode.FOLLOW
-            and _Camera.current.parent is not None
-            and isinstance(_Camera.current.parent, _Transform)
+        if _Camera.current.parent is not None and isinstance(
+            _Camera.current.parent, _Transform
         ):
             anchor = _Camera.current.parent
         relative_position = node_global_position - anchor.global_position
 
         if _Camera.current.mode & _CameraMode.CENTERED:
-            relative_position += self.size / 4
+            relative_position += self.size / 2
 
         # include half size of camera parent when including size
         viewport_global_position = _Camera.current.global_position
@@ -166,9 +166,8 @@ class Screen:
             for x_offset, char in enumerate(line):
                 x_final = x + x_offset
                 # insert char into screen buffer if visible
-                if 0 <= x_final < actual_width:
-                    if 0 <= y_final < actual_height:
-                        self.buffer[y_final][x_final] = (char, color)
+                if 0 <= x_final < actual_width and 0 <= y_final < actual_height:
+                    self.buffer[y_final][x_final] = (char, color)
         # TODO: implement render with rotation
 
     def show(self) -> None:
@@ -196,8 +195,9 @@ class Screen:
         self.stream.flush()
 
     def refresh(self) -> None:
+        self._resize_if_necessary()
         self.clear()
-        for node in sorted(
+        for node in sorted(  # NOTE: iterator becomes a 'list'
             _Texture.iter_texture_nodes(),
             key=lambda node: node.z_index,
         ):
