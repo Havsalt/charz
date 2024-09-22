@@ -200,7 +200,8 @@ class Screen:
         self._resize_if_necessary()
         self.clear()
         for node in sorted(  # NOTE: iterator becomes a 'list'
-            _Texture.iter_texture_nodes(),
+            # NOTE: 'list' is faster than 'tuple', when copying
+            list(_Texture.texture_instances.values()),  # iterate a copy
             key=lambda node: node.z_index,
         ):
             self.render(node)
