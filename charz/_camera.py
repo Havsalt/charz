@@ -13,8 +13,18 @@ from ._transform import Transform as _Transform
 class CameraMode(_IntEnum):
     FIXED = 0
     CENTERED = _auto()
-    FOLLOW = _auto()
     INCLUDE_SIZE = _auto()
+
+    def __or__(self, other: CameraMode) -> CameraMode:
+        # NOTE: result may not be a member of 'CameraMode', but instead an 'int'.
+        # combine any 'CameraMode', where any value that is not bound to a variant,
+        # will in fact be an 'int', but we treat it like a 'CameraMode' that was combined
+        if isinstance(other, CameraMode):
+            new_value = self.value | other.value
+            if new_value in CameraMode._value2member_map_:
+                return CameraMode(new_value)
+            return new_value  # type: ignore
+        return NotImplemented
 
 
 class Camera(_Transform, _Node):
