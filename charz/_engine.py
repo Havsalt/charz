@@ -83,7 +83,8 @@ class Engine(metaclass=_EngineMixinSortMeta):
             for queued_node in _Node._queued_nodes:
                 queued_node.free()
             _Node._queued_nodes *= 0  # NOTE: faster way to do `.clear()`
-            for node in _Node.iter_nodes():
+            # NOTE: 'list' is faster than 'tuple', when copying
+            for node in list(_Node.node_instances.values()):  # iterating copy
                 node.update(delta)
             self.screen.refresh()
             self.clock.tick()
