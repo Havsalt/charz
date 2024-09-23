@@ -89,8 +89,15 @@ class Animated:  # Component (mixin class)
         animation: Animation,
         /,
     ):
-        setattr(self.animations, animation_name, animation)
+        self.add_animation(animation_name, animation)
         return self
+
+    def add_animation(
+        self,
+        animation_name: str,
+        animation: Animation,
+    ) -> None:
+        setattr(self.animations, animation_name, animation)
 
     def play(self, animation_name: str, /) -> None:
         self.current_animation = self.animations.get(animation_name, None)
