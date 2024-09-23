@@ -52,7 +52,7 @@ class Transform:
         if x is not None or y is not None:
             self.position = _Vec2(x or 0, y or 0)
         return self
-    
+
     # TODO: would be nice to figure out @overload with this function
     def with_global_position(
         self,
