@@ -6,11 +6,11 @@ import time as _time
 class Clock:
     """`Clock` base class, without delta time"""
 
-    def __init__(self, tps: float, /) -> None:
+    def __init__(self, tps: float = 16, /) -> None:
         """Initializes the clock with a given tps
 
         Args:
-            tps (float): ticks per second
+            tps (float, optional): ticks per second. Defaults to 16.
         """
         self.tps = tps
         self._delta_time = 1.0 / tps  # average delta time
@@ -43,11 +43,11 @@ class Clock:
 class DeltaClock(Clock):
     """`DeltaClock` calculating `delta time` and sleeps for maintaining desirerd `tps`"""
 
-    def __init__(self, tps: float, /) -> None:
+    def __init__(self, tps: float = 16, /) -> None:
         """Initializes the delta clock with a given tps
 
         Args:
-            tps (float): ticks per second
+            tps (float, optional): ticks per second. Defaults to 16.
         """
         self.tps = tps  # calls property setter
         self._delta_time = 1.0 / tps  # initial delta time (optimal scenario)
