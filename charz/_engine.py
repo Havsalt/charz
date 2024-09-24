@@ -33,6 +33,8 @@ class Engine(metaclass=_EngineMixinSortMeta):
     fps: float = 16
     clock: _Clock = _DeltaClock()
     screen: _Screen = _Screen()
+    clear_console: bool = False
+    hide_cursor: bool = True
     is_running: bool = False
 
     def __new__(cls: type[_EngineType], *args: _Any, **kwargs: _Any) -> _EngineType:
@@ -82,6 +84,16 @@ class Engine(metaclass=_EngineMixinSortMeta):
     def update(self, delta: float) -> None: ...
 
     def run(self):
+        # check if console/stream should be cleared
+        if self.clear_console:
+            clear_code = "\x1b[0J"
+            self.screen.stream.write(clear_code)
+            self.screen.stream.flush()
+        # hide cursor
+        if self.hide_cursor:
+            hide_code = "\x1b[?25l"
+            self.screen.stream.write(hide_code)
+            self.screen.stream.flush()
         delta = self.clock.get_delta()
         self.is_running = True
         while self.is_running:
@@ -95,5 +107,10 @@ class Engine(metaclass=_EngineMixinSortMeta):
             self.screen.refresh()
             self.clock.tick()
             delta = self.clock.get_delta()
+        # show cursor if hidden
+        if self.hide_cursor:
+            hide_code = "\x1b[?25h"
+            self.screen.stream.write(hide_code)
+            self.screen.stream.flush()
 
         return self  # this is for convenience if the desire to read the app state arise
