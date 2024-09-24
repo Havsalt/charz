@@ -31,9 +31,15 @@ class _EngineMixinSortMeta(type):
 
 class Engine(metaclass=_EngineMixinSortMeta):
     fps: float = 16
-    clock: _Clock = _DeltaClock(fps)
+    clock: _Clock = _DeltaClock()
     screen: _Screen = _Screen()
     is_running: bool = False
+
+    def __new__(cls: type[_EngineType], *args: _Any, **kwargs: _Any) -> _EngineType:
+        instance = super().__new__(cls, *args, **kwargs)  # type: _EngineType  # type: ignore[reportAssignmentType]
+        # overrides `.clock.tps` with `.fps` set from class attribute
+        instance.clock.tps = instance.fps
+        return instance  # type: ignore
 
     def with_fps(self, fps: float, /):
         self.fps = fps
