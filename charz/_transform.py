@@ -77,6 +77,10 @@ class Transform:
     def with_rotation(self, rotation: float, /):
         self.rotation = rotation
         return self
+    
+    def with_global_rotation(self, global_rotation: float, /):
+        self.global_rotation = global_rotation
+        return self
 
     def with_z_index(self, z_index: int, /):
         self.z_index = z_index
