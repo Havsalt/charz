@@ -51,6 +51,7 @@ class AnimationMapping(_SimpleNamespace):
             setattr(self, name, animation)
 
 
+# TODO: add `.play_backwards` attribute or method
 class Animated:  # Component (mixin class)
     animated_instances: _ClassVar[dict[int, _AnimatedNode]] = {}
 
@@ -96,6 +97,7 @@ class Animated:  # Component (mixin class)
         self,
         animation_name: str,
         animation: Animation,
+        /,
     ) -> None:
         setattr(self.animations, animation_name, animation)
 
