@@ -30,14 +30,21 @@ class Screen:
         self,
         width: int = 16,
         height: int = 12,
+        *,
         auto_resize: bool = False,
         transparancy_fill: str = " ",
+        background_color: _ColorValue | None = None,
+        margin_right: int = 1,
+        margin_bottom: int = 1,
     ) -> None:
         self.width = width
         self.height = height
+        self.margin_right = margin_right
+        self.margin_bottom = margin_bottom
         self._auto_resize = auto_resize
         self._resize_if_necessary()
         self.transparancy_fill = transparancy_fill
+        self.background_color = background_color
         self.buffer = []
         self.clear()  # for populating the list with an empty screen
 
@@ -53,8 +60,8 @@ class Screen:
     def _resize_if_necessary(self) -> None:  # NOTE: does not mutate screen buffer
         if self.auto_resize:
             terminal_size = _os.get_terminal_size(self.stream.fileno())
-            self.width = terminal_size.columns - 1
-            self.height = terminal_size.lines - 1
+            self.width = terminal_size.columns - self.margin_right
+            self.height = terminal_size.lines - self.margin_bottom
 
     def with_stream(self, stream: _FileLike[str], /):
         self.stream = stream
@@ -103,7 +110,7 @@ class Screen:
     def clear(self) -> None:
         self.buffer = [
             # (char, color) group
-            [(self.transparancy_fill, None) for _ in range(self.width)]
+            [(self.transparancy_fill, self.background_color) for _ in range(self.width)]
             for _ in range(self.height)
         ]
 
@@ -146,8 +153,8 @@ class Screen:
             viewport_global_position += _Camera.current.parent.get_texture_size() / 2
 
         terminal_size = _os.get_terminal_size()
-        actual_width = min(self.width, terminal_size.columns - 1)
-        actual_height = min(self.height, terminal_size.lines - 1)
+        actual_width = min(self.width, terminal_size.columns - self.margin_right)
+        actual_height = min(self.height, terminal_size.lines - self.margin_bottom)
 
         texture_size = node.get_texture_size()
         x = int(relative_position.x)
@@ -175,15 +182,10 @@ class Screen:
         # TODO: implement render with rotation
 
     def show(self) -> None:
-        # TODO: use better ANSI control codes to clear the screen better
         size = _os.get_terminal_size()
-        actual_width = min(self.width, size.columns - 1)  # -1 is margin
-        actual_height = min(self.height, size.lines - 1)
+        actual_width = min(self.width, size.columns - self.margin_right)  # -1 is margin
+        actual_height = min(self.height, size.lines - self.margin_bottom)
         out = ""
-        # move cursor
-        if actual_height > 0:
-            move_code = f"\u001b[{actual_height}A" + "\r"
-            out += move_code
         # construct frame
         for lino, row in enumerate(self.buffer[:actual_height], start=1):
             for char, color in row[:actual_width]:
@@ -194,6 +196,9 @@ class Screen:
             if lino != len(self.buffer):  # not at end
                 out += "\n"
         out += _RESET
+        # move cursor
+        move_code = f"\x1b[{actual_height - 1}A" + "\r"
+        out += move_code
         # write and flush
         self.stream.write(out)
         self.stream.flush()
