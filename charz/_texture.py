@@ -35,6 +35,7 @@ class Texture:
     texture: list[str]
     visible: bool = True
     centered: bool = False
+    transparency: str | None = None
 
     def with_texture(self, texture_or_line: list[str] | str, /):
         if isinstance(texture_or_line, str):
@@ -49,6 +50,10 @@ class Texture:
 
     def as_centered(self, state: bool = True, /):
         self.centered = state
+        return self
+
+    def with_transparency(self, char: str | None, /):
+        self.transparancy = char
         return self
 
     def hide(self) -> None:
