@@ -166,6 +166,8 @@ class Screen:
         for y_offset, line in enumerate(node.texture):
             y_final = y + y_offset
             for x_offset, char in enumerate(line):
+                if char == node.transparency:  # skip transparent char
+                    continue
                 x_final = x + x_offset
                 # insert char into screen buffer if visible
                 if 0 <= x_final < actual_width and 0 <= y_final < actual_height:
