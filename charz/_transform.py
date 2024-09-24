@@ -98,8 +98,8 @@ class Transform:
             _Vec2: global position
         """
         if self.is_top_level:
-            return self.position
-        global_position = self.position
+            return self.position.copy()
+        global_position = self.position.copy()
         parent = self.parent  # type: ignore
         while parent is not None and isinstance(parent, Transform):
             global_position = parent.position + global_position.rotated(parent.rotation)
