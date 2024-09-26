@@ -86,7 +86,7 @@ class Engine(metaclass=_EngineMixinSortMeta):
     def run(self):
         # check if console/stream should be cleared
         if self.clear_console:
-            clear_code = "\x1b[0J"
+            clear_code = "\x1b[2J\x1b[H"
             self.screen.stream.write(clear_code)
             self.screen.stream.flush()
         # hide cursor
