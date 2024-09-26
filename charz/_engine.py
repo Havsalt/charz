@@ -42,20 +42,7 @@ class Engine(metaclass=_EngineMixinSortMeta):
         # overrides `.clock.tps` with `.fps` set from class attribute
         instance.clock.tps = instance.fps
         return instance  # type: ignore
-
-    def with_fps(self, fps: float, /):
-        self.fps = fps
-        self.clock.tps = fps
-        return self
-
-    def with_clock(self, clock: _Clock, /):
-        self.clock = clock.with_tps(self.fps)
-        return self
-
-    def with_screen(self, screen: _Screen, /):
-        self.screen = screen
-        return self
-
+    
     # TODO: Try implementing @overload for this method
     def with_screen_size(
         self,
@@ -75,10 +62,6 @@ class Engine(metaclass=_EngineMixinSortMeta):
             self.screen.size = size
         if width is not None or height is not None:
             self.screen.size = _Vec2i(width or 16, height or 12)
-        return self
-
-    def with_auto_resize_screen(self, state: bool = True, /):
-        self.screen.auto_resize = state
         return self
 
     def update(self, delta: float) -> None: ...
