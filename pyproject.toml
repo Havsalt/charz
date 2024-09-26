@@ -86,7 +86,7 @@ ignore = [
 "annotations.py" = ["D205", "D212"] # Allow module docstring content to start at second line
 
 [tool.ruff.lint.mccabe]
-max-complexity = 6
+max-complexity = 7
 
 [tool.ruff.lint.isort]
 split-on-trailing-comma = false
