@@ -92,10 +92,13 @@ class Transform:
 
     @property
     def global_position(self) -> _Vec2:
-        """Computes the node's global position (world space)
+        """Returns a copy of the node's global position (in world space)
+
+        `NOTE`: cannot do `self.global_position.x = 5`,
+        use `self.global_position.x = self.global_position.x + 5`
 
         Returns:
-            _Vec2: global position
+            Vec2: copy of global position
         """
         if self.is_top_level:
             return self.position.copy()
