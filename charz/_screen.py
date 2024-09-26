@@ -26,7 +26,7 @@ class Screen:
     # screen texture buffer with (char, color) tuple
     buffer: list[list[tuple[str, _ColorValue | None]]]
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         width: int = 16,
         height: int = 12,
