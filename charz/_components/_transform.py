@@ -89,14 +89,25 @@ class Transform:
     def as_top_level(self, state: bool = True, /):
         self.is_top_level = state
         return self
+    
+    def set_global_x(self, x: float, /) -> None:
+        diff_x = x - self.global_position.x
+        self.position.x += diff_x
+    
+    def set_global_y(self, y: float, /) -> None:
+        diff_y = y - self.global_position.y
+        self.position.y += diff_y
 
     @property
     def global_position(self) -> _Vec2:
         """Returns a copy of the node's global position (in world space)
 
         `NOTE`: cannot do `self.global_position.x += 5`,
-        use `self.global_position.x = self.global_position.x + 5` instead
+        use `self.position += 5` instead, as it only adds a relative value
 
+        `NOTE`: cannot do `self.global_position.x = 42`,
+        use `self.set_global_x(42)`
+        
         Returns:
             Vec2: copy of global position
         """
