@@ -10,7 +10,7 @@ from typing import (
 
 from linflex import Vec2i as _Vec2i
 
-from ._annotations import (
+from .._annotations import (
     NodeType as _NodeType,
     TextureNode as _TextureNode,
 )

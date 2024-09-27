@@ -9,7 +9,7 @@ from typing import (
 
 from linflex import Vec2 as _Vec2
 
-from ._annotations import (
+from .._annotations import (
     NodeType as _NodeType,
     TransformNode as _TransformNode,
 )

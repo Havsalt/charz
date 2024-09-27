@@ -11,7 +11,7 @@ from typing import (
 )
 
 from ._texture import load_texture as _load_texture
-from ._annotations import (
+from .._annotations import (
     T as _T,
     NodeType as _NodeType,
     AnimatedNode as _AnimatedNode,

@@ -7,7 +7,7 @@ from typing import (
 
 from colex import ColorValue as _ColorValue
 
-from ._annotations import (
+from .._annotations import (
     NodeType as _NodeType,
     ColorNode as _ColorNode,
 )

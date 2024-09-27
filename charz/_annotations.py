@@ -22,7 +22,7 @@ from colex import ColorValue as _ColorValue
 if _TYPE_CHECKING:
     from ._clock import DeltaClock as _DeltaClock
     from ._screen import Screen as _Screen
-    from ._animation import (
+    from ._components._animation import (
         Animation as _Animation,
         AnimationMapping as _AnimationMapping,
     )

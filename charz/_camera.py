@@ -7,7 +7,7 @@ from enum import (
 from typing import ClassVar as _ClassVar
 
 from ._node import Node as _Node
-from ._transform import Transform as _Transform
+from ._components._transform import Transform as _Transform
 
 
 class CameraMode(_IntEnum):

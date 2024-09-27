@@ -13,8 +13,8 @@ from ._camera import (
     Camera as _Camera,
     CameraMode as _CameraMode,
 )
-from ._transform import Transform as _Transform
-from ._texture import Texture as _Texture
+from ._components._transform import Transform as _Transform
+from ._components._texture import Texture as _Texture
 from ._annotations import (
     FileLike as _FileLike,
     Renderable as _Renderable,
