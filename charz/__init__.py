@@ -5,16 +5,17 @@ Charz
 An object oriented terminal game engine
 
 Includes:
-- `Engine`
-- `Clock`
-- `DeltaClock`
-- `Screen`
-- `Camera`
+- `Engine` (derive new App class from this)
+- `Clock` (calculates delta time)
+- `DeltaClock` (controls framerate)
+- `Screen` (renders nodes to console)
+- `Camera` (handles viewport)
 - `CameraMode` (enum)
 - `Node` (base node)
-- `Node2D`
+- `Node2D` (node in world)
 - `Transform` (component)
 - `Vec2` (datastructure from `linflex` package)
+- `load_texture` (function)
 - `Texture` (component)
 - `Color` (component)
 - `ColorValue` (annotation from `colex` package)
@@ -27,7 +28,7 @@ Includes:
 
 from __future__ import annotations as _annotations
 
-__version__ = "0.0.20"
+__version__ = "0.0.21"
 __all__ = [
     "Engine",
     "Clock",
