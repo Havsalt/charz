@@ -27,7 +27,7 @@ Includes:
 
 from __future__ import annotations as _annotations
 
-__version__ = "0.0.19"
+__version__ = "0.0.20"
 __all__ = [
     "Engine",
     "Clock",
