@@ -182,6 +182,8 @@ class Screen:
         # TODO: implement render with rotation
 
     def show(self) -> None:
+        # TODO: ensure a screen with static width and height does not
+        #       cause the ASNI codes to jitter
         size = _os.get_terminal_size()
         actual_width = min(self.width, size.columns - self.margin_right)  # -1 is margin
         actual_height = min(self.height, size.lines - self.margin_bottom)
