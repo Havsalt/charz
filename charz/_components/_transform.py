@@ -94,8 +94,8 @@ class Transform:
     def global_position(self) -> _Vec2:
         """Returns a copy of the node's global position (in world space)
 
-        `NOTE`: cannot do `self.global_position.x = 5`,
-        use `self.global_position.x = self.global_position.x + 5`
+        `NOTE`: cannot do `self.global_position.x += 5`,
+        use `self.global_position.x = self.global_position.x + 5` instead
 
         Returns:
             Vec2: copy of global position
