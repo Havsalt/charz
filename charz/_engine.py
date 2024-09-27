@@ -42,7 +42,7 @@ class Engine(metaclass=_EngineMixinSortMeta):
         # overrides `.clock.tps` with `.fps` set from class attribute
         instance.clock.tps = instance.fps
         return instance  # type: ignore
-    
+
     # TODO: Try implementing @overload for this method
     def with_screen_size(
         self,
