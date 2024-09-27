@@ -52,6 +52,9 @@ class AnimationMapping(_SimpleNamespace):
 
 
 # TODO: add `.play_backwards` attribute or method
+# TODO: ensure last frame was rendered before `.is_playing = False`,
+#       because a loop checking if it should replay the animations will
+#       reset it back to the first frame before the last one is displayed
 class Animated:  # Component (mixin class)
     animated_instances: _ClassVar[dict[int, _AnimatedNode]] = {}
 
