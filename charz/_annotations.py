@@ -23,6 +23,7 @@ from typing_extensions import Self as _Self
 if _TYPE_CHECKING:
     from ._clock import DeltaClock as _DeltaClock
     from ._screen import Screen as _Screen
+    from ._collision import Hitbox
     from ._components._animation import (
         Animation as _Animation,
         AnimationMapping as _AnimationMapping,
@@ -146,14 +147,12 @@ class ColorNode(
 ): ...
 
 
-class Renderable(  # possible base: `ColorComponent`
+class Renderable(
     TextureComponent,
     TransformComponent,
     Node,
     _Protocol,
-):
-    ...
-    # possible field: `color` of type `_ColorValue`
+): ...
 
 
 class AnimatedComponent(_Protocol):
@@ -187,3 +186,21 @@ class AnimatedNode(  # possible base: `ColorComponent`
 ):
     ...
     # possible field: `color` of type `_ColorValue`
+
+
+class ColliderComponent(_Protocol):
+    collider_instances: _ClassVar[dict[int, ColliderNode]]
+    hitbox: Hitbox
+
+    def with_hitbox(self, hitbox: Hitbox, /) -> _Self: ...
+    def get_colliders(self) -> list[ColliderNode]: ...
+    def is_colliding_with(self, colldier_node: ColliderNode, /) -> bool: ...
+    def is_colliding(self) -> bool: ...
+
+
+class ColliderNode(
+    ColliderComponent,
+    TransformComponent,
+    Node,
+    _Protocol,
+): ...
