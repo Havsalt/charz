@@ -30,7 +30,7 @@ class Transform:
     position: _Vec2
     rotation: float = 0
     z_index: int = 0
-    is_top_level: bool = False
+    top_level: bool = False
 
     # TODO: would be nice to figure out @overload with this function
     def with_position(
@@ -87,7 +87,7 @@ class Transform:
         return self
 
     def as_top_level(self, state: bool = True, /):
-        self.is_top_level = state
+        self.top_level = state
         return self
     
     def set_global_x(self, x: float, /) -> None:
@@ -111,13 +111,13 @@ class Transform:
         Returns:
             Vec2: copy of global position
         """
-        if self.is_top_level:
+        if self.top_level:
             return self.position.copy()
         global_position = self.position.copy()
         parent = self.parent  # type: ignore
         while parent is not None and isinstance(parent, Transform):
             global_position = parent.position + global_position.rotated(parent.rotation)
-            if parent.is_top_level:
+            if parent.top_level:
                 return global_position
             parent = parent.parent  # type: ignore
         return global_position
@@ -135,13 +135,13 @@ class Transform:
         Returns:
             float: global rotation in radians
         """
-        if self.is_top_level:
+        if self.top_level:
             return self.rotation
         global_rotation = self.rotation
         parent = self.parent  # type: ignore
         while parent is not None and isinstance(parent, Transform):
             global_rotation += parent.rotation
-            if parent.is_top_level:
+            if parent.top_level:
                 return global_rotation
             parent = parent.parent  # type: ignore
         return global_rotation

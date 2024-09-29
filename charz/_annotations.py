@@ -64,7 +64,7 @@ class TransformComponent(_Protocol):
     position: _Vec2
     rotation: float
     z_index: int
-    is_top_level: bool
+    top_level: bool
 
     def with_position(
         self: _Self,
