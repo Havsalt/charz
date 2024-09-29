@@ -63,35 +63,6 @@ class Screen:
             self.width = terminal_size.columns - self.margin_right
             self.height = terminal_size.lines - self.margin_bottom
 
-    def with_stream(self, stream: _FileLike[str], /):
-        self.stream = stream
-        return self
-
-    def with_width(self, width: int, /):
-        self.width = width
-        return self
-
-    def with_height(self, height: int, /):
-        self.height = height
-        return self
-
-    def with_size(self, size: _Vec2i, /):
-        self.size = size
-        return self
-
-    def with_auto_resize(self, state: bool = True, /):
-        self.auto_resize = state
-        return self
-
-    def with_transparancy_fill(self, fill_char: str, /):
-        if len(fill_char) != 1:
-            raise ValueError(
-                "'transparancy_fill' cannot be a 'str' with length other than 1,"
-                f"got length {len(fill_char)}"
-            )
-        self.transparancy_fill = fill_char
-        return self
-
     @property
     def size(self) -> _Vec2i:
         return _Vec2i(self.width, self.height)
