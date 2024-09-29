@@ -8,11 +8,11 @@ from typing import (
     cast as _cast,
 )
 
-from linflex import Vec2
+from linflex import Vec2 as _Vec2
 from typing_extensions import Self as _Self
 
-from ._components._transform import Transform as _Transform
-from ._annotations import (
+from .._components._transform import Transform as _Transform
+from .._annotations import (
     NodeType as _NodeType,
     ColliderNode as _ColliderNode,
 )
@@ -20,7 +20,7 @@ from ._annotations import (
 
 @_dataclass(kw_only=True)
 class Hitbox:
-    size: Vec2
+    size: _Vec2
     centered = False
 
 
@@ -33,7 +33,7 @@ class Collider:  # Component (mixin class)
         if (class_hitbox := getattr(instance, "hitbox", None)) is not None:
             instance.hitbox = _deepcopy(class_hitbox)
         else:
-            instance.hitbox = Hitbox(size=Vec2.ZERO)
+            instance.hitbox = Hitbox(size=_Vec2.ZERO)
         return instance  # type: ignore
 
     hitbox: Hitbox
