@@ -22,7 +22,7 @@ from ._annotations import (
 
 
 # NOTE: this class is not a `Node` subclass,
-#       therefore it is treated more like a datastructure with methods
+#       and is therefore treated more like a datastructure with methods
 class Screen:
     stream: _FileLike[str] = _sys.stdout  # default stream, may be redirected
     # screen texture buffer with (char, color) tuple
