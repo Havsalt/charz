@@ -15,7 +15,7 @@ from .._annotations import (
 )
 
 
-class Transform:
+class Transform:  # Component (mixin class)
     transform_instances: _ClassVar[dict[int, _TransformNode]] = {}
 
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:

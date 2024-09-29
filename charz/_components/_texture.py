@@ -20,7 +20,7 @@ def load_texture(file_path: _Path | str, /) -> list[str]:
     return _Path.cwd().joinpath(str(file_path)).read_text(encoding="utf-8").splitlines()
 
 
-class Texture:
+class Texture:  # Component (mixin class)
     texture_instances: _ClassVar[dict[int, _TextureNode]] = {}
 
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
