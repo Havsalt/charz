@@ -28,6 +28,8 @@ Includes:
 - `Sprite` (prefabricated)
 - `AnimatedSprite` (prefabricated)
 - `Animation` (datastructure)
+- `Collider` (component)
+- `Hitbox` (datastructure)
 - `text` (module for flipping strings)
 """
 
@@ -58,6 +60,8 @@ __all__ = [
     "Sprite",
     "AnimatedSprite",
     "Animation",
+    "Collider",
+    "Hitbox",
     "text",
 ]
 
@@ -73,6 +77,7 @@ from ._components._transform import Transform
 from ._components._texture import load_texture, Texture
 from ._components._color import Color
 from ._components._animation import Animation
+from ._components._collision import Collider, Hitbox
 from ._prefabs._node2d import Node2D
 from ._prefabs._label import Label
 from ._prefabs._sprite import Sprite
