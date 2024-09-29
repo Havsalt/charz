@@ -28,7 +28,7 @@ class Collider:  # Component (mixin class)
     collider_instances: _ClassVar[dict[int, _ColliderNode]] = {}
 
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
-        instance = super().__new__(cls, *args, **kwargs)  # type: _ColliderNode  # type: ignore[reportAssignmentType]
+        instance = super().__new__(cls, *args, **kwargs)  # type: _ColliderNode  # type: ignore
         Collider.collider_instances[instance.uid] = instance
         if (class_hitbox := getattr(instance, "hitbox", None)) is not None:
             instance.hitbox = _deepcopy(class_hitbox)
