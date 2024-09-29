@@ -132,7 +132,7 @@ class ColorComponent(_Protocol):
 
     def with_color(
         self: _Self,
-        color: _ColorValue,
+        color: _ColorValue | None,
         /,
     ) -> _Self: ...
 
