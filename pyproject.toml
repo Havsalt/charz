@@ -62,7 +62,6 @@ select = [
 ]
 ignore = [
     # Project spesific rules to ignore
-    # "ANN202",  # flake8-annotations :: missing-return-type-private-function :!: Disabled for `with_*` methods
     "ANN204",  # flake8-annotations :: missing-return-type-special-method :!: __new__ in this project has to return special types
     "PLC0105", # type-name-incorrect-variance :!: TypeVar is used instead of Self (py 3.11+ feature mimicked in 3.10)
     # Rules that I do not know why it gives of a warning
