@@ -15,7 +15,7 @@ class Color:  # Component (mixin class)
     color_instances: dict[int, _ColorNode] = {}
 
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
-        instance = super().__new__(cls, *args, **kwargs)  # type: _ColorNode  # type: ignore[reportAssignmentType]
+        instance = super().__new__(cls, *args, **kwargs)  # type: _ColorNode  # type: ignore
         Color.color_instances[instance.uid] = instance
         return instance  # type: ignore
 

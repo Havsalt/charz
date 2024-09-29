@@ -38,7 +38,7 @@ class Engine(metaclass=_EngineMixinSortMeta):
     is_running: bool = False
 
     def __new__(cls: type[_EngineType], *args: _Any, **kwargs: _Any) -> _EngineType:
-        instance = super().__new__(cls, *args, **kwargs)  # type: _EngineType  # type: ignore[reportAssignmentType]
+        instance = super().__new__(cls, *args, **kwargs)  # type: _EngineType  # type: ignore
         # overrides `.clock.tps` with `.fps` set from class attribute
         instance.clock.tps = instance.fps
         return instance  # type: ignore

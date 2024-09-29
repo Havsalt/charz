@@ -24,7 +24,7 @@ class Texture:  # Component (mixin class)
     texture_instances: _ClassVar[dict[int, _TextureNode]] = {}
 
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
-        instance = super().__new__(cls, *args, **kwargs)  # type: _TextureNode  # type: ignore[reportAssignmentType]
+        instance = super().__new__(cls, *args, **kwargs)  # type: _TextureNode  # type: ignore
         Texture.texture_instances[instance.uid] = instance
         if (class_texture := getattr(instance, "texture", None)) is not None:
             instance.texture = _deepcopy(class_texture)

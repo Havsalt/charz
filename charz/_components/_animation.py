@@ -60,7 +60,7 @@ class Animated:  # Component (mixin class)
     animated_instances: _ClassVar[dict[int, _AnimatedNode]] = {}
 
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
-        instance = super().__new__(cls, *args, **kwargs)  # type: _AnimatedNode  # type: ignore[reportAssignmentType]
+        instance = super().__new__(cls, *args, **kwargs)  # type: _AnimatedNode  # type: ignore
         Animated.animated_instances[instance.uid] = instance
         if (class_animations := getattr(instance, "animations", None)) is not None:
             instance.animations = _deepcopy(class_animations)

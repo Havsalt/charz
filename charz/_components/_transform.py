@@ -4,6 +4,7 @@ from copy import deepcopy as _deepcopy
 from typing import (
     Any as _Any,
     ClassVar as _ClassVar,
+    cast as _cast,
 )
 
 from linflex import Vec2 as _Vec2
@@ -19,7 +20,7 @@ class Transform:  # Component (mixin class)
     transform_instances: _ClassVar[dict[int, _TransformNode]] = {}
 
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
-        instance = super().__new__(cls, *args, **kwargs)  # type: _TransformNode  # type: ignore[reportAssignmentType]
+        instance = super().__new__(cls, *args, **kwargs)  # type: _TransformNode  # type: ignore
         Transform.transform_instances[instance.uid] = instance
         if (class_position := getattr(instance, "position", None)) is not None:
             instance.position = _deepcopy(class_position)
@@ -152,6 +153,7 @@ class Transform:  # Component (mixin class)
         diff = rotation - self.global_rotation
         self.rotation += diff
 
-    def free(self: _TransformNode) -> None:
+    def free(self) -> None:
+        self = _cast(_TransformNode, self)
         del Transform.transform_instances[self.uid]
-        super().free()
+        super().free()  # type: ignore

@@ -42,7 +42,7 @@ class Camera(_Transform, _Node):
             return self
         Camera.current = Camera()  # make new default camera
         # remove from node count, will still be used as placeholder
-        Camera.current.free()  # type: ignore[reportAttributeAccessIssue]
+        Camera.current.free()
         return self
 
     def is_current(self) -> bool:
@@ -55,4 +55,4 @@ class Camera(_Transform, _Node):
 
 Camera.current = Camera()  # initial camera
 # remove from node count, will still be used as placeholder
-Camera.current.free()  # type: ignore[reportAttributeAccessIssue]
+Camera.current.free()
