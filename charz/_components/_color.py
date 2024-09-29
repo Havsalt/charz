@@ -11,7 +11,7 @@ from .._annotations import (
 )
 
 
-class Color:
+class Color:  # Component (mixin class)
     color_instances: dict[int, _ColorNode] = {}
 
     def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
