@@ -1,6 +1,9 @@
 from __future__ import annotations as _annotations
 
-from typing import Any as _Any
+from typing import (
+    Any as _Any,
+    cast as _cast,
+)
 
 from colex import ColorValue as _ColorValue
 from typing_extensions import Self as _Self
@@ -25,6 +28,7 @@ class Color:  # Component (mixin class)
         self.color = color
         return self
 
-    def free(self: _ColorNode) -> None:
+    def free(self) -> None:
+        self = _cast(_ColorNode, self)
         del Color.color_instances[self.uid]
-        super().free()
+        super().free()  # type: ignore

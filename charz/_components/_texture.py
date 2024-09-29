@@ -5,6 +5,7 @@ from copy import deepcopy as _deepcopy
 from typing import (
     Any as _Any,
     ClassVar as _ClassVar,
+    cast as _cast,
 )
 
 from linflex import Vec2i as _Vec2i
@@ -87,6 +88,7 @@ class Texture:  # Component (mixin class)
             len(self.texture),  # line count
         )
 
-    def free(self: _TextureNode) -> None:
+    def free(self) -> None:
+        self = _cast(_TextureNode, self)
         del Texture.texture_instances[self.uid]
-        super().free()
+        super().free()  # type: ignore

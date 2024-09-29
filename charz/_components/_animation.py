@@ -7,6 +7,7 @@ from copy import deepcopy as _deepcopy
 from typing import (
     Any as _Any,
     ClassVar as _ClassVar,
+    cast as _cast,
 )
 
 from typing_extensions import Self as _Self
@@ -121,6 +122,7 @@ class Animated:  # Component (mixin class)
         if self._frame_index == frame_count - 1:
             self.is_playing = False
 
-    def free(self: _AnimatedNode) -> None:
+    def free(self) -> None:
+        self = _cast(_AnimatedNode, self)
         del Animated.animated_instances[self.uid]
-        super().free()
+        super().free()  # type: ignore
