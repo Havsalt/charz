@@ -6,6 +6,8 @@ from enum import (
 )
 from typing import ClassVar as _ClassVar
 
+from typing_extensions import Self as _Self
+
 from ._node import Node as _Node
 from ._components._transform import Transform as _Transform
 
@@ -34,7 +36,7 @@ class Camera(_Transform, _Node):
     def set_current(self) -> None:
         Camera.current = self
 
-    def as_current(self, state: bool = True):
+    def as_current(self, state: bool = True) -> _Self:
         if state:
             self.set_current()
             return self
@@ -46,7 +48,7 @@ class Camera(_Transform, _Node):
     def is_current(self) -> bool:
         return Camera.current is self
 
-    def with_mode(self, mode: CameraMode, /):
+    def with_mode(self, mode: CameraMode, /) -> _Self:
         self.mode = mode
         return self
 

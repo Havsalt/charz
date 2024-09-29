@@ -18,6 +18,7 @@ from linflex import (
     Vec2i as _Vec2i,
 )
 from colex import ColorValue as _ColorValue
+from typing_extensions import Self as _Self
 
 if _TYPE_CHECKING:
     from ._clock import DeltaClock as _DeltaClock
@@ -30,7 +31,6 @@ if _TYPE_CHECKING:
 EngineType = _TypeVar("EngineType", bound="Engine", covariant=True)
 NodeType = _TypeVar("NodeType", bound="Node", covariant=True)
 T = _TypeVar("T")
-_Self = _TypeVar("_Self")
 _T_contra = _TypeVar("_T_contra", contravariant=True)
 
 

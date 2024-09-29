@@ -1,11 +1,9 @@
 from __future__ import annotations as _annotations
 
-from typing import (
-    Generator as _Generator,
-    Any as _Any,
-)
+from typing import Any as _Any
 
 from colex import ColorValue as _ColorValue
+from typing_extensions import Self as _Self
 
 from .._annotations import (
     NodeType as _NodeType,
@@ -23,7 +21,7 @@ class Color:
 
     color: _ColorValue | None = None
 
-    def with_color(self, color: _ColorValue | None, /):
+    def with_color(self, color: _ColorValue | None, /) -> _Self:
         self.color = color
         return self
 

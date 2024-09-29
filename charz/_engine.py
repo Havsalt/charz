@@ -6,7 +6,7 @@ from typing import (
     Any as _Any,
 )
 
-from linflex import Vec2i as _Vec2i
+from typing_extensions import Self as _Self
 
 from ._clock import (
     Clock as _Clock,
@@ -43,30 +43,9 @@ class Engine(metaclass=_EngineMixinSortMeta):
         instance.clock.tps = instance.fps
         return instance  # type: ignore
 
-    # TODO: Try implementing @overload for this method
-    def with_screen_size(
-        self,
-        size: _Vec2i | None = None,
-        /,
-        width: int | None = None,
-        height: int | None = None,
-    ):
-        if size is None and width is None and height is None:
-            raise TypeError(f"not all arguments can be 'None' at the same time")
-        if size is not None and (width is not None or height is not None):
-            raise TypeError(
-                "chose either positional argument 'size' "
-                "or keyword arguments 'width' and/or 'height', not all three"
-            )
-        if size is not None:
-            self.screen.size = size
-        if width is not None or height is not None:
-            self.screen.size = _Vec2i(width or 16, height or 12)
-        return self
-
     def update(self, delta: float) -> None: ...
 
-    def run(self):
+    def run(self) -> _Self:
         # check if console/stream should be cleared
         if self.clear_console:
             clear_code = "\x1b[2J\x1b[H"

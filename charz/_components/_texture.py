@@ -3,12 +3,12 @@ from __future__ import annotations as _annotations
 from pathlib import Path as _Path
 from copy import deepcopy as _deepcopy
 from typing import (
-    Generator as _Generator,
     Any as _Any,
     ClassVar as _ClassVar,
 )
 
 from linflex import Vec2i as _Vec2i
+from typing_extensions import Self as _Self
 
 from .._annotations import (
     NodeType as _NodeType,
@@ -37,22 +37,22 @@ class Texture:
     centered: bool = False
     transparency: str | None = None
 
-    def with_texture(self, texture_or_line: list[str] | str, /):
+    def with_texture(self, texture_or_line: list[str] | str, /) -> _Self:
         if isinstance(texture_or_line, str):
             self.texture = [texture_or_line]
             return self
         self.texture = texture_or_line
         return self
 
-    def as_visible(self, state: bool = True, /):
+    def as_visible(self, state: bool = True, /) -> _Self:
         self.visible = state
         return self
 
-    def as_centered(self, state: bool = True, /):
+    def as_centered(self, state: bool = True, /) -> _Self:
         self.centered = state
         return self
 
-    def with_transparency(self, char: str | None, /):
+    def with_transparency(self, char: str | None, /) -> _Self:
         self.transparancy = char
         return self
 

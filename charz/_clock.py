@@ -2,6 +2,8 @@ from __future__ import annotations as _annotations
 
 import time as _time
 
+from typing_extensions import Self as _Self
+
 
 class Clock:
     """`Clock` base class, without delta time"""
@@ -15,8 +17,9 @@ class Clock:
         self.tps = tps
         self._delta_time = 1.0 / tps  # average delta time
 
-    def with_tps(self, tps: float):
+    def with_tps(self, tps: float, /) -> _Self:
         self.tps = tps
+        self._delta_time = 1.0 / tps  # NOTE: resets if started
         return self
 
     @property

@@ -5,10 +5,11 @@ from functools import wraps as _wraps
 from pathlib import Path as _Path
 from copy import deepcopy as _deepcopy
 from typing import (
-    Generator as _Generator,
     Any as _Any,
     ClassVar as _ClassVar,
 )
+
+from typing_extensions import Self as _Self
 
 from ._texture import load_texture as _load_texture
 from .._annotations import (
@@ -70,7 +71,7 @@ class Animated:  # Component (mixin class)
         def update_method_factory(instance: _AnimatedNode, bound_update):  # noqa: ANN001 ANN202
             @_wraps(bound_update)
             def new_update_method(delta: float) -> None:
-                bound_update(delta)
+                bound_update(delta)  # TODO: swap order will fix rendering??
                 instance._wrapped_update_animated(delta)
 
             return new_update_method
@@ -83,7 +84,7 @@ class Animated:  # Component (mixin class)
     is_playing: bool = False
     _frame_index: int = 0
 
-    def with_animations(self, /, **animations: Animation):
+    def with_animations(self, /, **animations: Animation) -> _Self:
         self.animations.update(animations)
         return self
 
@@ -92,7 +93,7 @@ class Animated:  # Component (mixin class)
         animation_name: str,
         animation: Animation,
         /,
-    ):
+    ) -> _Self:
         self.add_animation(animation_name, animation)
         return self
 

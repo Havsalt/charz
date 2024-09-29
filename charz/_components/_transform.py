@@ -2,12 +2,12 @@ from __future__ import annotations as _annotations
 
 from copy import deepcopy as _deepcopy
 from typing import (
-    Generator as _Generator,
     Any as _Any,
     ClassVar as _ClassVar,
 )
 
 from linflex import Vec2 as _Vec2
+from typing_extensions import Self as _Self
 
 from .._annotations import (
     NodeType as _NodeType,
@@ -39,7 +39,7 @@ class Transform:
         /,
         x: float | None = None,
         y: float | None = None,
-    ):
+    ) -> _Self:
         if position is None and x is None and y is None:
             raise TypeError(f"not all arguments can be {None} at the same time")
         if position is not None and (x is not None or y is not None):
@@ -60,7 +60,7 @@ class Transform:
         /,
         x: float | None = None,
         y: float | None = None,
-    ):
+    ) -> _Self:
         if global_position is None and x is None and y is None:
             raise TypeError(f"not all arguments can be {None} at the same time")
         if global_position is not None and (x is not None or y is not None):
@@ -74,19 +74,19 @@ class Transform:
             self.global_position = _Vec2(x or 0, y or 0)
         return self
 
-    def with_rotation(self, rotation: float, /):
+    def with_rotation(self, rotation: float, /) -> _Self:
         self.rotation = rotation
         return self
 
-    def with_global_rotation(self, global_rotation: float, /):
+    def with_global_rotation(self, global_rotation: float, /) -> _Self:
         self.global_rotation = global_rotation
         return self
 
-    def with_z_index(self, z_index: int, /):
+    def with_z_index(self, z_index: int, /) -> _Self:
         self.z_index = z_index
         return self
 
-    def as_top_level(self, state: bool = True, /):
+    def as_top_level(self, state: bool = True, /) -> _Self:
         self.top_level = state
         return self
     

@@ -3,10 +3,11 @@ from __future__ import annotations as _annotations
 from itertools import count as _count
 from typing import (
     Any as _Any,
-    Generator as _Generator,
     Callable as _Callable,  # noqa: F401
     ClassVar as _ClassVar,
 )
+
+from typing_extensions import Self as _Self
 
 
 class _NodeMixinSortMeta(type):
@@ -36,11 +37,11 @@ class Node(metaclass=_NodeMixinSortMeta):
     parent: Node | None = None
     process_priority: int = 0
 
-    def with_parent(self, parent: Node | None, /):
+    def with_parent(self, parent: Node | None, /) -> _Self:
         self.parent = parent
         return self
 
-    def with_process_priority(self, process_priority: int, /):
+    def with_process_priority(self, process_priority: int, /) -> _Self:
         self.process_priority = process_priority
         return self
 
