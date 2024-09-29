@@ -12,9 +12,14 @@ Includes:
 - `Camera` (handles viewport)
 - `CameraMode` (enum)
 - `Node` (base node)
-- `Node2D` (node in world)
+- `Node2D` (prefabricated, node in world)
 - `Transform` (component)
+- `lerp` (function from `linflex` package)
+- `sign` (function from `linflex` package)
+- `clamp` (function from `linflex` package)
 - `Vec2` (datastructure from `linflex` package)
+- `Vec2i` (datastructure from `linflex` package)
+- `Vec3` (datastructure from `linflex` package)
 - `load_texture` (function)
 - `Texture` (component)
 - `Color` (component)
@@ -28,7 +33,7 @@ Includes:
 
 from __future__ import annotations as _annotations
 
-__version__ = "0.0.21"
+__version__ = "0.0.22"
 __all__ = [
     "Engine",
     "Clock",
@@ -39,7 +44,12 @@ __all__ = [
     "Node",
     "Node2D",
     "Transform",
+    "lerp",
+    "sign",
+    "clamp",
     "Vec2",
+    "Vec2i",
+    "Vec3",
     "load_texture",
     "Texture",
     "Color",
@@ -51,7 +61,7 @@ __all__ = [
     "text",
 ]
 
-from linflex import Vec2
+from linflex import lerp, sign, clamp, Vec2, Vec2i, Vec3
 from colex import ColorValue
 
 from ._engine import Engine
