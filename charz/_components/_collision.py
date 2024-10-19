@@ -21,7 +21,7 @@ from .._annotations import (
 @_dataclass(kw_only=True)
 class Hitbox:
     size: _Vec2
-    centered = False
+    centered: bool = False
 
 
 class Collider:  # Component (mixin class)
@@ -46,19 +46,22 @@ class Collider:  # Component (mixin class)
         self = _cast(_ColliderNode, self)
         colliders: list[Collider] = []
         for node in _Transform.transform_instances.values():
+            if self is node:
+                continue
+            # NOTE: might swap who the `.is_colliding_with(...)` is checked on
             if isinstance(node, Collider) and node.is_colliding_with(self):
                 colliders.append(node)
         return colliders
 
     def is_colliding_with(self, colldier_node: _ColliderNode, /) -> bool:
-        # TODO: consider `.rotation`
+        # TODO: consider `.global_rotation`
         self = _cast(_ColliderNode, self)
         start = self.global_position
         end = self.global_position + self.hitbox.size
         if self.hitbox.centered:
             start -= self.hitbox.size / 2
             end -= self.hitbox.size / 2
-        return start <= colldier_node.global_position <= end
+        return start <= colldier_node.global_position < end
 
     def is_colliding(self) -> bool:
         return bool(self.get_colliders())
