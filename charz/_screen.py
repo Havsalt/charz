@@ -61,7 +61,11 @@ class Screen:
 
     def _resize_if_necessary(self) -> None:  # NOTE: does not mutate screen buffer
         if self.auto_resize:
-            terminal_size = _os.get_terminal_size(self.stream.fileno())
+            try:  # `io.StringIO.filno()` raises an exception, allow alternative `.stream`
+                filno = self.stream.fileno()
+            except Exception:
+                return
+            terminal_size = _os.get_terminal_size(filno)
             self.width = terminal_size.columns - self.margin_right
             self.height = terminal_size.lines - self.margin_bottom
 
