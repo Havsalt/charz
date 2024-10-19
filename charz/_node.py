@@ -51,7 +51,8 @@ class Node(metaclass=_NodeMixinSortMeta):
     def update(self, delta: float) -> None: ...
 
     def queue_free(self) -> None:
-        Node._queued_nodes.append(self)
+        if self not in Node._queued_nodes:
+            Node._queued_nodes.append(self)
 
     def free(self) -> None:
         del Node.node_instances[self.uid]
