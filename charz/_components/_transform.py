@@ -50,8 +50,10 @@ class Transform:  # Component (mixin class)
             )
         if position is not None:
             self.position = position
-        if x is not None or y is not None:
-            self.position = _Vec2(x or 0, y or 0)
+        if x is not None:
+            self.position.x = x
+        if y is not None:
+            self.position.y = y
         return self
 
     # TODO: would be nice to figure out @overload with this function
@@ -71,8 +73,10 @@ class Transform:  # Component (mixin class)
             )
         if global_position is not None:
             self.global_position = global_position
-        if x is not None or y is not None:
-            self.global_position = _Vec2(x or 0, y or 0)
+        if x is not None:
+            self.global_position.x = x
+        if y is not None:
+            self.global_position.y = y
         return self
 
     def with_rotation(self, rotation: float, /) -> _Self:
