@@ -28,6 +28,7 @@ Includes:
 - `Sprite` (prefabricated)
 - `AnimatedSprite` (prefabricated)
 - `Animation` (datastructure)
+- `AnimationMapping` (datastructure)
 - `Collider` (component)
 - `Hitbox` (datastructure)
 - `text` (module for flipping strings)
@@ -35,7 +36,6 @@ Includes:
 
 from __future__ import annotations as _annotations
 
-__version__ = "0.0.22"
 __all__ = [
     "Engine",
     "Clock",
@@ -60,6 +60,7 @@ __all__ = [
     "Sprite",
     "AnimatedSprite",
     "Animation",
+    "AnimationMapping",
     "Collider",
     "Hitbox",
     "text",
@@ -76,7 +77,7 @@ from ._node import Node
 from ._components._transform import Transform
 from ._components._texture import load_texture, Texture
 from ._components._color import Color
-from ._components._animation import Animation
+from ._components._animation import Animation, AnimationMapping
 from ._components._collision import Collider, Hitbox
 from ._prefabs._node2d import Node2D
 from ._prefabs._label import Label
