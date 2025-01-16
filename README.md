@@ -26,13 +26,13 @@ class Player(Sprite):
 
 
 class Game(Engine):
-    screen = Screen(
-        auto_resize = True,
-    )
+    fps = 12
+    screen = Screen(auto_resize = True)
+    clear_console = True
 
     def __init__(self) -> None:
-
-        self.player = Player().with_global_position(10, 5)
+        Camera.current.mode = Camera.MODE_CENTERED
+        self.player = Player(position=Vec2(10, 5))
     
     def update(self, _delta: float) -> None:
         if keyboard.is_pressed("q"):
