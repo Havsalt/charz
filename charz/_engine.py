@@ -22,7 +22,7 @@ class EngineMixinSortMeta(type):
 
 
 class Engine(metaclass=EngineMixinSortMeta):
-    fps: float | None = 60
+    fps: float | None = 16
     clock: Clock = DeltaClock()
     screen: Screen = Screen()
     clear_console: bool = False
