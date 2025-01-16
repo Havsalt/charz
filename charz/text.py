@@ -1,9 +1,15 @@
-"""### Text utility module
+"""
+Text utility module
+-------------------
 
 Utility for flipping characters/lines. Support for rotating characters
 
 Includes:
-- ``
+- `flip_h`
+- `flip_v`
+- `flip_lines_h`
+- `flip_lines_v`
+- `rotate`
 """
 
 from __future__ import annotations as _annotations
@@ -160,7 +166,7 @@ def flip_lines_v(lines: list[str], /) -> list[str]:
     # fmt: on
 
 
-def rotate(char: str, angle: float, /) -> str:
+def rotate(char: str, /, angle: float) -> str:
     """Returns symbol when rotated by angle counter clockwise
 
     Args:

@@ -1,51 +1,45 @@
-from __future__ import annotations as _annotations
+from __future__ import annotations
 
-from dataclasses import dataclass as _dataclass
-from copy import deepcopy as _deepcopy
-from typing import (
-    ClassVar as _ClassVar,
-    Any as _Any,
-    cast as _cast,
-)
+from dataclasses import dataclass
+from copy import deepcopy
+from typing import ClassVar, Any, cast
 
-from linflex import Vec2 as _Vec2
-from typing_extensions import Self as _Self
+from linflex import Vec2
+from typing_extensions import Self
 
-from .._components._transform import Transform as _Transform
-from .._annotations import (
-    NodeType as _NodeType,
-    ColliderNode as _ColliderNode,
-)
+from .._components._transform import Transform
+from .._annotations import ColliderNode
 
 
-@_dataclass(kw_only=True)
+@dataclass(kw_only=True)
 class Hitbox:
-    size: _Vec2
+    size: Vec2
     centered: bool = False
 
 
 class Collider:  # Component (mixin class)
-    collider_instances: _ClassVar[dict[int, _ColliderNode]] = {}
+    collider_instances: ClassVar[dict[int, ColliderNode]] = {}
 
-    def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
-        instance = super().__new__(cls, *args, **kwargs)  # type: _ColliderNode  # type: ignore
-        Collider.collider_instances[instance.uid] = instance
+    def __new__(cls, *args: Any, **kwargs: Any) -> Self:
+        instance = super().__new__(cls, *args, **kwargs)
+        Collider.collider_instances[instance.uid] = instance  # type: ignore
         if (class_hitbox := getattr(instance, "hitbox", None)) is not None:
-            instance.hitbox = _deepcopy(class_hitbox)
+            instance.hitbox = deepcopy(class_hitbox)
         else:
-            instance.hitbox = Hitbox(size=_Vec2.ZERO)
-        return instance  # type: ignore
+            # TODO: use Vec2.ZERO when `linflex` is updated
+            instance.hitbox = Hitbox(size=Vec2(0, 0))
+        return instance
 
     hitbox: Hitbox
 
-    def with_hitbox(self, hitbox: Hitbox, /) -> _Self:
+    def with_hitbox(self, hitbox: Hitbox, /) -> Self:
         self.hitbox = hitbox
         return self
 
     def get_colliders(self) -> list[Collider]:
-        self = _cast(_ColliderNode, self)
+        self = cast(ColliderNode, self)
         colliders: list[Collider] = []
-        for node in _Transform.transform_instances.values():
+        for node in Transform.transform_instances.values():
             if self is node:
                 continue
             # NOTE: might swap who the `.is_colliding_with(...)` is checked on
@@ -53,9 +47,9 @@ class Collider:  # Component (mixin class)
                 colliders.append(node)
         return colliders
 
-    def is_colliding_with(self, colldier_node: _ColliderNode, /) -> bool:
+    def is_colliding_with(self, colldier_node: ColliderNode, /) -> bool:
         # TODO: consider `.global_rotation`
-        self = _cast(_ColliderNode, self)
+        self = cast(ColliderNode, self)
         start = self.global_position
         end = self.global_position + self.hitbox.size
         if self.hitbox.centered:
@@ -66,7 +60,6 @@ class Collider:  # Component (mixin class)
     def is_colliding(self) -> bool:
         return bool(self.get_colliders())
 
-    def free(self) -> None:
-        self = _cast(_ColliderNode, self)
-        del Collider.collider_instances[self.uid]
-        super().free()  # type: ignore
+    def _free(self) -> None:
+        del Collider.collider_instances[self.uid]  # type: ignore
+        super()._free()  # type: ignore

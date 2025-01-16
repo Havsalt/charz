@@ -1,9 +1,14 @@
+"""
+Custom Annotations for Charz
+----------------------------
+This file contains private annotations used across this package.
+
+Whenever there is a "?" comment,
+it means a type may or may not implement that field or mixin class.
+"""
+
 from __future__ import annotations as _annotations
 
-# ==( Custom Annotations )==
-# This file contains private annotations used across this package.
-# Whenever there is a "?" comment, it means that
-# a type may or may not implement that field or mixin class.
 
 from typing import (
     TypeVar as _TypeVar,
@@ -29,8 +34,6 @@ if _TYPE_CHECKING:
         AnimationMapping as _AnimationMapping,
     )
 
-EngineType = _TypeVar("EngineType", bound="Engine", covariant=True)
-NodeType = _TypeVar("NodeType", bound="Node", covariant=True)
 T = _TypeVar("T")
 _T_contra = _TypeVar("_T_contra", contravariant=True)
 
@@ -57,14 +60,13 @@ class Node(_Protocol):
     def with_process_priority(self, process_priority: int, /) -> _Self: ...
     def update(self, delta: float) -> None: ...
     def queue_free(self) -> None: ...
-    def free(self) -> None: ...
+    def _free(self) -> None: ...
 
 
 class TransformComponent(_Protocol):
     transform_instances: _ClassVar[dict[int, TransformNode]]
     position: _Vec2
     rotation: float
-    z_index: int
     top_level: bool
 
     def with_position(
@@ -83,7 +85,6 @@ class TransformComponent(_Protocol):
     ) -> _Self: ...
     def with_rotation(self, rotation: float, /) -> _Self: ...
     def with_global_rotation(self, global_rotation: float, /) -> _Self: ...
-    def with_z_index(self, z_index: int, /) -> _Self: ...
     def as_top_level(self, state: bool = True, /) -> _Self: ...
     @property
     def global_position(self) -> _Vec2: ...
@@ -107,16 +108,19 @@ class TextureComponent(_Protocol):
     texture: list[str]
     visible: bool
     centered: bool
+    z_index: int
     transparency: str | None
 
     def with_texture(self, texture_or_line: list[str] | str, /) -> _Self: ...
     def as_visible(self, state: bool = True, /) -> _Self: ...
     def as_centered(self, state: bool = True, /) -> _Self: ...
+    def with_z_index(self, z_index: int, /) -> _Self: ...
     def with_transparency(self, char: str | None, /) -> _Self: ...
     def hide(self) -> None: ...
     def show(self) -> None: ...
     def is_globally_visible(self) -> bool: ...
-    def get_texture_size(self) -> _Vec2i: ...
+    @property
+    def texture_size(self) -> _Vec2i: ...
 
 
 class TextureNode(

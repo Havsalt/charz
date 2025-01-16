@@ -1,3 +1,48 @@
 # Charz
 
 An object oriented terminal game engine
+
+## Getting started
+
+```python
+import colex              # Color constants and styling
+import keyboard           # For taking key inputs
+from charz import *       # Module can be imported as namespace: "import charz"
+
+
+class Player(Sprite):
+    _SPEED: int = 4    # Defining local constant
+    color = colex.RED  # In reality just a string, like "\x1b[31m" for red
+
+    def update(self, delta: float) -> None:  # This method is called every frame
+        if keyboard.is_pressed("a"):
+            self.position.y -= self._SPEED * delta
+        if keyboard.is_pressed("d"):
+            self.position.y += self._SPEED * delta
+        if keyboard.is_pressed("s"):
+            self.position.y += self._SPEED * delta
+        if keyboard.is_pressed("w"):
+            self.position.y -= self._SPEED * delta
+
+
+class Game(Engine):
+    screen = Screen(
+        auto_resize = True,
+    )
+
+    def __init__(self) -> None:
+
+        self.player = Player().with_global_position(10, 5)
+    
+    def update(self, _delta: float) -> None:
+        if keyboard.is_pressed("q"):
+            self.is_running = False
+        if keyboard.is_pressed("e"):
+            self.player.queue_free()  # `Engine` will drop reference to player
+            # NOTE: Player reference is still kept alive by `App`, but it won't be updated
+
+
+def main() -> None:
+    game = Game()
+    game.run()
+```

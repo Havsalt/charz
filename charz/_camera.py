@@ -1,58 +1,64 @@
-from __future__ import annotations as _annotations
+from __future__ import annotations
 
-from enum import (
-    IntEnum as _IntEnum,
-    auto as _auto,
-)
-from typing import ClassVar as _ClassVar
+from enum import IntEnum, auto
+from typing import ClassVar
 
-from typing_extensions import Self as _Self
+from typing_extensions import Self
 
-from ._node import Node as _Node
-from ._components._transform import Transform as _Transform
+from ._node import Node
+from ._components._transform import Transform
 
 
-class CameraMode(_IntEnum):
+class CameraMode(IntEnum):
     FIXED = 0
-    CENTERED = _auto()
-    INCLUDE_SIZE = _auto()
+    CENTERED = auto()
+    INCLUDE_SIZE = auto()
 
     def __or__(self, other: CameraMode) -> CameraMode:
-        # NOTE: result may not be a member of 'CameraMode', but instead an 'int'.
-        # combine any 'CameraMode', where any value that is not bound to a variant,
-        # will in fact be an 'int', but we treat it like a 'CameraMode' that was combined
+        """Merge two CameraMode values into a new CameraMode value
+
+        NOTE: Result may not be a member of `CameraMode`, but instead an `int`.
+        Combine any `CameraMode`, where any value that is not bound to a variant,
+        will in fact be an `int`, but we treat it like a `CameraMode` that was combined
+
+        Args:
+            other (CameraMode): other CameraMode value to merge with
+
+        Returns:
+            CameraMode: new combined CameraMode value
+        """
         if isinstance(other, CameraMode):
             new_value = self.value | other.value
             if new_value in CameraMode._value2member_map_:
                 return CameraMode(new_value)
             return new_value  # type: ignore
-        return NotImplemented
+        raise TypeError(
+            f"unsupported operand type(s) for |: 'CameraMode' and '{type(other)}'"
+        )
 
 
-class Camera(_Transform, _Node):
-    current: _ClassVar[Camera]
-    mode: CameraMode = CameraMode.FIXED
+class Camera(Transform, Node):
+    MODE_FIXED = CameraMode.FIXED
+    MODE_CENTERED = CameraMode.CENTERED
+    MODE_INCLUDE_SIZE = CameraMode.INCLUDE_SIZE
+    current: ClassVar[Camera]
+    mode: CameraMode = MODE_FIXED
 
     def set_current(self) -> None:
         Camera.current = self
 
-    def as_current(self, state: bool = True) -> _Self:
-        if state:
-            self.set_current()
-            return self
-        Camera.current = Camera()  # make new default camera
-        # remove from node count, will still be used as placeholder
-        Camera.current.free()
+    def as_current(self) -> Self:
+        self.set_current()
         return self
 
     def is_current(self) -> bool:
         return Camera.current is self
 
-    def with_mode(self, mode: CameraMode, /) -> _Self:
+    def with_mode(self, mode: CameraMode, /) -> Self:
         self.mode = mode
         return self
 
 
 Camera.current = Camera()  # initial camera
 # remove from node count, will still be used as placeholder
-Camera.current.free()
+Camera.current._free()

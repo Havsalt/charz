@@ -1,46 +1,39 @@
-from __future__ import annotations as _annotations
+from __future__ import annotations
 
-from copy import deepcopy as _deepcopy
-from typing import (
-    Any as _Any,
-    ClassVar as _ClassVar,
-    cast as _cast,
-)
+from copy import deepcopy
+from typing import Any, ClassVar
 
-from linflex import Vec2 as _Vec2
-from typing_extensions import Self as _Self
+from linflex import Vec2
+from typing_extensions import Self
 
-from .._annotations import (
-    NodeType as _NodeType,
-    TransformNode as _TransformNode,
-)
+from .._annotations import TransformNode
 
 
 class Transform:  # Component (mixin class)
-    transform_instances: _ClassVar[dict[int, _TransformNode]] = {}
+    transform_instances: ClassVar[dict[int, TransformNode]] = {}
 
-    def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
-        instance = super().__new__(cls, *args, **kwargs)  # type: _TransformNode  # type: ignore
-        Transform.transform_instances[instance.uid] = instance
+    def __new__(cls, *args: Any, **kwargs: Any) -> Self:
+        instance = super().__new__(cls, *args, **kwargs)
+        Transform.transform_instances[instance.uid] = instance  # type: ignore
         if (class_position := getattr(instance, "position", None)) is not None:
-            instance.position = _deepcopy(class_position)
+            instance.position = deepcopy(class_position)
         else:
-            instance.position = _Vec2.ZERO
-        return instance  # type: ignore
+            # TODO: use with Vec2.ZERO, when `linflex` is updated
+            instance.position = Vec2(0, 0)
+        return instance
 
-    position: _Vec2
+    position: Vec2
     rotation: float = 0
-    z_index: int = 0
     top_level: bool = False
 
     # TODO: would be nice to figure out @overload with this function
     def with_position(
         self,
-        position: _Vec2 | None = None,
+        position: Vec2 | None = None,
         /,
         x: float | None = None,
         y: float | None = None,
-    ) -> _Self:
+    ) -> Self:
         if position is None and x is None and y is None:
             raise TypeError(f"not all arguments can be {None} at the same time")
         if position is not None and (x is not None or y is not None):
@@ -59,11 +52,11 @@ class Transform:  # Component (mixin class)
     # TODO: would be nice to figure out @overload with this function
     def with_global_position(
         self,
-        global_position: _Vec2 | None = None,
+        global_position: Vec2 | None = None,
         /,
         x: float | None = None,
         y: float | None = None,
-    ) -> _Self:
+    ) -> Self:
         if global_position is None and x is None and y is None:
             raise TypeError(f"not all arguments can be {None} at the same time")
         if global_position is not None and (x is not None or y is not None):
@@ -72,26 +65,24 @@ class Transform:  # Component (mixin class)
                 "or keyword arguments 'x' and/or 'y', not all three"
             )
         if global_position is not None:
-            self.global_position = global_position
+            self.global_position = (
+                global_position.copy()
+            )  # NOTE: prevents unintended mutation
         if x is not None:
-            self.global_position.x = x
+            self.set_global_x(x)
         if y is not None:
-            self.global_position.y = y
+            self.set_global_y(y)
         return self
 
-    def with_rotation(self, rotation: float, /) -> _Self:
+    def with_rotation(self, rotation: float, /) -> Self:
         self.rotation = rotation
         return self
 
-    def with_global_rotation(self, global_rotation: float, /) -> _Self:
+    def with_global_rotation(self, global_rotation: float, /) -> Self:
         self.global_rotation = global_rotation
         return self
 
-    def with_z_index(self, z_index: int, /) -> _Self:
-        self.z_index = z_index
-        return self
-
-    def as_top_level(self, state: bool = True, /) -> _Self:
+    def as_top_level(self, state: bool = True, /) -> Self:
         self.top_level = state
         return self
 
@@ -104,13 +95,13 @@ class Transform:  # Component (mixin class)
         self.position.y += diff_y
 
     @property
-    def global_position(self) -> _Vec2:
+    def global_position(self) -> Vec2:
         """Returns a copy of the node's global position (in world space)
 
-        `NOTE`: cannot do `self.global_position.x += 5`,
+        `NOTE`: Cannot do `self.global_position.x += 5`,
         use `self.position += 5` instead, as it only adds a relative value
 
-        `NOTE`: cannot do `self.global_position.x = 42`,
+        `NOTE`: Cannot do `self.global_position.x = 42`,
         use `self.set_global_x(42)`
 
         Returns:
@@ -128,7 +119,7 @@ class Transform:  # Component (mixin class)
         return global_position
 
     @global_position.setter
-    def global_position(self, position: _Vec2) -> None:
+    def global_position(self, position: Vec2) -> None:
         """Sets the node's global position (world space)"""
         diff = position - self.global_position
         self.position += diff
@@ -157,7 +148,6 @@ class Transform:  # Component (mixin class)
         diff = rotation - self.global_rotation
         self.rotation += diff
 
-    def free(self) -> None:
-        self = _cast(_TransformNode, self)
-        del Transform.transform_instances[self.uid]
-        super().free()  # type: ignore
+    def _free(self) -> None:
+        del Transform.transform_instances[self.uid]  # type: ignore
+        super()._free()  # type: ignore

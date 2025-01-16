@@ -1,23 +1,15 @@
-from __future__ import annotations as _annotations
+from __future__ import annotations
 
-from copy import deepcopy as _deepcopy
-from typing import (
-    Callable as _Callable,  # noqa: F401
-    Any as _Any,
-)
+from typing import Any
 
-from typing_extensions import Self as _Self
+from typing_extensions import Self
 
-from ._clock import (
-    Clock as _Clock,
-    DeltaClock as _DeltaClock,
-)
-from ._screen import Screen as _Screen
-from ._node import Node as _Node
-from ._annotations import EngineType as _EngineType
+from ._clock import Clock, DeltaClock
+from ._screen import Screen
+from ._node import Node
 
 
-class _EngineMixinSortMeta(type):
+class EngineMixinSortMeta(type):
     """Engine metaclass for initializing `Engine` subclass after other `mixin` classes"""
 
     def __new__(cls, name: str, bases: tuple[type, ...], attrs: dict[str, object]):
@@ -29,23 +21,23 @@ class _EngineMixinSortMeta(type):
         return new_type
 
 
-class Engine(metaclass=_EngineMixinSortMeta):
-    fps: float = 16
-    clock: _Clock = _DeltaClock()
-    screen: _Screen = _Screen()
+class Engine(metaclass=EngineMixinSortMeta):
+    fps: float | None = 60
+    clock: Clock = DeltaClock()
+    screen: Screen = Screen()
     clear_console: bool = False
     hide_cursor: bool = True
     is_running: bool = False
 
-    def __new__(cls: type[_EngineType], *args: _Any, **kwargs: _Any) -> _EngineType:
-        instance = super().__new__(cls, *args, **kwargs)  # type: _EngineType  # type: ignore
-        # overrides `.clock.tps` with `.fps` set from class attribute
+    def __new__(cls, *args: Any, **kwargs: Any) -> Self:
+        instance = super().__new__(cls, *args, **kwargs)
+        # set `.clock.tps` with `.fps` set from class attribute
         instance.clock.tps = instance.fps
         return instance  # type: ignore
 
     def update(self, delta: float) -> None: ...
 
-    def run(self) -> _Self:
+    def run(self) -> Self:
         # check if console/stream should be cleared
         if self.clear_console:
             clear_code = "\x1b[2J\x1b[H"
@@ -56,19 +48,22 @@ class Engine(metaclass=_EngineMixinSortMeta):
             hide_code = "\x1b[?25l"
             self.screen.stream.write(hide_code)
             self.screen.stream.flush()
-        delta = self.clock.get_delta()
+
+        delta = self.clock.delta()  # initial delta
         self.is_running = True
-        while self.is_running:
+
+        while self.is_running:  # main loop
             self.update(delta)
-            for queued_node in _Node._queued_nodes:
-                queued_node.free()
-            _Node._queued_nodes *= 0  # NOTE: faster way to do `.clear()`
-            # NOTE: 'list' is faster than 'tuple', when copying
-            for node in list(_Node.node_instances.values()):  # iterating copy
+            for queued_node in Node._queued_nodes:
+                queued_node._free()
+            Node._queued_nodes *= 0  # NOTE: faster way to do `.clear()`
+            # NOTE: `list` is faster than `tuple`, when copying
+            for node in list(Node.node_instances.values()):  # iterating copy
                 node.update(delta)
             self.screen.refresh()
             self.clock.tick()
-            delta = self.clock.get_delta()
+            delta = self.clock.delta()
+
         # show cursor if hidden
         if self.hide_cursor:
             hide_code = "\x1b[?25h"

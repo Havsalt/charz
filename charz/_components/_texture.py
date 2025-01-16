@@ -1,59 +1,57 @@
-from __future__ import annotations as _annotations
+from __future__ import annotations
 
-from pathlib import Path as _Path
-from copy import deepcopy as _deepcopy
-from typing import (
-    Any as _Any,
-    ClassVar as _ClassVar,
-    cast as _cast,
-)
+from pathlib import Path
+from copy import deepcopy
+from typing import Any, ClassVar
 
-from linflex import Vec2i as _Vec2i
-from typing_extensions import Self as _Self
+from linflex import Vec2i
+from typing_extensions import Self
 
-from .._annotations import (
-    NodeType as _NodeType,
-    TextureNode as _TextureNode,
-)
+from .._annotations import TextureNode
 
 
-def load_texture(file_path: _Path | str, /) -> list[str]:
-    return _Path.cwd().joinpath(str(file_path)).read_text(encoding="utf-8").splitlines()
+def load_texture(file_path: Path | str, /) -> list[str]:
+    return Path.cwd().joinpath(str(file_path)).read_text(encoding="utf-8").splitlines()
 
 
 class Texture:  # Component (mixin class)
-    texture_instances: _ClassVar[dict[int, _TextureNode]] = {}
+    texture_instances: ClassVar[dict[int, TextureNode]] = {}
 
-    def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
-        instance = super().__new__(cls, *args, **kwargs)  # type: _TextureNode  # type: ignore
-        Texture.texture_instances[instance.uid] = instance
+    def __new__(cls, *args: Any, **kwargs: Any) -> Self:
+        instance = super().__new__(cls, *args, **kwargs)
+        Texture.texture_instances[instance.uid] = instance  # type: ignore
         if (class_texture := getattr(instance, "texture", None)) is not None:
-            instance.texture = _deepcopy(class_texture)
+            instance.texture = deepcopy(class_texture)
         else:
             instance.texture = []
-        return instance  # type: ignore
+        return instance
 
     texture: list[str]
     visible: bool = True
     centered: bool = False
+    z_index: int = 0
     transparency: str | None = None
 
-    def with_texture(self, texture_or_line: list[str] | str, /) -> _Self:
+    def with_texture(self, texture_or_line: list[str] | str, /) -> Self:
         if isinstance(texture_or_line, str):
             self.texture = [texture_or_line]
             return self
         self.texture = texture_or_line
         return self
 
-    def as_visible(self, state: bool = True, /) -> _Self:
+    def as_visible(self, state: bool = True, /) -> Self:
         self.visible = state
         return self
 
-    def as_centered(self, state: bool = True, /) -> _Self:
+    def as_centered(self, state: bool = True, /) -> Self:
         self.centered = state
         return self
 
-    def with_transparency(self, char: str | None, /) -> _Self:
+    def with_z_index(self, z_index: int, /) -> Self:
+        self.z_index = z_index
+        return self
+
+    def with_transparency(self, char: str | None, /) -> Self:
         self.transparancy = char
         return self
 
@@ -80,15 +78,22 @@ class Texture:  # Component (mixin class)
             parent = parent.parent  # type: ignore
         return True
 
-    def get_texture_size(self) -> _Vec2i:
+    @property
+    def texture_size(self) -> Vec2i:
+        """Get the size of the texture
+
+        Computed in O(n*m), where n is the number of lines and m is the length of the longest line
+
+        Returns:
+            Vec2i: texture size
+        """
         if not self.texture:
-            return _Vec2i.ZERO
-        return _Vec2i(
+            return Vec2i(0, 0)  # TODO: use Vec2i.ZERO when `linflex` is updated
+        return Vec2i(
             len(max(self.texture, key=len)),  # size of longest line
             len(self.texture),  # line count
         )
 
-    def free(self) -> None:
-        self = _cast(_TextureNode, self)
-        del Texture.texture_instances[self.uid]
-        super().free()  # type: ignore
+    def _free(self) -> None:
+        del Texture.texture_instances[self.uid]  # type: ignore
+        super()._free()  # type: ignore

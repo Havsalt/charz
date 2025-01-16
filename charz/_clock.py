@@ -1,73 +1,64 @@
-from __future__ import annotations as _annotations
+from __future__ import annotations
 
-import time as _time
+import time
+from typing import Literal
 
 
-# NOTE: this class is not a `Node` subclass,
-#       and is therefore treated more like a datastructure with methods
 class Clock:
     """`Clock` base class, without delta time"""
 
-    def __init__(self, tps: float = 16, /) -> None:
-        """Initializes the clock with a given tps
-
-        Args:
-            tps (float, optional): ticks per second. Defaults to 16.
-        """
-        self.tps = tps
-        self._delta_time = 1.0 / tps  # average delta time
+    _tps: float | None = None
 
     @property
-    def tps(self) -> float:
+    def tps(self) -> float | None:
         return self._tps
 
     @tps.setter
-    def tps(self, value: float) -> None:
+    def tps(self, value: float | None) -> None:
         self._tps = value
 
-    def get_delta(self) -> float:
-        """Gets the time it took until tick was called again
+    def delta(self) -> Literal[0]:
+        """Returns the delta time between ticks
 
         Returns:
-            float: delta time until last fram
+            Literal[0]: always returns 0, since `Clock` class does not calculate delta time
         """
-        return self._delta_time
+        return 0
 
     def tick(self) -> None:
-        """Does nothing. Exists for better coupling, when extending the `Clock` class"""
+        """Does nothing on its own. Exists for better coupling, when extending the `Clock` class"""
         return
 
 
 class DeltaClock(Clock):
-    """`DeltaClock` calculating `delta time` and sleeps for maintaining desirerd `tps`"""
+    """`DeltaClock` class, with delta time calculation"""
 
-    def __init__(self, tps: float = 16, /) -> None:
-        """Initializes the delta clock with a given tps
-
-        Args:
-            tps (float, optional): ticks per second. Defaults to 16.
-        """
-        self.tps = tps  # calls property setter
-        self._delta_time = 1.0 / tps  # initial delta time (optimal scenario)
-        self._last_tick = _time.perf_counter()
+    def __init__(self) -> None:
+        self._delta: float = 0
+        self._target_delta: float = 0
+        self._last_tick = time.perf_counter()
 
     @property
-    def tps(self) -> float:
+    def tps(self) -> float | None:
         return self._tps
 
     @tps.setter
-    def tps(self, value: float) -> None:
+    def tps(self, value: float | None) -> None:
         self._tps = value
-        self._target_delta = 1.0 / self._tps
+        if value is not None:
+            self._target_delta = 1.0 / value
+
+    def delta(self) -> float:
+        return self._delta
 
     def tick(self) -> None:
-        """Pauses the clock temporay to achieve the desired framerate (tps)"""
-        current_time = _time.perf_counter()
+        """Sleeps for the remaining time to maintain desired `tps`"""
+        current_time = time.perf_counter()
         elapsed_time = current_time - self._last_tick
         sleep_time = self._target_delta - elapsed_time
         if sleep_time > 0:
-            _time.sleep(sleep_time)
-            self._last_tick = _time.perf_counter()
+            time.sleep(sleep_time)
+            self._last_tick = time.perf_counter()
         else:
             self._last_tick = current_time
-        self._delta_time = max(0, sleep_time)
+        self._delta = max(0, sleep_time)

@@ -1,34 +1,27 @@
-from __future__ import annotations as _annotations
+from __future__ import annotations
 
-from typing import (
-    Any as _Any,
-    cast as _cast,
-)
+from typing import Any
 
-from colex import ColorValue as _ColorValue
-from typing_extensions import Self as _Self
+from colex import ColorValue
+from typing_extensions import Self
 
-from .._annotations import (
-    NodeType as _NodeType,
-    ColorNode as _ColorNode,
-)
+from .._annotations import ColorNode
 
 
 class Color:  # Component (mixin class)
-    color_instances: dict[int, _ColorNode] = {}
+    color_instances: dict[int, ColorNode] = {}
 
-    def __new__(cls: type[_NodeType], *args: _Any, **kwargs: _Any) -> _NodeType:
-        instance = super().__new__(cls, *args, **kwargs)  # type: _ColorNode  # type: ignore
-        Color.color_instances[instance.uid] = instance
-        return instance  # type: ignore
+    def __new__(cls, *args: Any, **kwargs: Any) -> Self:
+        instance = super().__new__(cls, *args, **kwargs)
+        Color.color_instances[instance.uid] = instance  # type: ignore
+        return instance
 
-    color: _ColorValue | None = None
+    color: ColorValue | None = None
 
-    def with_color(self, color: _ColorValue | None, /) -> _Self:
+    def with_color(self, color: ColorValue | None, /) -> Self:
         self.color = color
         return self
 
-    def free(self) -> None:
-        self = _cast(_ColorNode, self)
-        del Color.color_instances[self.uid]
-        super().free()  # type: ignore
+    def _free(self) -> None:
+        del Color.color_instances[self.uid]  # type: ignore
+        super()._free()  # type: ignore
