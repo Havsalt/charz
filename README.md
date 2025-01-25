@@ -13,6 +13,12 @@ from charz import *       # Module can be imported as namespace: "import charz"
 class Player(Sprite):
     _SPEED: int = 4    # Defining local constant
     color = colex.RED  # In reality just a string, like "\x1b[31m" for red
+    centered = True    # Apply sprite centereing - Handled by `charz`
+    texture = [        # A texture may be defined as a class variable, of type `list[str]`
+        "  O",
+        "/ | \\",
+        " / \\",
+    ]
 
     def update(self, delta: float) -> None:  # This method is called every frame
         if keyboard.is_pressed("a"):
