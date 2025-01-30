@@ -14,7 +14,6 @@ from .._annotations import T, AnimatedNode
 
 class Animation:
     __slots__ = ("frames",)
-    frames: list[list[str]]
 
     def __init__(self, animation_path: Path | str, /) -> None:
         # fmt: off
@@ -25,6 +24,41 @@ class Animation:
         )
         # fmt: on
         self.frames = list(map(load_texture, frame_directory))
+
+    def __repr__(self) -> str:
+        # should never be empty, but if the programmer did it, show empty frame count
+        if not self.frames:
+            return f"{self.__class__.__name__}(▦!:N/A->N/A)"
+        longest = 0
+        shortest = 0
+        tallest = 0
+        lowest = 0
+        # these are used as temporary variables in loop
+        local_longest = 0
+        local_shortest = 0
+        local_tallest = 0
+        local_lowest = 0
+        for frame in self.frames:
+            # compare all time best against best results per iteration
+            if not frame:  # allow empty frame
+                continue
+            elif not any(frame):  # allow frame with empty lines
+                continue
+            local_longest = len(max(frame, key=len))
+            longest = max(local_longest, longest)
+            local_tallest = len(frame)
+            tallest = max(local_tallest, tallest)
+            local_shortest = len(min(frame, key=len))
+            shortest = min(local_shortest, shortest)
+            local_lowest = min(local_lowest, shortest)
+        return (
+            self.__class__.__name__
+            + "("
+            + f"▦{len(self.frames)}"
+            + f":{shortest}x{lowest}"
+            + f"->{longest}x{tallest}"
+            + ")"
+        )
 
 
 class AnimationMapping(SimpleNamespace):
