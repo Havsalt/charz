@@ -101,8 +101,10 @@ class Screen:
         # determine whether to use use the parent of current camera
         # or its parent as anchor for viewport
         anchor = Camera.current
-        if Camera.current.parent is not None and isinstance(
-            Camera.current.parent, Transform
+        if (
+            not Camera.current.top_level
+            and Camera.current.parent is not None
+            and isinstance(Camera.current.parent, Transform)
         ):
             anchor = Camera.current.parent
         relative_position = node_global_position - anchor.global_position
