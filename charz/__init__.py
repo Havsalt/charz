@@ -42,7 +42,6 @@ __all__ = [
     "DeltaClock",
     "Screen",
     "Camera",
-    "CameraMode",
     "Node",
     "Node2D",
     "Transform",
@@ -72,7 +71,7 @@ from colex import ColorValue
 from ._engine import Engine
 from ._clock import Clock, DeltaClock
 from ._screen import Screen
-from ._camera import Camera, CameraMode
+from ._camera import Camera
 from ._node import Node
 from ._components._transform import Transform
 from ._components._texture import load_texture, Texture
