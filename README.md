@@ -53,6 +53,10 @@ def main() -> None:
     game.run()
 ```
 
+## Background
+
+This project is heavily inspired by the `Godot Game Engine`.
+
 ## License
 
 MIT
