@@ -1,0 +1,19 @@
+.vscode
+.mypy_cache
+.ruff_cache
+dev.py
+dev[0-9].py
+beta-dist
+test-animations
+ecs_dev.py
+
+# python generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# venv
+.venv
