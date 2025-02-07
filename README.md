@@ -2,6 +2,28 @@
 
 An object oriented terminal game engine
 
+## Installation
+
+Install using either `pip` or `rye`:
+
+```bash
+pip install charz[all]
+```
+
+```bash
+rye install charz[all]
+```
+
+If you don't need the `keyboard` package, simply use:
+
+```bash
+pip install charz
+```
+
+```bash
+rye add charz
+```
+
 ## Getting started
 
 ```python
