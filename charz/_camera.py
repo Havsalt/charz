@@ -16,9 +16,9 @@ class CameraMode(Flag):
 
 
 class Camera(Transform, Node):
-    MODE_FIXED = ClassVar[CameraMode.FIXED]
-    MODE_CENTERED = ClassVar[CameraMode.CENTERED]
-    MODE_INCLUDE_SIZE = ClassVar[CameraMode.INCLUDE_SIZE]
+    MODE_FIXED: ClassVar[CameraMode] = CameraMode.FIXED
+    MODE_CENTERED: ClassVar[CameraMode] = CameraMode.CENTERED
+    MODE_INCLUDE_SIZE: ClassVar[CameraMode] = CameraMode.INCLUDE_SIZE
     current: ClassVar[Camera]
     mode: CameraMode = MODE_FIXED
 
