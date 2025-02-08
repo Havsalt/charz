@@ -70,7 +70,7 @@ class Game(Engine):
             # NOTE: Player reference is still kept alive by `App`, but it won't be updated
 
 
-def main() -> None:
+if __name__ == "__main__":
     game = Game()
     game.run()
 ```
