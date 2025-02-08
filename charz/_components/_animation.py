@@ -61,7 +61,7 @@ class Animation:
         )
 
 
-class AnimationMapping(SimpleNamespace):
+class AnimationSet(SimpleNamespace):
     def __init__(self, **animations: Animation) -> None:
         super().__init__(**animations)
 
@@ -92,7 +92,7 @@ class Animated:  # Component (mixin class)
         if (class_animations := getattr(instance, "animations", None)) is not None:
             instance.animations = deepcopy(class_animations)
         else:
-            instance.animations = AnimationMapping()
+            instance.animations = AnimationSet()
 
         # inject `._wrapped_update_animated()` into `.update()`
         def update_method_factory(instance: AnimatedNode, bound_update):  # noqa: ANN001 ANN202
@@ -106,7 +106,7 @@ class Animated:  # Component (mixin class)
         instance.update = update_method_factory(instance, instance.update)  # type: ignore
         return instance  # type: ignore
 
-    animations: AnimationMapping
+    animations: AnimationSet
     current_animation: Animation | None = None
     is_playing: bool = False
     _frame_index: int = 0

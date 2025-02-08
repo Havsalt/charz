@@ -5,7 +5,7 @@ from linflex import Vec2
 
 from .._node import Node
 
-from .._components._animation import Animated, AnimationMapping
+from .._components._animation import Animated, AnimationSet
 from ._sprite import Sprite
 
 
@@ -24,7 +24,7 @@ class AnimatedSprite(Animated, Sprite):
         z_index: int | None = None,
         transparency: str | None = None,
         color: ColorValue | None = None,
-        animations: AnimationMapping | None = None,
+        animations: AnimationSet | None = None,
     ) -> None:
         super().__init__(
             parent=parent,

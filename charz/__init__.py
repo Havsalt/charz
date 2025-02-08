@@ -10,7 +10,6 @@ Includes:
 - `DeltaClock` (controls framerate)
 - `Screen` (renders nodes to console)
 - `Camera` (handles viewport)
-- `CameraMode` (enum)
 - `Node` (base node)
 - `Node2D` (prefabricated, node in world)
 - `Transform` (component)
@@ -28,7 +27,7 @@ Includes:
 - `Sprite` (prefabricated)
 - `AnimatedSprite` (prefabricated)
 - `Animation` (datastructure)
-- `AnimationMapping` (datastructure)
+- `AnimationSet` (datastructure)
 - `Collider` (component)
 - `Hitbox` (datastructure)
 - `text` (module for flipping strings)
@@ -59,7 +58,7 @@ __all__ = [
     "Sprite",
     "AnimatedSprite",
     "Animation",
-    "AnimationMapping",
+    "AnimationSet",
     "Collider",
     "Hitbox",
     "text",
@@ -76,7 +75,7 @@ from ._node import Node
 from ._components._transform import Transform
 from ._components._texture import load_texture, Texture
 from ._components._color import Color
-from ._components._animation import Animation, AnimationMapping
+from ._components._animation import Animation, AnimationSet
 from ._components._collision import Collider, Hitbox
 from ._prefabs._node2d import Node2D
 from ._prefabs._label import Label

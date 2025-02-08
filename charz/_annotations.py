@@ -31,7 +31,7 @@ if _TYPE_CHECKING:
     from ._components._collision import Hitbox
     from ._components._animation import (
         Animation as _Animation,
-        AnimationMapping as _AnimationMapping,
+        AnimationSet as _AnimationMapping,
     )
 
 T = _TypeVar("T")
