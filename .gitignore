@@ -1,6 +1,6 @@
-.vscode
-.mypy_cache
-.ruff_cache
+.vscode/
+.mypy_cache/
+.ruff_cache/
 dev.py
 dev[0-9].py
 beta-dist
