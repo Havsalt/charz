@@ -79,6 +79,10 @@ def main() -> None:
 
 This project is heavily inspired by the `Godot Game Engine`.
 
+## Regarding testing
+
+Tests for `charz` are currently manual and only somewhat implemented. Until I find a testing tool I like, things will be manual, just so I know if the critical parts work.
+
 ## License
 
 MIT
