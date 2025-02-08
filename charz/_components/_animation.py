@@ -9,13 +9,21 @@ from typing import Any, ClassVar
 from typing_extensions import Self
 
 from ._texture import load_texture
+from .. import text
 from .._annotations import T, AnimatedNode
 
 
 class Animation:
     __slots__ = ("frames",)
 
-    def __init__(self, animation_path: Path | str, /) -> None:
+    def __init__(
+        self,
+        animation_path: Path | str,
+        /,
+        reverse: bool = False,
+        flip_h: bool = False,
+        flip_v: bool = False,
+    ) -> None:
         # fmt: off
         frame_directory = (
             Path.cwd()
@@ -23,12 +31,19 @@ class Animation:
             .iterdir()
         )
         # fmt: on
-        self.frames = list(map(load_texture, frame_directory))
+        generator = map(load_texture, frame_directory)
+        if reverse:
+            generator = reversed(list(generator))
+        if flip_h:
+            generator = map(text.flip_lines_h, generator)
+        if flip_v:
+            generator = map(text.flip_lines_v, generator)
+        self.frames = list(generator)
 
     def __repr__(self) -> str:
         # should never be empty, but if the programmer did it, show empty frame count
         if not self.frames:
-            return f"{self.__class__.__name__}(▦!:N/A->N/A)"
+            return f"{self.__class__.__name__}(N/A)"
         longest = 0
         shortest = 0
         tallest = 0
@@ -54,7 +69,7 @@ class Animation:
         return (
             self.__class__.__name__
             + "("
-            + f"▦{len(self.frames)}"
+            + f"{len(self.frames)}"
             + f":{shortest}x{lowest}"
             + f"->{longest}x{tallest}"
             + ")"
