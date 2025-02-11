@@ -1,10 +1,12 @@
 """
 Charz
------
+=====
 
 An object oriented terminal game engine
 
-Includes:
+Includes
+--------
+
 - `Engine` (derive new App class from this)
 - `Clock` (calculates delta time)
 - `DeltaClock` (controls framerate)
