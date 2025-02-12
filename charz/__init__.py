@@ -32,10 +32,8 @@ Includes
 - `AnimationSet` (datastructure)
 - `Collider` (component)
 - `Hitbox` (datastructure)
-- `text` (module for flipping strings)
+- `text` (module for flipping strings and rotating chars)
 """
-
-from __future__ import annotations as _annotations
 
 __all__ = [
     "Engine",
