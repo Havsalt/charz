@@ -7,32 +7,43 @@ An object oriented terminal game engine
 Includes
 --------
 
-- `Engine` (derive new App class from this)
-- `Clock` (calculates delta time)
-- `DeltaClock` (controls framerate)
-- `Screen` (renders nodes to console)
-- `Camera` (handles viewport)
-- `Node` (base node)
-- `Node2D` (prefabricated, node in world)
-- `Transform` (component)
-- `lerp` (function from `linflex` package)
-- `sign` (function from `linflex` package)
-- `clamp` (function from `linflex` package)
-- `Vec2` (datastructure from `linflex` package)
-- `Vec2i` (datastructure from `linflex` package)
-- `Vec3` (datastructure from `linflex` package)
-- `load_texture` (function)
-- `Texture` (component)
-- `Color` (component)
-- `ColorValue` (annotation from `colex` package)
-- `Label` (prefabricated)
-- `Sprite` (prefabricated)
-- `AnimatedSprite` (prefabricated)
-- `Animation` (datastructure)
-- `AnimationSet` (datastructure)
-- `Collider` (component)
-- `Hitbox` (datastructure)
-- `text` (module for flipping strings and rotating chars)
+- Annotations (from package `colex`)
+  - `ColorValue`
+- Math (from package `linflex`)
+  - `lerp`
+  - `sign`
+  - `clamp`
+  - `Vec2`
+  - `Vec2i`
+  - `Vec3`
+- Modules
+  - `text`
+  - `colex`    (dependency)
+  - `keyboard` (optional dependency)
+- Framework
+  - `Engine`
+  - `Clock`
+  - `DeltaClock`
+  - `Screen`
+- Datastructures
+  - `Animation`
+  - `AnimationSet`
+  - `Hitbox`
+- Functions
+  - `load_texture`
+- Components
+  - `Transform`
+  - `Texture`
+  - `Color`
+  - `Animated`
+  - `Collider`
+- Nodes
+  - `Camera`
+  - `Node`
+  - `Node2D`
+  - `Sprite`
+  - `Label`
+  - `AnimatedSprite`
 """
 
 __all__ = [
