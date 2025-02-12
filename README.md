@@ -111,9 +111,9 @@ This project is heavily inspired by the `Godot Game Engine`.
   - `Animation`
   - `Collider`
 - Nodes
+  - `Camera`
   - `Node`
   - `Node2D`
-  - `Camera`
   - `Sprite`
   - `Label`
   - `AnimatedSprite`
