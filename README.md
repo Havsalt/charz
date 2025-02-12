@@ -75,9 +75,48 @@ if __name__ == "__main__":
     game.run()
 ```
 
-## Background
+## Rational
 
 This project is heavily inspired by the `Godot Game Engine`.
+
+## Includes
+
+- Annotations
+  - `ColorValue`
+- Math
+  - `lerp`
+  - `sign`
+  - `clamp`
+  - `Vec2`
+  - `Vec2i`
+  - `Vec3`
+- Modules
+  - `text`
+  - `colex`    (Dependency)
+  - `keyboard` (Optional dependency)
+- Framework
+  - `Engine`
+  - `Clock`
+  - `DeltaClock`
+  - `Screen`
+- Datastructures
+  - `AnimationSet`
+  - `Hitbox`
+- Functions
+  - `load_texture`
+- Components
+  - `Transform`
+  - `Texture`
+  - `Color`
+  - `Animation`
+  - `Collider`
+- Nodes
+  - `Node`
+  - `Node2D`
+  - `Camera`
+  - `Sprite`
+  - `Label`
+  - `AnimatedSprite`
 
 ## Regarding testing
 
