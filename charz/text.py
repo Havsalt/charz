@@ -97,6 +97,15 @@ for _options in list(_r_conversions.values()):
 # fmt: on
 
 
+def fill(line: str, *, width: int, fill_char: str) -> str:
+    return line.ljust(width, fill_char)
+
+
+def fill_lines(lines: list[str], *, fill_char: str = " ") -> list[str]:
+    longest = len(max(lines, key=len))
+    return [fill(line, width=longest, fill_char=fill_char) for line in lines]
+
+
 def flip_h(line: str, /) -> str:
     """Flips a single line horizontally. Also works with a single character
 
