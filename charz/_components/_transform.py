@@ -18,8 +18,7 @@ class Transform:  # Component (mixin class)
         if (class_position := getattr(instance, "position", None)) is not None:
             instance.position = deepcopy(class_position)
         else:
-            # TODO: use with Vec2.ZERO, when `linflex` is updated
-            instance.position = Vec2(0, 0)
+            instance.position = Vec2.ZERO
         return instance
 
     position: Vec2
