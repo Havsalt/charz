@@ -7,11 +7,41 @@ from typing import Any, ClassVar
 from linflex import Vec2i
 from typing_extensions import Self
 
+from .. import text
 from .._annotations import TextureNode
 
 
-def load_texture(file_path: Path | str, /) -> list[str]:
-    return Path.cwd().joinpath(str(file_path)).read_text(encoding="utf-8").splitlines()
+def load_texture(
+    file_path: Path | str,
+    /,
+    *,
+    flip_h: bool = False,
+    flip_v: bool = False,
+    fill: bool = True,
+    fill_char: str = " ",
+) -> list[str]:
+    """Loads texture given a file path
+
+    Args:
+        file_path (Path | str): path to file.
+        flip_h (bool, optional): flip horizontally. Defaults to False.
+        flip_v (bool, optional): flip vertically. Defaults to False.
+        fill (bool, optional): fill in to make shape rectangular. Defaults to True.
+        fill_char (str, optional): string of length 1 to fill with. Defaults to " ".
+
+    Returns:
+        list[str]: loaded texture
+    """
+    file = Path.cwd().joinpath(str(file_path))
+    content = file.read_text(encoding="utf-8")
+    texture = content.splitlines()
+    if fill:  # NOTE: this fill logic has to be before flipping
+        texture = text.fill_lines(texture, fill_char=fill_char)
+    if flip_h:
+        texture = text.flip_lines_h(texture)
+    if flip_v:
+        texture = text.flip_lines_v(texture)
+    return texture
 
 
 class Texture:  # Component (mixin class)
