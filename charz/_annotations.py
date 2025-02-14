@@ -1,6 +1,7 @@
 """
 Custom Annotations for Charz
-----------------------------
+============================
+
 This file contains private annotations used across this package.
 
 Whenever there is a "?" comment,
