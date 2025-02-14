@@ -92,6 +92,12 @@ This project is heavily inspired by the `Godot Game Engine`.
   - `Vec3`
 - Modules
   - `text`
+    - `fill`
+    - `flip_h`
+    - `flip_v`
+    - `fill_lines`
+    - `flip_lines_h`
+    - `flip_lines_v`
   - `colex`    (Dependency)
   - `keyboard` (Optional dependency)
 - Framework
