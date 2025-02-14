@@ -106,7 +106,7 @@ def flip_h(line: str, /) -> str:
     Returns:
         list[str]: flipped line or character
     """
-    return "".join(_h_conversions.get(char, char) for char in line)[::-1]
+    return "".join(_h_conversions.get(char, char) for char in reversed(line))
 
 
 def flip_v(line: str, /) -> str:
@@ -118,12 +118,7 @@ def flip_v(line: str, /) -> str:
     Returns:
         list[str]: flipped line or character
     """
-    # fmt: off
-    return "".join(
-        _v_conversions.get(char, char)
-        for char in line
-    )
-    # fmt: on
+    return "".join(_v_conversions.get(char, char) for char in line)
 
 
 def flip_lines_h(lines: list[str], /) -> list[str]:
@@ -135,15 +130,7 @@ def flip_lines_h(lines: list[str], /) -> list[str]:
     Returns:
         list[str]: flipped content
     """
-    # fmt: off
-    return list(map(
-        lambda line: "".join(
-            _h_conversions.get(char, char)
-            for char in line
-        ),
-        lines
-    ))[::-1]
-    # fmt: on
+    return [flip_h(line) for line in lines]
 
 
 def flip_lines_v(lines: list[str], /) -> list[str]:
@@ -155,15 +142,7 @@ def flip_lines_v(lines: list[str], /) -> list[str]:
     Returns:
         list[str]: flipped content
     """
-    # fmt: off
-    return list(map(
-        lambda line: "".join(
-            _v_conversions.get(char, char)
-            for char in line
-        ),
-        lines
-    ))
-    # fmt: on
+    return [flip_v(line) for line in reversed(lines)]
 
 
 def rotate(char: str, /, angle: float) -> str:
