@@ -12,7 +12,8 @@
 -e file:.
 colex==0.2.0
     # via charz
-linflex==0.1.3
+linflex==0.2.0
     # via charz
 typing-extensions==4.12.2
     # via charz
+    # via linflex
