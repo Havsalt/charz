@@ -18,7 +18,7 @@ class Animation:
 
     def __init__(
         self,
-        animation_path: Path | str,
+        folder_path: Path | str,
         /,
         *,
         reverse: bool = False,
@@ -27,10 +27,19 @@ class Animation:
         fill: bool = True,
         fill_char: str = " ",
     ) -> None:
+        """Loads an `Animation` given a path to the folder where the animation is stored
+
+        Args:
+            folder_path (Path | str): path to folder where animation frames are stored as files.
+            flip_h (bool, optional): flip frames horizontally. Defaults to False.
+            flip_v (bool, optional): flip frames vertically. Defaults to False.
+            fill (bool, optional): fill in to make shape of frames rectangular. Defaults to True.
+            fill_char (str, optional): string of length 1 to fill with. Defaults to " ".
+        """
         # fmt: off
         frame_directory = (
             Path.cwd()
-            .joinpath(str(animation_path))
+            .joinpath(str(folder_path))
             .iterdir()
         )
         # fmt: on
