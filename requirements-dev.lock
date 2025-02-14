@@ -12,9 +12,22 @@
 -e file:.
 colex==0.2.0
     # via charz
+colorama==0.4.6
+    # via pytest
+exceptiongroup==1.2.2
+    # via pytest
+iniconfig==2.0.0
+    # via pytest
 keyboard==0.13.5
 linflex==0.2.0
     # via charz
+packaging==24.2
+    # via pytest
+pluggy==1.5.0
+    # via pytest
+pytest==8.3.4
+tomli==2.2.1
+    # via pytest
 typing-extensions==4.12.2
     # via charz
     # via linflex
