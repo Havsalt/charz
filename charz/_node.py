@@ -1,19 +1,18 @@
-from __future__ import annotations as _annotations
+from __future__ import annotations
 
-from itertools import count as _count
+from itertools import count
 from typing import (
     Any as _Any,
-    Callable as _Callable,  # noqa: F401
-    ClassVar as _ClassVar,
+    ClassVar,
 )
 
-from typing_extensions import Self as _Self
+from typing_extensions import Self
 
 
-class _NodeMixinSortMeta(type):
+class NodeMixinSortMeta(type):
     """Node metaclass for initializing `Node` subclass after other `mixin` classes"""
 
-    def __new__(cls, name: str, bases: tuple[type, ...], attrs: dict[str, object]):
+    def __new__(cls, name: str, bases: tuple[type, ...], attrs: dict[str, object]) -> type:
         def sorter(base: type) -> bool:
             return isinstance(base, Node)
 
@@ -22,10 +21,10 @@ class _NodeMixinSortMeta(type):
         return new_type
 
 
-class Node(metaclass=_NodeMixinSortMeta):
-    _queued_nodes: _ClassVar[list[Node]] = []
-    _uid_counter: _ClassVar[_count] = _count(0, 1)
-    node_instances: _ClassVar[dict[int, Node]] = {}
+class Node(metaclass=NodeMixinSortMeta):
+    _queued_nodes: ClassVar[list[Node]] = []
+    _uid_counter: ClassVar[count] = count(0, 1)
+    node_instances: ClassVar[dict[int, Node]] = {}
 
     def __new__(cls, *_args: _Any, **_kwargs: _Any):
         # NOTE: additional args and kwargs are ignored!
@@ -42,11 +41,11 @@ class Node(metaclass=_NodeMixinSortMeta):
         if parent is not None:
             self.parent = parent
 
-    def with_parent(self, parent: Node | None, /) -> _Self:
+    def with_parent(self, parent: Node | None, /) -> Self:
         self.parent = parent
         return self
 
-    def with_process_priority(self, process_priority: int, /) -> _Self:
+    def with_process_priority(self, process_priority: int, /) -> Self:
         self.process_priority = process_priority
         return self
 
