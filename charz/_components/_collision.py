@@ -26,8 +26,7 @@ class Collider:  # Component (mixin class)
         if (class_hitbox := getattr(instance, "hitbox", None)) is not None:
             instance.hitbox = deepcopy(class_hitbox)
         else:
-            # TODO: use Vec2.ZERO when `linflex` is updated
-            instance.hitbox = Hitbox(size=Vec2(0, 0))
+            instance.hitbox = Hitbox(size=Vec2.ZERO)
         return instance
 
     hitbox: Hitbox
