@@ -88,7 +88,7 @@ class Texture:  # Component (mixin class)
             Vec2i: texture size
         """
         if not self.texture:
-            return Vec2i(0, 0)  # TODO: use Vec2i.ZERO when `linflex` is updated
+            return Vec2i.ZERO
         return Vec2i(
             len(max(self.texture, key=len)),  # size of longest line
             len(self.texture),  # line count
