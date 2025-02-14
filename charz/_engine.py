@@ -12,7 +12,12 @@ from ._node import Node
 class EngineMixinSortMeta(type):
     """Engine metaclass for initializing `Engine` subclass after other `mixin` classes"""
 
-    def __new__(cls, name: str, bases: tuple[type, ...], attrs: dict[str, object]) -> type:
+    def __new__(
+        cls,
+        name: str,
+        bases: tuple[type, ...],
+        attrs: dict[str, object],
+    ) -> type:
         def sorter(base: type) -> bool:
             return isinstance(base, Engine)
 

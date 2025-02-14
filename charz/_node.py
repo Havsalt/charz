@@ -12,7 +12,12 @@ from typing_extensions import Self
 class NodeMixinSortMeta(type):
     """Node metaclass for initializing `Node` subclass after other `mixin` classes"""
 
-    def __new__(cls, name: str, bases: tuple[type, ...], attrs: dict[str, object]) -> type:
+    def __new__(
+        cls,
+        name: str,
+        bases: tuple[type, ...],
+        attrs: dict[str, object],
+    ) -> type:
         def sorter(base: type) -> bool:
             return isinstance(base, Node)
 
