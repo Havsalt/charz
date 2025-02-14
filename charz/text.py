@@ -97,11 +97,30 @@ for _options in list(_r_conversions.values()):
 # fmt: on
 
 
-def fill(line: str, *, width: int, fill_char: str) -> str:
+def fill(line: str, *, width: int, fill_char: str = " ") -> str:
+    """Fills a single left-justified line with a string of length 1
+
+    Args:
+        line (str): line to be filled
+        width (int): maximum width of output string
+        fill_char (str, optional): string of length 1 to fill line with. Defaults to " ".
+
+    Returns:
+        str: line filled with fill character
+    """
     return line.ljust(width, fill_char)
 
 
 def fill_lines(lines: list[str], *, fill_char: str = " ") -> list[str]:
+    """Fill lines with fill character, based on longest line. Usefull for filling textures, so that
+
+    Args:
+        lines (list[str]): lines to be filled
+        fill_char (str, optional): string of length 1 to fill line with. Defaults to " ".
+
+    Returns:
+        list[str]: _description_
+    """
     longest = len(max(lines, key=len))
     return [fill(line, width=longest, fill_char=fill_char) for line in lines]
 
@@ -118,18 +137,6 @@ def flip_h(line: str, /) -> str:
     return "".join(_h_conversions.get(char, char) for char in reversed(line))
 
 
-def flip_v(line: str, /) -> str:
-    """Flips a single line vertically. Also works with a single character
-
-    Args:
-        line (list[str]): content to ble flipped
-
-    Returns:
-        list[str]: flipped line or character
-    """
-    return "".join(_v_conversions.get(char, char) for char in line)
-
-
 def flip_lines_h(lines: list[str], /) -> list[str]:
     """Flips lines horizontally. Usefull for flipping textures
 
@@ -140,6 +147,18 @@ def flip_lines_h(lines: list[str], /) -> list[str]:
         list[str]: flipped content
     """
     return [flip_h(line) for line in lines]
+
+
+def flip_v(line: str, /) -> str:
+    """Flips a single line vertically. Also works with a single character
+
+    Args:
+        line (list[str]): content to ble flipped
+
+    Returns:
+        list[str]: flipped line or character
+    """
+    return "".join(_v_conversions.get(char, char) for char in line)
 
 
 def flip_lines_v(lines: list[str], /) -> list[str]:
