@@ -98,6 +98,7 @@ This project is heavily inspired by the `Godot Game Engine`.
     - `fill_lines`
     - `flip_lines_h`
     - `flip_lines_v`
+    - `rotate`
   - `colex`    (Dependency)
   - `keyboard` (Optional dependency)
 - Framework
