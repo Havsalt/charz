@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from types import SimpleNamespace
-from functools import wraps
+from functools import partial, wraps
 from pathlib import Path
 from copy import deepcopy
 from typing import Any, ClassVar
@@ -20,9 +20,12 @@ class Animation:
         self,
         animation_path: Path | str,
         /,
+        *,
         reverse: bool = False,
         flip_h: bool = False,
         flip_v: bool = False,
+        fill: bool = True,
+        fill_char: str = " ",
     ) -> None:
         # fmt: off
         frame_directory = (
@@ -32,12 +35,14 @@ class Animation:
         )
         # fmt: on
         generator = map(load_texture, frame_directory)
-        if reverse:
-            generator = reversed(list(generator))
+        if fill:  # NOTE: this fill logic has to be before flipping
+            generator = map(partial(text.fill_lines, fill_char=fill_char), generator)
         if flip_h:
             generator = map(text.flip_lines_h, generator)
         if flip_v:
             generator = map(text.flip_lines_v, generator)
+        if reverse:
+            generator = reversed(list(generator))
         self.frames = list(generator)
 
     def __repr__(self) -> str:
