@@ -18,6 +18,12 @@ Includes
   - `Vec3`
 - Modules
   - `text`
+    - `fill`
+    - `flip_h`
+    - `flip_v`
+    - `fill_lines`
+    - `flip_lines_h`
+    - `flip_lines_v`
   - `colex`    (dependency)
   - `keyboard` (optional dependency)
 - Framework
