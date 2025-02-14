@@ -1,10 +1,7 @@
 from __future__ import annotations
 
 from itertools import count
-from typing import (
-    Any as _Any,
-    ClassVar,
-)
+from typing import Any, ClassVar
 
 from typing_extensions import Self
 
@@ -31,7 +28,7 @@ class Node(metaclass=NodeMixinSortMeta):
     _uid_counter: ClassVar[count] = count(0, 1)
     node_instances: ClassVar[dict[int, Node]] = {}
 
-    def __new__(cls, *_args: _Any, **_kwargs: _Any):
+    def __new__(cls, *_args: Any, **_kwargs: Any):
         # NOTE: additional args and kwargs are ignored!
         instance = super().__new__(cls)
         instance.uid = next(Node._uid_counter)
