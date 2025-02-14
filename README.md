@@ -124,6 +124,10 @@ Tests for `charz` are currently manual and only somewhat implemented. Until I fi
 
 **NOTE**: Tests cannot be run from `current working directory` at the moment! I'll just monkeypatch it to run on my machine *-famose last words*.
 
+## Versioning
+
+This project will use `semantic versioning` after reaching release `0.1.0`. Consider any patch bump before that to be a breaking change. It is adviced to pin `charz` using `==` in your `pyporject.toml`, until release `0.1.0`.
+
 ## License
 
 MIT
