@@ -16,6 +16,7 @@ from typing import (
     Protocol as _Protocol,
     ClassVar as _ClassVar,
     Any as _Any,
+    runtime_checkable as _runtime_checkable,
     TYPE_CHECKING as _TYPE_CHECKING,
 )
 
@@ -29,22 +30,24 @@ from typing_extensions import Self as _Self
 if _TYPE_CHECKING:
     from ._clock import DeltaClock as _DeltaClock
     from ._screen import Screen as _Screen
-    from ._components._collision import Hitbox
-    from ._components._animation import (
+    from ._animation import (
         Animation as _Animation,
         AnimationSet as _AnimationMapping,
     )
+    from ._components._collision import Hitbox
 
 T = _TypeVar("T")
 _T_contra = _TypeVar("_T_contra", contravariant=True)
 
 
+@_runtime_checkable
 class FileLike(_Protocol[_T_contra]):
     def write(self, stream: _T_contra, /) -> object: ...
     def flush(self, /) -> None: ...
     def fileno(self, /) -> int: ...
 
 
+@_runtime_checkable
 class Engine(_Protocol):
     fps: float
     clock: _DeltaClock
@@ -52,6 +55,7 @@ class Engine(_Protocol):
     is_running: bool
 
 
+@_runtime_checkable
 class Node(_Protocol):
     node_instances: _ClassVar[dict[int, Node]]
     uid: int
@@ -97,6 +101,7 @@ class TransformComponent(_Protocol):
     def global_rotation(self, rotation: float) -> None: ...
 
 
+@_runtime_checkable
 class TransformNode(
     TransformComponent,
     Node,
@@ -124,6 +129,7 @@ class TextureComponent(_Protocol):
     def texture_size(self) -> _Vec2i: ...
 
 
+@_runtime_checkable
 class TextureNode(
     TextureComponent,
     TransformComponent,
@@ -143,6 +149,7 @@ class ColorComponent(_Protocol):
     ) -> _Self: ...
 
 
+@_runtime_checkable
 class ColorNode(
     ColorComponent,
     TextureComponent,
@@ -152,6 +159,7 @@ class ColorNode(
 ): ...
 
 
+@_runtime_checkable
 class Renderable(
     TextureComponent,
     TransformComponent,
@@ -182,6 +190,7 @@ class AnimatedComponent(_Protocol):
     def _wrapped_update_animated(self, _delta: float) -> None: ...
 
 
+@_runtime_checkable
 class AnimatedNode(  # possible base: `ColorComponent`
     AnimatedComponent,
     TextureComponent,
@@ -203,6 +212,7 @@ class ColliderComponent(_Protocol):
     def is_colliding(self) -> bool: ...
 
 
+@_runtime_checkable
 class ColliderNode(
     ColliderComponent,
     TransformComponent,
