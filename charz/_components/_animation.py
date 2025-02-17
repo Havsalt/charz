@@ -13,12 +13,26 @@ from .. import text
 from .._annotations import T, AnimatedNode
 
 
-class Animation:
+class AnimationClassProperties(type):
+    _folder_path: Path = Path.cwd()
+
+    @property
+    def folder_path(self) -> Path:
+        return self._folder_path
+
+    @folder_path.setter
+    def folder_path(self, new_path: Path | str) -> None:
+        self._folder_path = Path(new_path)
+        if not self._folder_path.exists():
+            raise ValueError("invalid animation folder path")
+
+
+class Animation(metaclass=AnimationClassProperties):
     __slots__ = ("frames",)
 
     def __init__(
         self,
-        folder_path: Path | str,
+        animation_path: Path | str,
         /,
         *,
         reverse: bool = False,
@@ -38,8 +52,8 @@ class Animation:
         """
         # fmt: off
         frame_directory = (
-            Path.cwd()
-            .joinpath(str(folder_path))
+            Animation.folder_path
+            .joinpath(str(animation_path))
             .iterdir()
         )
         # fmt: on
