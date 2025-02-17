@@ -25,7 +25,7 @@ class CameraClassAttributes(NodeMixinSorter):
         if not hasattr(self, "_current"):
             self._current = Camera()  # Create default camera if none exists
         return self._current
-    
+
     @current.setter
     def current(self, new: Camera | None) -> None:
         if new is None:
