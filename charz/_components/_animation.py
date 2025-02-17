@@ -16,6 +16,11 @@ from .._annotations import T, AnimatedNode
 class AnimationClassProperties(type):
     _folder_path: Path = Path.cwd()
 
+    # NOTE: This has to be set before importing local files in your project:
+    # from charz importing ..., Animation, ...
+    # Animation.folder_path = "src/animations"
+    # from .local_file importing ...
+
     @property
     def folder_path(self) -> Path:
         return self._folder_path
