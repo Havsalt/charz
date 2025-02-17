@@ -74,6 +74,7 @@ __all__ = [
     "ColorValue",
     "Label",
     "Sprite",
+    "Animated",
     "AnimatedSprite",
     "Animation",
     "AnimationSet",
@@ -82,18 +83,21 @@ __all__ = [
     "text",
 ]
 
+# re-exports
 from linflex import lerp, sign, clamp, Vec2, Vec2i, Vec3
 from colex import ColorValue
 
+# exports
 from ._engine import Engine
 from ._clock import Clock, DeltaClock
 from ._screen import Screen
 from ._camera import Camera
 from ._node import Node
+from ._animation import Animation, AnimationSet
 from ._components._transform import Transform
 from ._components._texture import load_texture, Texture
 from ._components._color import Color
-from ._components._animation import Animation, AnimationSet
+from ._components._animated import Animated
 from ._components._collision import Collider, Hitbox
 from ._prefabs._node2d import Node2D
 from ._prefabs._label import Label
