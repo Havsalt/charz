@@ -5,7 +5,8 @@ from linflex import Vec2
 
 from .._node import Node
 
-from .._components._animation import Animated, AnimationSet
+from .._animation import AnimationSet
+from .._components._animated import Animated
 from ._sprite import Sprite
 
 
