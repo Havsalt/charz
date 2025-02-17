@@ -26,7 +26,7 @@ class Screen:
         *,
         auto_resize: bool = False,
         transparancy_fill: str = " ",
-        background_color: ColorValue | None = None,
+        default_color: ColorValue | None = None,
         margin_right: int = 1,
         margin_bottom: int = 1,
     ) -> None:
@@ -37,7 +37,8 @@ class Screen:
         self._auto_resize = auto_resize
         self._resize_if_necessary()
         self.transparancy_fill = transparancy_fill
-        self.background_color = background_color
+        # NOTE: `.default_color` will not override `Texture`s with `.color = None`
+        self.default_color = default_color
         self.buffer = []
         self.clear()  # for populating the list with an empty screen
 
@@ -78,7 +79,7 @@ class Screen:
     def clear(self) -> None:
         self.buffer = [
             # (char, color) group
-            [(self.transparancy_fill, self.background_color) for _ in range(self.width)]
+            [(self.transparancy_fill, self.default_color) for _ in range(self.width)]
             for _ in range(self.height)
         ]
 
