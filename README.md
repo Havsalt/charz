@@ -115,7 +115,7 @@ This project is heavily inspired by the `Godot Game Engine`.
   - `Transform`
   - `Texture`
   - `Color`
-  - `Animation`
+  - `Animated`
   - `Collider`
 - Nodes
   - `Camera`
