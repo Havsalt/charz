@@ -28,7 +28,7 @@ class Node(metaclass=NodeMixinSorter):
     _uid_counter: ClassVar[count] = count(0, 1)
     node_instances: ClassVar[dict[int, Node]] = {}
 
-    def __new__(cls, *_args: Any, **_kwargs: Any):
+    def __new__(cls, *_args: Any, **_kwargs: Any) -> Self:
         # NOTE: additional args and kwargs are ignored!
         instance = super().__new__(cls)
         instance.uid = next(Node._uid_counter)
