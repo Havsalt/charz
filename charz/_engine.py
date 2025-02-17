@@ -9,7 +9,7 @@ from ._screen import Screen
 from ._node import Node
 
 
-class EngineMixinSortMeta(type):
+class EngineMixinSorter(type):
     """Engine metaclass for initializing `Engine` subclass after other `mixin` classes"""
 
     def __new__(
@@ -26,7 +26,7 @@ class EngineMixinSortMeta(type):
         return new_type
 
 
-class Engine(metaclass=EngineMixinSortMeta):
+class Engine(metaclass=EngineMixinSorter):
     fps: float | None = 16
     clock: Clock = DeltaClock()
     screen: Screen = Screen()

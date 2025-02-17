@@ -6,7 +6,7 @@ from typing import Any, ClassVar
 from typing_extensions import Self
 
 
-class NodeMixinSortMeta(type):
+class NodeMixinSorter(type):
     """Node metaclass for initializing `Node` subclass after other `mixin` classes"""
 
     def __new__(
@@ -23,7 +23,7 @@ class NodeMixinSortMeta(type):
         return new_type
 
 
-class Node(metaclass=NodeMixinSortMeta):
+class Node(metaclass=NodeMixinSorter):
     _queued_nodes: ClassVar[list[Node]] = []
     _uid_counter: ClassVar[count] = count(0, 1)
     node_instances: ClassVar[dict[int, Node]] = {}
