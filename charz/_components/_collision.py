@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from copy import deepcopy
-from typing import ClassVar, Any, cast
+from typing import ClassVar, Any
 
 from linflex import Vec2
 from typing_extensions import Self
@@ -36,7 +36,7 @@ class Collider:  # Component (mixin class)
         return self
 
     def get_colliders(self) -> list[Collider]:
-        self = cast(ColliderNode, self)
+        assert isinstance(self, ColliderNode)
         colliders: list[Collider] = []
         for node in Transform.transform_instances.values():
             if self is node:
@@ -48,7 +48,7 @@ class Collider:  # Component (mixin class)
 
     def is_colliding_with(self, colldier_node: ColliderNode, /) -> bool:
         # TODO: consider `.global_rotation`
-        self = cast(ColliderNode, self)
+        assert isinstance(self, ColliderNode)
         start = self.global_position
         end = self.global_position + self.hitbox.size
         if self.hitbox.centered:
