@@ -140,14 +140,16 @@ def flip_v(line: str, /) -> str:
 
 
 def fill_lines(lines: list[str], *, fill_char: str = " ") -> list[str]:
-    """Fill lines with fill character, based on longest line. Usefull for filling textures, so that
+    """Fill lines with fill character, based on longest line.
+    Usefull for filling textures, so that it gets a nice rectangular shape.
+    Good for centering and flipping textures.
 
     Args:
         lines (list[str]): lines to be filled
         fill_char (str, optional): string of length 1 to fill line with. Defaults to " ".
 
     Returns:
-        list[str]: _description_
+        list[str]: rectangular filled lines
     """
     longest = len(max(lines, key=len))
     return [fill(line, width=longest, fill_char=fill_char) for line in lines]
