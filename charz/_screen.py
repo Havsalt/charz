@@ -164,7 +164,7 @@ class Screen:
         for lino, row in enumerate(self.buffer[:actual_height], start=1):
             for char, color in row[:actual_width]:
                 if color is not None:
-                    out += color + char
+                    out += RESET + color + char
                 else:
                     out += RESET + char
             if lino != len(self.buffer):  # not at end
