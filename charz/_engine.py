@@ -43,16 +43,17 @@ class Engine(metaclass=EngineMixinSorter):
     def update(self, delta: float) -> None: ...
 
     def run(self) -> Self:
-        # check if console/stream should be cleared
-        if self.clear_console:
-            clear_code = "\x1b[2J\x1b[H"
-            self.screen.stream.write(clear_code)
-            self.screen.stream.flush()
-        # hide cursor
-        if self.hide_cursor:
-            hide_code = "\x1b[?25l"
-            self.screen.stream.write(hide_code)
-            self.screen.stream.flush()
+        if self.screen.is_using_ansi():
+            # check if console/stream should be cleared
+            if self.clear_console:
+                clear_code = "\x1b[2J\x1b[H"
+                self.screen.stream.write(clear_code)
+                self.screen.stream.flush()
+            # hide cursor
+            if self.hide_cursor:
+                hide_code = "\x1b[?25l"
+                self.screen.stream.write(hide_code)
+                self.screen.stream.flush()
 
         delta = self.clock.delta()  # initial delta
         self.is_running = True
