@@ -204,8 +204,6 @@ class Screen(metaclass=ScreenClassProperties):
         # TODO: implement render with rotation
 
     def show(self) -> None:
-        # TODO: ensure a screen with static width and height does not
-        #       cause the ANSI codes to jitter
         actual_size = self.get_actual_size()
         # construct frame
         out = ""
@@ -219,7 +217,7 @@ class Screen(metaclass=ScreenClassProperties):
                         out += RESET + color + char
                 else:
                     out += char
-            if lino != len(self.buffer):  # not at end
+            if lino != actual_size.y:  # not at end
                 out += "\n"
         if is_using_ansi:
             out += RESET
