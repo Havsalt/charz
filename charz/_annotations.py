@@ -34,7 +34,7 @@ if _TYPE_CHECKING:
         Animation as _Animation,
         AnimationSet as _AnimationMapping,
     )
-    from ._components._collision import Hitbox
+    from ._components._collision import Hitbox as _Hitbox
 
 T = _TypeVar("T")
 _T_contra = _TypeVar("_T_contra", contravariant=True)
@@ -204,9 +204,9 @@ class AnimatedNode(  # possible base: `ColorComponent`
 
 class ColliderComponent(_Protocol):
     collider_instances: _ClassVar[dict[int, ColliderNode]]
-    hitbox: Hitbox
+    hitbox: _Hitbox
 
-    def with_hitbox(self, hitbox: Hitbox, /) -> _Self: ...
+    def with_hitbox(self, hitbox: _Hitbox, /) -> _Self: ...
     def get_colliders(self) -> list[ColliderNode]: ...
     def is_colliding_with(self, colldier_node: ColliderNode, /) -> bool: ...
     def is_colliding(self) -> bool: ...
