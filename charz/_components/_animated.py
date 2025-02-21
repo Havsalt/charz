@@ -43,7 +43,8 @@ class Animated:  # Component (mixin class)
     _frame_index: int = 0
 
     def with_animations(self, /, **animations: Animation) -> Self:
-        self.animations.update(animations)
+        for animation_name, animation in animations.items():
+            setattr(self.animations, animation_name, animation)
         return self
 
     def with_animation(
@@ -64,7 +65,7 @@ class Animated:  # Component (mixin class)
         setattr(self.animations, animation_name, animation)
 
     def play(self, animation_name: str, /) -> None:
-        self.current_animation = self.animations.get(animation_name, None)
+        self.current_animation = getattr(self.animations, animation_name, None)
         self.is_playing = True
         self._frame_index = 0
         # the actual logic of playing the animation is handled in `.update(...)`
