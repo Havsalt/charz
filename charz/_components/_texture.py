@@ -20,7 +20,7 @@ def load_texture(
     fill: bool = True,
     fill_char: str = " ",
 ) -> list[str]:
-    """Loads texture given a file path
+    """Loads texture from file
 
     Args:
         file_path (Path | str): path to file.
