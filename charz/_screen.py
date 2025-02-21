@@ -154,7 +154,7 @@ class Screen:
         # TODO: ensure a screen with static width and height does not
         #       cause the ANSI codes to jitter
         size = os.get_terminal_size()
-        actual_width = min(self.width, size.columns - self.margin_right)  # -1 is margin
+        actual_width = min(self.width, size.columns - self.margin_right)
         actual_height = min(self.height, size.lines - self.margin_bottom)
         out = ""
         # construct frame
