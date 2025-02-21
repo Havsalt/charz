@@ -1,5 +1,6 @@
 .vscode/
 dev.py
+dev.txt
 dev[0-9].py
 beta-dist
 test-animations
