@@ -50,7 +50,7 @@ class Animation(metaclass=AnimationClassProperties):
             flip_v (bool, optional): flip frames vertically. Defaults to False.
             fill (bool, optional): fill in to make shape of frames rectangular. Defaults to True.
             fill_char (str, optional): string of length 1 to fill with. Defaults to " ".
-        """
+        """  # noqa: E501
         # fmt: off
         frame_directory = (
             Animation.folder_path

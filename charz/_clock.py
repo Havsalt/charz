@@ -22,11 +22,11 @@ class Clock:
 
         Returns:
             Literal[0]: always returns 0, since `Clock` class does not calculate delta time
-        """
+        """  # noqa: E501
         return 0
 
     def tick(self) -> None:
-        """Does nothing on its own. Exists for better coupling, when extending the `Clock` class"""
+        """Does nothing on its own. Exists for better coupling, when extending the `Clock` class"""  # noqa: E501
         return
 
 

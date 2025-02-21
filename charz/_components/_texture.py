@@ -116,7 +116,7 @@ class Texture:  # Component (mixin class)
 
         Returns:
             Vec2i: texture size
-        """
+        """  # noqa: E501
         if not self.texture:
             return Vec2i.ZERO
         return Vec2i(
