@@ -109,15 +109,7 @@ class AnimationSet(SimpleNamespace):
         super().__init__(**animations)
 
     def __getattribute__(self, name: str) -> Animation:
-        print(name)
         return super().__getattribute__(name)
 
     def __setattr__(self, name: str, value: Animation) -> None:
         return super().__setattr__(name, value)
-
-    def get(self, animation_name: str, default: T = None) -> Animation | T:
-        return getattr(self, animation_name, default)
-
-    def update(self, animations: dict[str, Animation]) -> None:
-        for name, animation in animations.items():
-            setattr(self, name, animation)
