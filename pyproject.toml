@@ -49,7 +49,6 @@ select = [
     "UP",     # pyupgrade
     "PL",     # pylint
     "D",      # pydocstyle
-    "C901",   # mccabe :: complex-structure
     "ISC",    # flake8-implicit-str-concat
     "ANN",    # flake8-annotations
     "FA",     # flake8-future-annotations
@@ -65,6 +64,8 @@ select = [
 ignore = [
     # Rules that I do not know why it gives of a warning
     "ISC001",  # single-line-implicit-string-concatenation
+    "PLR0912", # pylint refactor :: too many branches
+    "PLR0913", # pylint refactor :: too many parameters
     # Rules I ignore across projects
     "D200",    # pydocstyle :: fits-on-one-line
     "D203",    # pydocstyle :: one-blank-line-before-class
@@ -74,7 +75,6 @@ ignore = [
     "UP035",   # pyupgrade :: depricated-import :!: Using typing.Generator instead of collections.abc.Generator
     "N812"     # pep8-naming :: lowercase-imported-as-non-lowercase
 ]
-extend-per-file-ignores = { "__init__.py" = ["D205", "D212"], "_annotations.py" = ["D205", "D212"], "text.py" = ["D205", "D212"] }
-mccabe = { max-complexity = 7 }
+extend-per-file-ignores = { "__init__.py" = ["D205", "D212"], "_annotations.py" = ["D205", "D212"], "text.py" = ["D205", "D212"], "tests/**" = ["D"] }
 isort = { split-on-trailing-comma = false }
 flake8-annotations = { allow-star-arg-any = true }
