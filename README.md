@@ -11,7 +11,7 @@ pip install charz[all]
 ```
 
 ```bash
-rye install charz --features all
+rye add charz --features all
 ```
 
 If you don't need the `keyboard` package, simply use:
