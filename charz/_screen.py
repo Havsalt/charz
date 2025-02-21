@@ -93,6 +93,14 @@ class Screen(metaclass=ScreenClassProperties):
         self._resize_if_necessary()
 
     def is_using_ansi(self) -> bool:
+        """Returns whether its using ANSI escape and color codes
+
+        Checks first `.color_choice`. Returns `True` if set to `ALWAYS`,
+        and `False` if set to `NEVER`. If set to `AUTO`, check whether a `tty` is detected
+
+        Returns:
+            bool: ansi use
+        """
         if self.color_choice is ColorChoice.ALWAYS:
             return True
         try:
