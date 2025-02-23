@@ -112,7 +112,7 @@ class Screen(metaclass=ScreenClassProperties):
         if self.color_choice is ColorChoice.AUTO and is_a_tty:
             return True
         return False  # is not a tty or `ColorChoice.NEVER`
-    
+
     def get_actual_size(self) -> Vec2i:
         try:
             fileno = self.stream.fileno()
@@ -208,8 +208,8 @@ class Screen(metaclass=ScreenClassProperties):
         # construct frame
         out = ""
         is_using_ansi = self.is_using_ansi()
-        for lino, row in enumerate(self.buffer[:actual_size.y], start=1):
-            for char, color in row[:actual_size.x]:
+        for lino, row in enumerate(self.buffer[: actual_size.y], start=1):
+            for char, color in row[: actual_size.x]:
                 if is_using_ansi:
                     if color is None:
                         out += RESET + char
