@@ -33,13 +33,13 @@ class Sprite(Color, Texture, Transform, Node):
             self.position = position
         if rotation is not None:
             self.rotation = rotation
-        if top_level is not None:
+        if top_level:  # `bool` and `None` check combined
             self.top_level = top_level
         if texture is not None:
             self.texture = texture
-        if visible is not None:
+        if visible:  # `bool` and `None` check combined
             self.visible = visible
-        if centered is not None:
+        if centered:  # `bool` and `None` check combined
             self.centered = centered
         if z_index is not None:
             self.z_index = z_index
