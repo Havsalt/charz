@@ -3,10 +3,12 @@ from __future__ import annotations
 from types import SimpleNamespace
 from functools import partial
 from pathlib import Path
+from copy import deepcopy
+
+from typing_extensions import Self
 
 from ._components._texture import load_texture
 from . import text
-from ._annotations import T
 
 
 class AnimationClassProperties(type):
@@ -30,6 +32,40 @@ class AnimationClassProperties(type):
 
 class Animation(metaclass=AnimationClassProperties):
     __slots__ = ("frames",)
+
+    @classmethod
+    def from_frames(
+        cls,
+        frames: list[list[str]],
+        /,
+        *,
+        reverse: bool = False,
+        flip_h: bool = False,
+        flip_v: bool = False,
+        fill: bool = True,
+        fill_char: str = " ",
+        unique: bool = False,
+    ) -> Self:
+        instance = super().__new__(cls)  # omit calling `__init__`
+        # the negated parameters creates unique list instances,
+        # so only copy if they are not present and `unique` is true
+        if (
+            unique and not reverse and not flip_h and not flip_v and not fill
+        ):
+            generator = deepcopy(frames)
+        else:
+            generator = frames
+
+        if fill:  # NOTE: this fill logic has to be before flipping
+            generator = map(partial(text.fill_lines, fill_char=fill_char), generator)
+        if flip_h:
+            generator = map(text.flip_lines_h, generator)
+        if flip_v:
+            generator = map(text.flip_lines_v, generator)
+        if reverse:
+            generator = reversed(list(generator))
+        instance.frames = list(generator)
+        return instance
 
     def __init__(
         self,
