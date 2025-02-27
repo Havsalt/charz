@@ -33,7 +33,7 @@ from charz import *       # Module can be imported as namespace: "import charz"
 
 
 class Player(Sprite):
-    _SPEED: int = 4    # Defining local constant
+    SPEED: int = 4     # Defining constant
     color = colex.RED  # In reality just a string, like "\x1b[31m" for red
     centered = True    # Apply sprite centereing - Handled by `charz`
     texture = [        # A texture may be defined as a class variable, of type `list[str]`
@@ -44,13 +44,13 @@ class Player(Sprite):
 
     def update(self, delta: float) -> None:  # This method is called every frame
         if keyboard.is_pressed("a"):
-            self.position.y -= self._SPEED * delta
+            self.position.y -= self.SPEED * delta
         if keyboard.is_pressed("d"):
-            self.position.y += self._SPEED * delta
+            self.position.y += self.SPEED * delta
         if keyboard.is_pressed("s"):
-            self.position.y += self._SPEED * delta
+            self.position.y += self.SPEED * delta
         if keyboard.is_pressed("w"):
-            self.position.y -= self._SPEED * delta
+            self.position.y -= self.SPEED * delta
 
 
 class Game(Engine):
