@@ -16,7 +16,11 @@ requires-python = ">= 3.10"
 
 [project.optional-dependencies]
 keyboard = [ "keyboard>=0.13.5" ]
-all = [ "keyboard>=0.13.5" ]
+controller = [ "pygame~=2.1" ]
+all = [
+    "keyboard>=0.13.5",
+    "pygame~=2.1",
+]
 
 [build-system]
 requires = ["hatchling==1.26.3"]
@@ -27,6 +31,7 @@ managed = true
 dev-dependencies = [
     "keyboard>=0.13.5",
     "pytest>=8.3.4",
+    "pygame~=2.1",
 ]
 
 [tool.hatch.metadata]
