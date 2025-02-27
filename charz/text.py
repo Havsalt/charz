@@ -151,6 +151,8 @@ def fill_lines(lines: list[str], *, fill_char: str = " ") -> list[str]:
     Returns:
         list[str]: rectangular filled lines
     """
+    if not any(lines):  # allow empty lines
+        return []  # but still return unique list
     longest = len(max(lines, key=len))
     return [fill(line, width=longest, fill_char=fill_char) for line in lines]
 
