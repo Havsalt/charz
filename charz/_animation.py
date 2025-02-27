@@ -44,7 +44,7 @@ class Animation(metaclass=AnimationClassProperties):
         flip_v: bool = False,
         fill: bool = True,
         fill_char: str = " ",
-        unique: bool = False,
+        unique: bool = True,
     ) -> Self:
         instance = super().__new__(cls)  # omit calling `__init__`
         # the negated parameters creates unique list instances,
