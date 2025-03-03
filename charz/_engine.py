@@ -42,7 +42,7 @@ class Engine(metaclass=EngineMixinSorter):
 
     def update(self, delta: float) -> None: ...
 
-    def run(self) -> Self:
+    def run(self) -> None:
         if self.screen.is_using_ansi():
             # check if console/stream should be cleared
             if self.clear_console:
@@ -76,5 +76,3 @@ class Engine(metaclass=EngineMixinSorter):
                 hide_code = "\x1b[?25h"
                 self.screen.stream.write(hide_code)
                 self.screen.stream.flush()
-
-        return self  # this is for convenience if the desire to read the app state arise
