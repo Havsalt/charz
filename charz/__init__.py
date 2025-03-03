@@ -80,6 +80,7 @@ __all__ = [
     "AnimationSet",
     "Collider",
     "Hitbox",
+    "SimpleMovement",
     "text",
 ]
 
@@ -99,6 +100,7 @@ from ._components._texture import load_texture, Texture
 from ._components._color import Color
 from ._components._animated import Animated
 from ._components._collision import Collider, Hitbox
+from ._components._simple_movement import SimpleMovement
 from ._prefabs._node2d import Node2D
 from ._prefabs._label import Label
 from ._prefabs._sprite import Sprite
