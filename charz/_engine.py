@@ -55,7 +55,7 @@ class Engine(metaclass=EngineMixinSorter):
                 self.screen.stream.write(hide_code)
                 self.screen.stream.flush()
 
-        delta = self.clock.delta()  # initial delta
+        delta = self.clock.delta  # initial delta
         self.is_running = True
 
         while self.is_running:  # main loop
@@ -68,7 +68,7 @@ class Engine(metaclass=EngineMixinSorter):
                 node.update(delta)
             self.screen.refresh()
             self.clock.tick()
-            delta = self.clock.delta()
+            delta = self.clock.delta
 
         # show cursor if hidden
         if self.hide_cursor:
