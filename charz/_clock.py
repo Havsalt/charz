@@ -17,6 +17,7 @@ class Clock:
     def tps(self, value: float | None) -> None:
         self._tps = value
 
+    @property
     def delta(self) -> Literal[0]:
         """Returns the delta time between ticks
 
@@ -48,6 +49,7 @@ class DeltaClock(Clock):
         if value is not None:
             self._target_delta = 1.0 / value
 
+    @property
     def delta(self) -> float:
         return self._delta
 
