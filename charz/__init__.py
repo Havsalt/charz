@@ -116,13 +116,6 @@ from . import text
 # provide correct completion help - even if the required feature is not active
 if _TYPE_CHECKING:
     from ._components._simple_movement import SimpleMovement
-else:
-    # import `TYPE_CHECKING` here because the IDE can't handle the underscore
-    from typing import TYPE_CHECKING  # this import won't be actually available at runtime
-
-    if not TYPE_CHECKING:
-        SimpleMovement = NotImplemented
-    del TYPE_CHECKING  # delete it to error on import
 
 # lazy exports
 _lazy_objects: tuple[_Literal["SimpleMovement"]] = ("SimpleMovement",)
