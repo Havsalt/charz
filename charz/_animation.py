@@ -50,9 +50,7 @@ class Animation(metaclass=AnimationClassProperties):
         # the negated parameters creates unique list instances,
         # so only copy if they are not present and `unique` is true,
         # else it would be copying an extra time for no reason
-        if (
-            unique and not reverse and not flip_h and not flip_v and not fill
-        ):
+        if unique and not reverse and not flip_h and not flip_v and not fill:
             generator = deepcopy(frames)
         else:
             generator = frames
