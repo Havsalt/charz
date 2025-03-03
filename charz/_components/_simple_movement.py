@@ -1,22 +1,35 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+__all__ = ("SimpleMovement",)
 
-try:
-    import keyboard
-except ModuleNotFoundError:
-    raise ModuleNotFoundError(
-        "module 'keyboard' was not found,"
-        " use 'charz' with 'keyboard' or 'all' feature flag,"
-        " like depending on 'charz[keyboard]' in 'pyproject.toml'"
-    )
+from typing import TYPE_CHECKING, NoReturn
+
 from linflex import Vec2
 
-from .._node import Node
 from ._transform import Transform
 
 if TYPE_CHECKING:
     import keyboard
+else:
+    keyboard = None
+
+
+def __getattr__(name: str) -> type[SimpleMovement] | NoReturn:
+    try:
+        global keyboard
+        if keyboard is None:
+            import keyboard as _keyboard
+
+            keyboard = _keyboard
+    except ModuleNotFoundError:
+        raise ModuleNotFoundError(
+            "module 'keyboard' was not found,"
+            " use 'charz' with 'keyboard' or 'all' feature flag,"
+            " like depending on 'charz[keyboard]' in 'pyproject.toml'"
+        )
+    if name not in __all__:
+        raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+    return SimpleMovement
 
 
 class SimpleMovement:  # Component (mixin class)
