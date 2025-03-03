@@ -6,6 +6,9 @@ beta-dist
 test-animations
 ecs_dev.py
 
+# temp
+_controller_support.py
+
 # python generated files
 __pycache__/
 *.py[oc]
