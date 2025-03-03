@@ -70,10 +70,11 @@ class Engine(metaclass=EngineMixinSorter):
             self.clock.tick()
             delta = self.clock.delta
 
-        # show cursor if hidden
-        if self.hide_cursor:
-            hide_code = "\x1b[?25h"
-            self.screen.stream.write(hide_code)
-            self.screen.stream.flush()
+        if self.screen.is_using_ansi():
+            # show cursor if hidden
+            if self.hide_cursor:
+                hide_code = "\x1b[?25h"
+                self.screen.stream.write(hide_code)
+                self.screen.stream.flush()
 
         return self  # this is for convenience if the desire to read the app state arise
