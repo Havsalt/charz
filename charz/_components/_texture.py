@@ -82,7 +82,7 @@ class Texture:  # Component (mixin class)
         return self
 
     def with_transparency(self, char: str | None, /) -> Self:
-        self.transparancy = char
+        self.transparency = char
         return self
 
     def hide(self) -> None:
