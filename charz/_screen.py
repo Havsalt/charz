@@ -36,7 +36,7 @@ class Screen(metaclass=ScreenClassProperties):
         height: int = 12,
         *,
         auto_resize: bool = False,
-        transparancy_fill: str = " ",
+        transparency_fill: str = " ",
         color_choice: ColorChoice = ColorChoice.AUTO,
         stream: FileLike[str] | None = None,
         margin_right: int = 1,
@@ -52,7 +52,7 @@ class Screen(metaclass=ScreenClassProperties):
         self.margin_bottom = margin_bottom
         self._auto_resize = auto_resize
         self._resize_if_necessary()
-        self.transparancy_fill = transparancy_fill
+        self.transparency_fill = transparency_fill
         self.buffer = []
         self.clear()  # for populating the list with an empty screen
 
@@ -131,7 +131,7 @@ class Screen(metaclass=ScreenClassProperties):
     def clear(self) -> None:
         self.buffer = [
             # (char, color) group
-            [(self.transparancy_fill, None) for _ in range(self.width)]
+            [(self.transparency_fill, None) for _ in range(self.width)]
             for _ in range(self.height)
         ]
 
