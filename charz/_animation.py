@@ -27,7 +27,7 @@ class AnimationClassProperties(type):
     def folder_path(cls, new_path: Path | str) -> None:
         cls._folder_path = Path(new_path)
         if not cls._folder_path.exists():
-            raise ValueError("invalid animation folder path")
+            raise ValueError("invalid animation root folder path")
 
 
 class Animation(metaclass=AnimationClassProperties):
