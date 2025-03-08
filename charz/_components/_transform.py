@@ -111,7 +111,11 @@ class Transform:  # Component (mixin class)
         global_position = self.position.copy()
         parent = self.parent  # type: ignore
         while parent is not None and isinstance(parent, Transform):
-            global_position = parent.position + global_position.rotated(parent.rotation)
+            # check for rotation, since cos(0) and sin(0) produces *approximate* values
+            if parent.rotation:
+                global_position = parent.position + global_position.rotated(parent.rotation)
+            else:
+                global_position += parent.position 
             if parent.top_level:
                 return global_position
             parent = parent.parent  # type: ignore
