@@ -16,15 +16,14 @@ class Node2D(Transform, Node):
         rotation: float | None = None,
         top_level: bool | None = None,
     ) -> None:
-        if parent is not None:
-            self.parent = parent
+        super().__init__(parent=parent)
         if process_priority is not None:
             self.process_priority = process_priority
         if position is not None:
             self.position = position
         if rotation is not None:
             self.rotation = rotation
-        if top_level is not None:
+        if top_level:  # `bool` and `None` check combined
             self.top_level = top_level
 
     def __str__(self) -> str:

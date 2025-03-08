@@ -4,12 +4,12 @@ from colex import ColorValue
 from linflex import Vec2
 
 from .._node import Node
-from .._components._transform import Transform
 from .._components._texture import Texture
 from .._components._color import Color
+from ._node2d import Node2D
 
 
-class Sprite(Color, Texture, Transform, Node):
+class Sprite(Color, Texture, Node2D):
     def __init__(
         self,
         parent: Node | None = None,
@@ -25,16 +25,13 @@ class Sprite(Color, Texture, Transform, Node):
         transparency: str | None = None,
         color: ColorValue | None = None,
     ) -> None:
-        if parent is not None:
-            self.parent = parent
-        if process_priority is not None:
-            self.process_priority = process_priority
-        if position is not None:
-            self.position = position
-        if rotation is not None:
-            self.rotation = rotation
-        if top_level:  # `bool` and `None` check combined
-            self.top_level = top_level
+        super().__init__(
+            parent=parent,
+            process_priority=process_priority,
+            position=position,
+            rotation=rotation,
+            top_level=top_level,
+        )
         if texture is not None:
             self.texture = texture
         if visible:  # `bool` and `None` check combined

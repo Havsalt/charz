@@ -5,12 +5,10 @@ from linflex import Vec2
 from typing_extensions import Self
 
 from .._node import Node
-from .._components._transform import Transform
-from .._components._texture import Texture
-from .._components._color import Color
+from ._sprite import Sprite
 
 
-class Label(Color, Texture, Transform, Node):
+class Label(Sprite):
     newline: str = "\n"
     tab_size: int = 4
     tab_char: str = "\t"
@@ -36,28 +34,19 @@ class Label(Color, Texture, Transform, Node):
         tab_char: str | None = None,
         tab_fill: str | None = None,
     ) -> None:
-        if parent is not None:
-            self.parent = parent
-        if process_priority is not None:
-            self.process_priority = process_priority
-        if position is not None:
-            self.position = position
-        if rotation is not None:
-            self.rotation = rotation
-        if top_level is not None:
-            self.top_level = top_level
-        if texture is not None:
-            self.texture = texture
-        if visible is not None:
-            self.visible = visible
-        if centered is not None:
-            self.centered = centered
-        if z_index is not None:
-            self.z_index = z_index
-        if transparency is not None:
-            self.transparency = transparency
-        if color is not None:
-            self.color = color
+        super().__init__(
+            parent=parent,
+            process_priority=process_priority,
+            position=position,
+            rotation=rotation,
+            top_level=top_level,
+            texture=texture,
+            visible=visible,
+            centered=centered,
+            z_index=z_index,
+            transparency=transparency,
+            color=color,
+        )
         if text is not None:
             self.text = text
         if newline is not None:
