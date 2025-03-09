@@ -64,9 +64,7 @@ class Transform:  # Component (mixin class)
                 "or keyword arguments 'x' and/or 'y', not all three"
             )
         if global_position is not None:
-            self.global_position = (
-                global_position.copy()
-            )  # NOTE: prevents unintended mutation
+            self.global_position = global_position
         if x is not None:
             self.set_global_x(x)
         if y is not None:
@@ -113,9 +111,11 @@ class Transform:  # Component (mixin class)
         while parent is not None and isinstance(parent, Transform):
             # check for rotation, since cos(0) and sin(0) produces *approximate* values
             if parent.rotation:
-                global_position = parent.position + global_position.rotated(parent.rotation)
+                global_position = parent.position + global_position.rotated(
+                    parent.rotation
+                )
             else:
-                global_position += parent.position 
+                global_position += parent.position
             if parent.top_level:
                 return global_position
             parent = parent.parent  # type: ignore
