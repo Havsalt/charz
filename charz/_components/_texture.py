@@ -1,18 +1,20 @@
 from __future__ import annotations
 
-from pathlib import Path
 from copy import deepcopy
+from pathlib import Path
 from typing import Any, ClassVar
 
 from linflex import Vec2i
 from typing_extensions import Self
 
 from .. import text
+from .._asset_loader import AssetLoader
 from .._annotations import TextureNode
 
 
+# TODO: in future versions, add caching
 def load_texture(
-    file_path: Path | str,
+    texture_path: Path | str,
     /,
     *,
     flip_h: bool = False,
@@ -23,7 +25,7 @@ def load_texture(
     """Loads texture from file
 
     Args:
-        file_path (Path | str): path to file.
+        texture_path (Path | str): path to file with texture.
         flip_h (bool, optional): flip horizontally. Defaults to False.
         flip_v (bool, optional): flip vertically. Defaults to False.
         fill (bool, optional): fill in to make shape rectangular. Defaults to True.
@@ -32,7 +34,13 @@ def load_texture(
     Returns:
         list[str]: loaded texture
     """
-    file = Path.cwd().joinpath(str(file_path))
+    # fmt: off
+    file = (
+        Path.cwd()
+        .joinpath(AssetLoader.texture_root)
+        .joinpath(texture_path)
+    )
+    # fmt: on
     content = file.read_text(encoding="utf-8")
     texture = content.splitlines()
     if fill:  # NOTE: this fill logic has to be before flipping
