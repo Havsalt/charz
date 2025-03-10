@@ -59,6 +59,7 @@ class SimpleMovement:  # Component (mixin class)
             self.is_moving_down() - self.is_moving_up(),
         )
 
+    # TODO: add automatic wrapping of this function, so no conflict with user `.update`
     def update(self, delta: float) -> None:
         super().update(delta)  # type: ignore
         assert isinstance(self, Transform), "Missing `Transform` mixin"
