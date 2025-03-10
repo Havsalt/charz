@@ -8,6 +8,7 @@ from copy import deepcopy
 from typing_extensions import Self
 
 from ._components._texture import load_texture
+from ._asset_loader import AssetLoader
 from . import text
 
 
@@ -86,13 +87,12 @@ class Animation(metaclass=AnimationClassProperties):
             fill (bool, optional): fill in to make shape of frames rectangular. Defaults to True.
             fill_char (str, optional): string of length 1 to fill with. Defaults to " ".
         """  # noqa: E501
-        # fmt: off
         frame_directory = (
-            Animation.folder_path
+            Path.cwd()
+            .joinpath(AssetLoader.animation_root)
             .joinpath(animation_path)
             .iterdir()
         )
-        # fmt: on
         generator = map(load_texture, frame_directory)
         if fill:  # NOTE: this fill logic has to be before flipping
             generator = map(partial(text.fill_lines, fill_char=fill_char), generator)

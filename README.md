@@ -111,6 +111,8 @@ This project is heavily inspired by the `Godot Game Engine`.
   - `Hitbox`
 - Functions
   - `load_texture`
+- Singletons
+  - `AssetLoader`
 - Components
   - `Transform`
   - `Texture`

@@ -81,6 +81,7 @@ __all__ = [
     "Collider",
     "Hitbox",
     "SimpleMovement",
+    "AssetLoader",
     "text",
 ]
 
@@ -110,6 +111,7 @@ from ._prefabs._node2d import Node2D
 from ._prefabs._label import Label
 from ._prefabs._sprite import Sprite
 from ._prefabs._animated_sprite import AnimatedSprite
+from ._asset_loader import AssetLoader
 from . import text
 
 
@@ -127,6 +129,7 @@ _loaded_objects: dict[str, object] = {
 
 
 # lazy load to properly load optional dependencies along the standard exports
+# TODO: check if there is a step here that can be skipped
 def __getattr__(name: str) -> _Any:
     global _loaded_objects
     if name in _loaded_objects:
