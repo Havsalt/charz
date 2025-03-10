@@ -47,7 +47,7 @@ class Screen(metaclass=ScreenClassProperties):
         self.color_choice = color_choice
         if stream is not None:
             self.stream = stream
-            # NOTE: else, uses global `Screen.stream`
+            # NOTE: uses class variable `Screen.stream` by default
         self.margin_right = margin_right
         self.margin_bottom = margin_bottom
         self._auto_resize = auto_resize
@@ -73,7 +73,10 @@ class Screen(metaclass=ScreenClassProperties):
                 # do not resize if not proper `.stream.fileno()` is available,
                 # like `io.StringIO.fileno()`
                 return
-            terminal_size = os.get_terminal_size(fileno)
+            try:
+                terminal_size = os.get_terminal_size(fileno)
+            except (ValueError, OSError):
+                return
             self.width = terminal_size.columns - self.margin_right
             self.height = terminal_size.lines - self.margin_bottom
 
@@ -118,15 +121,13 @@ class Screen(metaclass=ScreenClassProperties):
             fileno = self.stream.fileno()
         except ValueError:
             return self.size.copy()
-        else:
-            try:
-                terminal_size = os.get_terminal_size(fileno)
-            except ValueError:
-                return self.size.copy()
-            else:
-                actual_width = min(self.width, terminal_size.columns - self.margin_right)
-                actual_height = min(self.height, terminal_size.lines - self.margin_bottom)
-                return Vec2i(actual_width, actual_height)
+        try:
+            terminal_size = os.get_terminal_size(fileno)
+        except (ValueError, OSError):
+            return self.size.copy()
+        actual_width = min(self.width, terminal_size.columns - self.margin_right)
+        actual_height = min(self.height, terminal_size.lines - self.margin_bottom)
+        return Vec2i(actual_width, actual_height)
 
     def clear(self) -> None:
         self.buffer = [
