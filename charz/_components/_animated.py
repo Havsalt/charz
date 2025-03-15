@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from functools import wraps
 from copy import deepcopy
-from typing import Any, ClassVar
+from enum import Enum, unique, auto
+from typing import Any
 
 from typing_extensions import Self
 
@@ -10,16 +11,15 @@ from .._animation import AnimationSet, Animation
 from .._annotations import AnimatedNode
 
 
-# TODO: add `.play_backwards` attribute or method
-# TODO: ensure last frame was rendered before `.is_playing = False`,
-#       because a loop checking if it should replay the animations will
-#       reset it back to the first frame before the last one is displayed
-class Animated:  # Component (mixin class)
-    animated_instances: ClassVar[dict[int, AnimatedNode]] = {}
+@unique
+class PlaybackDirection(Enum):
+    FORAWRD = auto()
+    BACKWARD = auto()
 
+
+class Animated:  # Component (mixin class)
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         instance = super().__new__(cls, *args, **kwargs)
-        Animated.animated_instances[instance.uid] = instance  # type: ignore
         if (class_animations := getattr(instance, "animations", None)) is not None:
             instance.animations = deepcopy(class_animations)
         else:
@@ -39,10 +39,14 @@ class Animated:  # Component (mixin class)
 
     animations: AnimationSet
     current_animation: Animation | None = None
+    repeat: bool = False
     is_playing: bool = False
     _frame_index: int = 0
+    _playback_direction: PlaybackDirection = PlaybackDirection.FORAWRD
+    _is_on_last_frame: bool = False
 
     def with_animations(self, /, **animations: Animation) -> Self:
+        # NOTE: additive
         for animation_name, animation in animations.items():
             setattr(self.animations, animation_name, animation)
         return self
@@ -53,7 +57,12 @@ class Animated:  # Component (mixin class)
         animation: Animation,
         /,
     ) -> Self:
+        # NOTE: additive
         self.add_animation(animation_name, animation)
+        return self
+
+    def with_repeat(self, state: bool = True, /) -> Self:
+        self.repeat = state
         return self
 
     def add_animation(
@@ -65,21 +74,58 @@ class Animated:  # Component (mixin class)
         setattr(self.animations, animation_name, animation)
 
     def play(self, animation_name: str, /) -> None:
-        self.current_animation = getattr(self.animations, animation_name, None)
+        if not hasattr(self.animations, animation_name):
+            raise ValueError(f"animation not found: '{animation_name}'")
+        self.current_animation = getattr(self.animations, animation_name)
         self.is_playing = True
+        self._is_on_last_frame = False
+        self._playback_direction = PlaybackDirection.FORAWRD
         self._frame_index = 0
-        # the actual logic of playing the animation is handled in `.update(...)`
+        # the actual logic of playing the animation
+        # is handled in `_wrapped_update_animated`
+
+    def play_backwards(self, animation_name: str, /) -> None:
+        if not hasattr(self.animations, animation_name):
+            raise ValueError(f"animation not found: '{animation_name}'")
+        self.current_animation = getattr(self.animations, animation_name)
+        assert isinstance(self.current_animation, Animation)
+        self.is_playing = True
+        self._is_on_last_frame = False
+        self._playback_direction = PlaybackDirection.BACKWARD
+        self._frame_index = len(self.current_animation.frames) - 1
+        # the actual logic of playing the animation
+        # is handled in `_wrapped_update_animated`
 
     def _wrapped_update_animated(self, _delta: float) -> None:
         if self.current_animation is None:
             self.is_playing = False
             return
+
         self.texture = self.current_animation.frames[self._frame_index]
         frame_count = len(self.current_animation.frames)
-        self._frame_index = min(self._frame_index + 1, frame_count - 1)
-        if self._frame_index == frame_count - 1:
-            self.is_playing = False
+        # using `min` and `max` instead of `clamp`
+        # for better linting (`int` instead of `int | float`)
+        index_change = 1 if self._playback_direction is PlaybackDirection.FORAWRD else -1
+        self._frame_index = min(
+            frame_count - 1,
+            max(
+                0,
+                self._frame_index + index_change,
+            ),
+        )
 
-    def _free(self) -> None:
-        del Animated.animated_instances[self.uid]  # type: ignore
-        super()._free()  # type: ignore
+        if self._is_on_last_frame:
+            if self.repeat:
+                self._frame_index = 0
+                self._is_on_last_frame = False
+            else:
+                self.is_playing = False
+
+        last_index = (
+            frame_count - 1
+            if self._playback_direction is PlaybackDirection.FORAWRD
+            else 0
+        )
+        # state variable to ensure last frame is shown
+        if self._frame_index == last_index:
+            self._is_on_last_frame = True
