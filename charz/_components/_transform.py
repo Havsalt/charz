@@ -108,7 +108,7 @@ class Transform:  # Component (mixin class)
             return self.position.copy()
         global_position = self.position.copy()
         parent = self.parent  # type: ignore
-        while parent is not None and isinstance(parent, Transform):
+        while isinstance(parent, Transform):
             # check for rotation, since cos(0) and sin(0) produces *approximate* values
             if parent.rotation:
                 global_position = parent.position + global_position.rotated(
@@ -138,7 +138,7 @@ class Transform:  # Component (mixin class)
             return self.rotation
         global_rotation = self.rotation
         parent = self.parent  # type: ignore
-        while parent is not None and isinstance(parent, Transform):
+        while isinstance(parent, Transform):
             global_rotation += parent.rotation
             if parent.top_level:
                 return global_rotation
