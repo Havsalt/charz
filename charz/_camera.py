@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from enum import Flag, auto
+from enum import Flag, unique, auto
 
 from linflex import Vec2
 from typing_extensions import Self
@@ -9,6 +9,7 @@ from ._node import Node, NodeMixinSorter
 from ._components._transform import Transform
 
 
+@unique
 class CameraMode(Flag):
     FIXED = auto()
     CENTERED = auto()
