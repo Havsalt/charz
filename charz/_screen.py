@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 import sys
-from enum import Enum, auto
+from enum import Enum, unique, auto
 
 from linflex import Vec2i
 from colex import ColorValue, RESET
@@ -13,6 +13,7 @@ from ._components._texture import Texture
 from ._annotations import FileLike, Renderable
 
 
+@unique
 class ColorChoice(Enum):
     AUTO = auto()
     ALWAYS = auto()
