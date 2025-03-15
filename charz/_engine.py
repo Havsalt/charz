@@ -70,9 +70,7 @@ class Engine(metaclass=EngineMixinSorter):
             self.clock.tick()
             delta = self.clock.delta
 
-        if self.screen.is_using_ansi():
-            # show cursor if hidden
-            if self.hide_cursor:
-                hide_code = "\x1b[?25h"
-                self.screen.stream.write(hide_code)
-                self.screen.stream.flush()
+        if self.hide_cursor and self.screen.is_using_ansi():
+            hide_code = "\x1b[?25h"
+            self.screen.stream.write(hide_code)
+            self.screen.stream.flush()
