@@ -77,11 +77,11 @@ class Texture:  # Component (mixin class)
         self.texture = texture_or_line
         return self
 
-    def as_visible(self, state: bool = True, /) -> Self:
+    def with_visibility(self, state: bool = True, /) -> Self:
         self.visible = state
         return self
 
-    def as_centered(self, state: bool = True, /) -> Self:
+    def with_centering(self, state: bool = True, /) -> Self:
         self.centered = state
         return self
 
