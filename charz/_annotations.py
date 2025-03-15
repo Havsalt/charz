@@ -15,7 +15,6 @@ from typing import (
     TypeVar as _TypeVar,
     Protocol as _Protocol,
     ClassVar as _ClassVar,
-    Any as _Any,
     runtime_checkable as _runtime_checkable,
     TYPE_CHECKING as _TYPE_CHECKING,
 )
@@ -69,7 +68,6 @@ class Node(_Protocol):
 
 
 class TransformComponent(_Protocol):
-    transform_instances: _ClassVar[dict[int, TransformNode]]
     position: _Vec2
     rotation: float
     top_level: bool
@@ -139,7 +137,6 @@ class TextureNode(
 
 
 class ColorComponent(_Protocol):
-    color_instances: _ClassVar[dict[int, ColorNode]]
     color: _ColorValue | None
 
     def with_color(
@@ -161,6 +158,7 @@ class ColorNode(
 
 @_runtime_checkable
 class Renderable(
+    # `ColorComponent`?
     TextureComponent,
     TransformComponent,
     Node,
@@ -169,12 +167,10 @@ class Renderable(
 
 
 class AnimatedComponent(_Protocol):
-    animated_instances: _ClassVar[dict[int, AnimatedNode]]
     animations: _AnimationMapping
     current_animation: _Animation | None = None
-    _frame_index: int = 0
 
-    def with_animations(self, animations: dict[str, _Any], /) -> _Self: ...
+    def with_animations(self, **animations: _Animation) -> _Self: ...
     def with_animation(
         self,
         animation_name: str,
@@ -187,11 +183,13 @@ class AnimatedComponent(_Protocol):
         animation: _Animation,
     ) -> None: ...
     def play(self, animation_name: str, /) -> None: ...
+    def play_backwards(self, animation_name: str, /) -> None: ...
     def _wrapped_update_animated(self, _delta: float) -> None: ...
 
 
 @_runtime_checkable
-class AnimatedNode(  # possible base: `ColorComponent`
+class AnimatedNode(
+    # `ColorComponent`?
     AnimatedComponent,
     TextureComponent,
     TransformComponent,
@@ -199,7 +197,6 @@ class AnimatedNode(  # possible base: `ColorComponent`
     _Protocol,
 ):
     ...
-    # possible field: `color` of type `_ColorValue`
 
 
 class ColliderComponent(_Protocol):
@@ -214,6 +211,8 @@ class ColliderComponent(_Protocol):
 
 @_runtime_checkable
 class ColliderNode(
+    # `ColorComponent`?
+    # `TextureComponent`?
     ColliderComponent,
     TransformComponent,
     Node,
