@@ -16,17 +16,17 @@ else:
 
 def __getattr__(name: str) -> type[SimpleMovement] | NoReturn:
     try:
-        global keyboard
+        global keyboard  # noqa: PLW0603
         if keyboard is None:
             import keyboard as _keyboard
 
             keyboard = _keyboard
-    except ModuleNotFoundError:
+    except ModuleNotFoundError as error:
         raise ModuleNotFoundError(
             "module 'keyboard' was not found,"
             " use 'charz' with 'keyboard' or 'all' feature flag,"
             " like depending on 'charz[keyboard]' in 'pyproject.toml'"
-        )
+        ) from error
     if name not in __all__:
         raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
     return SimpleMovement
