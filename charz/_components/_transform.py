@@ -1,20 +1,15 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from typing import Any, ClassVar
+from typing import Any
 
 from linflex import Vec2
 from typing_extensions import Self
 
-from .._annotations import TransformNode
-
 
 class Transform:  # Component (mixin class)
-    transform_instances: ClassVar[dict[int, TransformNode]] = {}
-
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         instance = super().__new__(cls, *args, **kwargs)
-        Transform.transform_instances[instance.uid] = instance  # type: ignore
         if (class_position := getattr(instance, "position", None)) is not None:
             instance.position = deepcopy(class_position)
         else:
@@ -150,7 +145,3 @@ class Transform:  # Component (mixin class)
         """Sets the node's global rotation (world space)"""
         diff = rotation - self.global_rotation
         self.rotation += diff
-
-    def _free(self) -> None:
-        del Transform.transform_instances[self.uid]  # type: ignore
-        super()._free()  # type: ignore
