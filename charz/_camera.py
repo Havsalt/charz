@@ -57,11 +57,11 @@ class Camera(Transform, Node, metaclass=CameraClassAttributes):
             self.position = position
         if rotation is not None:
             self.rotation = rotation
-        if top_level is not None:  # `bool` and `None` check combined
+        if top_level is not None:
             self.top_level = top_level
         if mode is not None:
             self.mode = mode
-        if current:  # `bool` and `None` check combined
+        if current is not None:
             self.set_current()
 
     def set_current(self) -> None:
