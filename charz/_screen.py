@@ -90,7 +90,8 @@ class Screen(metaclass=ScreenClassProperties):
         self._auto_resize = state
         self._resize_if_necessary()
 
-    def _resize_if_necessary(self) -> None:  # NOTE: does not mutate screen buffer
+    def _resize_if_necessary(self) -> None:
+        # NOTE: does not mutate screen buffer
         if self.auto_resize:
             try:
                 fileno = self.stream.fileno()
