@@ -34,9 +34,9 @@ class Sprite(Color, Texture, Node2D):
         )
         if texture is not None:
             self.texture = texture
-        if visible:  # `bool` and `None` check combined
+        if visible is not None:
             self.visible = visible
-        if centered:  # `bool` and `None` check combined
+        if centered is not None:
             self.centered = centered
         if z_index is not None:
             self.z_index = z_index
