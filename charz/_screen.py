@@ -94,7 +94,7 @@ class Screen(metaclass=ScreenClassProperties):
         if self.auto_resize:
             try:
                 fileno = self.stream.fileno()
-            except Exception:
+            except (ValueError, OSError):
                 # do not resize if not proper `.stream.fileno()` is available,
                 # like `io.StringIO.fileno()`
                 return
@@ -133,7 +133,7 @@ class Screen(metaclass=ScreenClassProperties):
             return True
         try:
             fileno = self.stream.fileno()
-        except (OSError, ValueError):
+        except (ValueError, OSError):
             is_a_tty = False
         else:
             try:
@@ -146,7 +146,7 @@ class Screen(metaclass=ScreenClassProperties):
     def get_actual_size(self) -> Vec2i:
         try:
             fileno = self.stream.fileno()
-        except ValueError:
+        except (ValueError, OSError):
             return self.size.copy()
         try:
             terminal_size = os.get_terminal_size(fileno)
