@@ -13,6 +13,11 @@ from ._components._texture import Texture
 from ._annotations import FileLike, Renderable
 
 
+CONSOLE_CLEAR_CODE = "\x1b[2J\x1b[H"
+CURSOR_HIDE_CODE = "\x1b[?25l"
+CURSOR_SHOW_CODE = "\x1b[?25h"
+
+
 @unique
 class ColorChoice(Enum):
     AUTO = auto()
@@ -37,6 +42,8 @@ class Screen(metaclass=ScreenClassProperties):
         height: int = 12,
         *,
         auto_resize: bool = False,
+        initial_clear: bool = False,
+        hide_cursor: bool = True,
         transparency_fill: str = " ",
         color_choice: ColorChoice = ColorChoice.AUTO,
         stream: FileLike[str] | None = None,
@@ -52,10 +59,27 @@ class Screen(metaclass=ScreenClassProperties):
         self.margin_right = margin_right
         self.margin_bottom = margin_bottom
         self._auto_resize = auto_resize
+        self.initial_clear = initial_clear
+        self.hide_cursor = hide_cursor
         self._resize_if_necessary()
         self.transparency_fill = transparency_fill
         self.buffer = []
-        self.clear()  # for populating the list with an empty screen
+        self.clear()  # for populating the screen buffer
+        self.startup()
+
+    def startup(self) -> None:
+        if self.is_using_ansi():
+            if self.initial_clear:
+                self.stream.write(CONSOLE_CLEAR_CODE)
+                self.stream.flush()
+            if self.hide_cursor:
+                self.stream.write(CURSOR_HIDE_CODE)
+                self.stream.flush()
+
+    def cleanup(self) -> None:
+        if self.hide_cursor and self.is_using_ansi():
+            self.stream.write(CURSOR_SHOW_CODE)
+            self.stream.flush()
 
     @property
     def auto_resize(self) -> bool:
