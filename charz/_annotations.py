@@ -195,8 +195,7 @@ class AnimatedNode(
     TransformComponent,
     Node,
     _Protocol,
-):
-    ...
+): ...
 
 
 class ColliderComponent(_Protocol):
