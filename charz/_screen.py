@@ -108,13 +108,15 @@ class Screen(metaclass=ScreenClassProperties):
             return True
         try:
             fileno = self.stream.fileno()
-        except ValueError:
+        except (OSError, ValueError):
             is_a_tty = False
         else:
-            is_a_tty = os.isatty(fileno)
-        if self.color_choice is ColorChoice.AUTO and is_a_tty:
-            return True
-        return False  # is not a tty or `ColorChoice.NEVER`
+            try:
+                is_a_tty = os.isatty(fileno)
+            except OSError:
+                is_a_tty = False
+        # is not a tty or `ColorChoice.NEVER`
+        return self.color_choice is ColorChoice.AUTO and is_a_tty
 
     def get_actual_size(self) -> Vec2i:
         try:
