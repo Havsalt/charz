@@ -79,7 +79,7 @@ class Transform:  # Component (mixin class)
         self.global_rotation = global_rotation
         return self
 
-    def as_top_level(self, state: bool = True, /) -> Self:
+    def with_top_level(self, state: bool = True, /) -> Self:
         self.top_level = state
         return self
 
