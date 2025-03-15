@@ -88,7 +88,6 @@ __all__ = [
 from typing import (
     TYPE_CHECKING as _TYPE_CHECKING,
     Literal as _Literal,
-    Any as _Any,
 )
 
 # re-exports
@@ -120,6 +119,7 @@ if _TYPE_CHECKING:
     from ._components._simple_movement import SimpleMovement
 
 # lazy exports
+# NOTE: add to `Literal` and tuple when adding new export
 _lazy_objects: tuple[_Literal["SimpleMovement"]] = ("SimpleMovement",)
 _loaded_objects: dict[str, object] = {
     name: obj
@@ -130,8 +130,7 @@ _loaded_objects: dict[str, object] = {
 
 # lazy load to properly load optional dependencies along the standard exports
 # TODO: check if there is a step here that can be skipped
-def __getattr__(name: str) -> _Any:
-    global _loaded_objects
+def __getattr__(name: str) -> object:
     if name in _loaded_objects:
         return _loaded_objects[name]
     elif name in _lazy_objects:
