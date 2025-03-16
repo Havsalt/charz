@@ -35,14 +35,14 @@ class Collider:  # Component (mixin class)
         self.hitbox = hitbox
         return self
 
-    def get_colliders(self) -> list[Collider]:
+    def get_colliders(self) -> list[ColliderNode]:
         assert isinstance(self, ColliderNode)
-        colliders: list[Collider] = []
-        for node in Transform.transform_instances.values():
+        colliders: list[ColliderNode] = []
+        for node in Collider.collider_instances.values():
             if self is node:
                 continue
             # NOTE: might swap who the `.is_colliding_with(...)` is checked on
-            if isinstance(node, Collider) and node.is_colliding_with(self):
+            if node.is_colliding_with(self):
                 colliders.append(node)
         return colliders
 
@@ -57,7 +57,14 @@ class Collider:  # Component (mixin class)
         return start <= colldier_node.global_position < end
 
     def is_colliding(self) -> bool:
-        return bool(self.get_colliders())
+        assert isinstance(self, ColliderNode)
+        for node in Collider.collider_instances.values():
+            if self is node:
+                continue
+            # NOTE: might swap who the `.is_colliding_with(...)` is checked on
+            if node.is_colliding_with(self):
+                return True
+        return False
 
     def _free(self) -> None:
         del Collider.collider_instances[self.uid]  # type: ignore
