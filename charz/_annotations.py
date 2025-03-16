@@ -201,6 +201,7 @@ class AnimatedNode(
 class ColliderComponent(_Protocol):
     collider_instances: _ClassVar[dict[int, ColliderNode]]
     hitbox: _Hitbox
+    disabled: bool
 
     def with_hitbox(self, hitbox: _Hitbox, /) -> _Self: ...
     def get_colliders(self) -> list[ColliderNode]: ...
