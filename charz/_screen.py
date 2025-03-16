@@ -43,6 +43,7 @@ class Screen(metaclass=ScreenClassProperties):
         *,
         auto_resize: bool = False,
         initial_clear: bool = False,
+        final_clear: bool = True,
         hide_cursor: bool = True,
         transparency_fill: str = " ",
         color_choice: ColorChoice = ColorChoice.AUTO,
@@ -60,14 +61,14 @@ class Screen(metaclass=ScreenClassProperties):
         self.margin_bottom = margin_bottom
         self._auto_resize = auto_resize
         self.initial_clear = initial_clear
+        self.final_clear = final_clear
         self.hide_cursor = hide_cursor
         self._resize_if_necessary()
         self.transparency_fill = transparency_fill
         self.buffer = []
         self.clear()  # for populating the screen buffer
-        self.startup()
 
-    def startup(self) -> None:
+    def on_startup(self) -> None:
         if self.is_using_ansi():
             if self.initial_clear:
                 self.stream.write(CONSOLE_CLEAR_CODE)
@@ -76,10 +77,16 @@ class Screen(metaclass=ScreenClassProperties):
                 self.stream.write(CURSOR_HIDE_CODE)
                 self.stream.flush()
 
-    def cleanup(self) -> None:
+    def on_cleanup(self) -> None:
         if self.hide_cursor and self.is_using_ansi():
             self.stream.write(CURSOR_SHOW_CODE)
             self.stream.flush()
+        if self.final_clear:
+            old_fill = self.transparency_fill
+            self.transparency_fill = " "
+            self.clear()
+            self.show()
+            self.transparency_fill = old_fill
 
     @property
     def auto_resize(self) -> bool:

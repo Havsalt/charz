@@ -41,6 +41,8 @@ class Engine(metaclass=EngineMixinSorter):
     def update(self, delta: float) -> None: ...
 
     def run(self) -> None:
+        self.screen.on_startup()
+
         delta = self.clock.delta  # initial delta
         self.is_running = True
 
@@ -55,3 +57,5 @@ class Engine(metaclass=EngineMixinSorter):
             self.screen.refresh()
             self.clock.tick()
             delta = self.clock.delta
+
+        self.screen.on_cleanup()
