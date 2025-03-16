@@ -35,7 +35,7 @@ class Collider:  # Component (mixin class)
     def with_hitbox(self, hitbox: Hitbox, /) -> Self:
         self.hitbox = hitbox
         return self
-    
+
     def with_disabled(self, state: bool = True, /) -> Self:
         self.disabled = state
         return self
@@ -46,10 +46,18 @@ class Collider:  # Component (mixin class)
         for node in Collider.collider_instances.values():
             if self is node:
                 continue
-            # NOTE: might swap who the `.is_colliding_with(...)` is checked on
-            if node.is_colliding_with(self):
+            if self.is_colliding_with(node):
                 colliders.append(node)
         return colliders
+
+    def is_colliding(self) -> bool:
+        assert isinstance(self, ColliderNode)
+        for node in Collider.collider_instances.values():
+            if self is node:
+                continue
+            if self.is_colliding_with(node):
+                return True
+        return False
 
     def is_colliding_with(self, colldier_node: ColliderNode, /) -> bool:
         if colldier_node.disabled:
@@ -62,16 +70,6 @@ class Collider:  # Component (mixin class)
             start -= self.hitbox.size / 2
             end -= self.hitbox.size / 2
         return start <= colldier_node.global_position < end
-
-    def is_colliding(self) -> bool:
-        assert isinstance(self, ColliderNode)
-        for node in Collider.collider_instances.values():
-            if self is node:
-                continue
-            # NOTE: might swap who the `.is_colliding_with(...)` is checked on
-            if node.is_colliding_with(self):
-                return True
-        return False
 
     def _free(self) -> None:
         del Collider.collider_instances[self.uid]  # type: ignore
