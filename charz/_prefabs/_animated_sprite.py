@@ -26,6 +26,7 @@ class AnimatedSprite(Animated, Sprite):
         transparency: str | None = None,
         color: ColorValue | None = None,
         animations: AnimationSet | None = None,
+        repeat: bool | None = None,
     ) -> None:
         super().__init__(
             parent=parent,
@@ -42,3 +43,5 @@ class AnimatedSprite(Animated, Sprite):
         )
         if animations is not None:
             self.animations = animations
+        if repeat is not None:
+            self.repeat = repeat
