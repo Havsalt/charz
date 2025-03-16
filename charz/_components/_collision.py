@@ -30,9 +30,14 @@ class Collider:  # Component (mixin class)
         return instance
 
     hitbox: Hitbox
+    disabled: bool = False
 
     def with_hitbox(self, hitbox: Hitbox, /) -> Self:
         self.hitbox = hitbox
+        return self
+    
+    def with_disabled(self, state: bool = True, /) -> Self:
+        self.disabled = state
         return self
 
     def get_colliders(self) -> list[ColliderNode]:
@@ -47,6 +52,8 @@ class Collider:  # Component (mixin class)
         return colliders
 
     def is_colliding_with(self, colldier_node: ColliderNode, /) -> bool:
+        if colldier_node.disabled:
+            return False
         # TODO: consider `.global_rotation`
         assert isinstance(self, ColliderNode)
         start = self.global_position
