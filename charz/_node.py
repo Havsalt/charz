@@ -25,7 +25,7 @@ class NodeMixinSorter(type):
 
 class Node(metaclass=NodeMixinSorter):
     _queued_nodes: ClassVar[list[Node]] = []
-    _uid_counter: ClassVar[count] = count(0, 1)
+    _uid_counter: ClassVar[count[int]] = count(0, 1)
     node_instances: ClassVar[dict[int, Node]] = {}
 
     def __new__(cls, *_args: Any, **_kwargs: Any) -> Self:
