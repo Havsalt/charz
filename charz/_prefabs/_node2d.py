@@ -31,7 +31,7 @@ class Node2D(Transform, Node):
             self.__class__.__name__
             + "("
             + f"#{self.uid}"
-            + f":{self.position}"
-            + f":{self.rotation}"
+            + f":{round(self.position, 2)}"
+            + f":{round(self.rotation, 2)}"
             + ")"
         )

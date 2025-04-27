@@ -50,7 +50,7 @@ class Sprite(Color, Texture, Node2D):
             self.__class__.__name__
             + "("
             + f"#{self.uid}"
-            + f":{self.position}"
+            + f":{round(self.position, 2)}"
             + f":{round(self.rotation, 2)}R"
             + f":{'{}x{}'.format(*self.texture_size.to_tuple())}"
             + f":{repr(self.color)}"
