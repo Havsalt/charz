@@ -30,13 +30,21 @@ class Engine(metaclass=EngineMixinSorter):
     fps: float | None = 16
     clock: Clock = DeltaClock()
     screen: Screen = Screen()
-    is_running: bool = False
+    _is_running: bool = False  # using setter and getter to prevent subclass def overriding
 
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         instance = super().__new__(cls, *args, **kwargs)
         # set `.clock.tps` with `.fps` set from class attribute
         instance.clock.tps = instance.fps
         return instance
+    
+    @property
+    def is_running(self) -> bool:
+        return self._is_running
+    
+    @is_running.setter
+    def is_running(self, run_state: bool) -> None:
+        self._is_running = run_state
 
     def update(self, delta: float) -> None: ...
 
@@ -44,9 +52,9 @@ class Engine(metaclass=EngineMixinSorter):
         self.screen.on_startup()
 
         delta = self.clock.delta  # initial delta
-        self.is_running = True
+        self._is_running = True
 
-        while self.is_running:  # main loop
+        while self._is_running:  # main loop
             self.update(delta)
             for queued_node in Node._queued_nodes:
                 queued_node._free()
