@@ -36,7 +36,7 @@ class Engine(metaclass=EngineMixinSorter):
         instance = super().__new__(cls, *args, **kwargs)
         # set `.clock.tps` with `.fps` set from class attribute
         instance.clock.tps = instance.fps
-        return instance  # type: ignore
+        return instance
 
     def update(self, delta: float) -> None: ...
 
