@@ -51,12 +51,15 @@ class Engine(_Protocol):
     fps: float
     clock: _DeltaClock
     screen: _Screen
-    is_running: bool
+    _is_running: bool
+    @property
+    def is_running(self) -> bool: ...
+    @is_running.setter
+    def is_running(self, run_state: bool) -> None: ...
 
 
 @_runtime_checkable
 class Node(_Protocol):
-    node_instances: _ClassVar[dict[int, Node]]
     uid: int
 
     def __init__(self) -> None: ...
