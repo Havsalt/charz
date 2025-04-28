@@ -60,6 +60,7 @@ class Engine(_Protocol):
 
 @_runtime_checkable
 class Node(_Protocol):
+    node_instances: _ClassVar[dict[int, Node]]
     uid: int
 
     def __init__(self) -> None: ...
