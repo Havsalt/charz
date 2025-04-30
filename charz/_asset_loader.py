@@ -9,7 +9,7 @@ class AssetLoaderClassProperties(type):
     _texture_root: Path = Path.cwd()
     _animation_root: Path = Path.cwd()
 
-    # NOTE: Theese have to be set before importing local files in your project:
+    # NOTE: These have to be set before importing local files in your project:
     # from charz importing ..., AssetLoader, ...
     # AssetLoader.texture_root = "src/sprites"
     # AssetLoader.animation_root = "src/animations"
@@ -38,6 +38,18 @@ class AssetLoaderClassProperties(type):
 
 @final
 class AssetLoader(metaclass=AssetLoaderClassProperties):
+    """Configuration class for loading assets
+
+    Variables have to be set **before** importing local files in your project,
+    as it is typical to use `load_texture` in a class definition
+    when subclassing `Sprite`:
+
+    >>> from charz importing ..., AssetLoader, ...
+    >>> AssetLoader.texture_root = "src/sprites"
+    >>> AssetLoader.animation_root = "src/animations"
+    >>> from .local_file importing ...
+    """
+
     # prevent instantiating, as this class only has class methods and class variables
     def __new__(cls, *_args: Any, **_kwargs: Any) -> NoReturn:
         raise TypeError(f"{cls.__name__} cannot be instantiated")
