@@ -2,12 +2,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from copy import deepcopy
-from typing import ClassVar, Any
+from typing import Any
 
 from linflex import Vec2
 from typing_extensions import Self
 
-from .._components._transform import Transform
+from .._scene import Scene
+from .._grouping import Group
 from .._annotations import ColliderNode
 
 
@@ -18,11 +19,8 @@ class Hitbox:
 
 
 class Collider:  # Component (mixin class)
-    collider_instances: ClassVar[dict[int, ColliderNode]] = {}
-
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         instance = super().__new__(cls, *args, **kwargs)
-        Collider.collider_instances[instance.uid] = instance  # type: ignore
         if (class_hitbox := getattr(instance, "hitbox", None)) is not None:
             instance.hitbox = deepcopy(class_hitbox)
         else:
@@ -43,24 +41,30 @@ class Collider:  # Component (mixin class)
     def get_colliders(self) -> list[ColliderNode]:
         assert isinstance(self, ColliderNode)
         colliders: list[ColliderNode] = []
-        for node in Collider.collider_instances.values():
+        for node in Scene.current.groups[Group.COLLIDER].values():
             if self is node:
                 continue
+            assert isinstance(
+                node, ColliderNode
+            ), f"Node {node} missing 'Collider' component"
             if self.is_colliding_with(node):
                 colliders.append(node)
         return colliders
 
     def is_colliding(self) -> bool:
         assert isinstance(self, ColliderNode)
-        for node in Collider.collider_instances.values():
+        for node in Scene.current.groups[Group.COLLIDER].values():
             if self is node:
                 continue
+            assert isinstance(
+                node, ColliderNode
+            ), f"Node {node} missing 'Collider' component"
             if self.is_colliding_with(node):
                 return True
         return False
 
     def is_colliding_with(self, colldier_node: ColliderNode, /) -> bool:
-        if colldier_node.disabled:
+        if self.disabled or colldier_node.disabled:
             return False
         # TODO: consider `.global_rotation`
         assert isinstance(self, ColliderNode)

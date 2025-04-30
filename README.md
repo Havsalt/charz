@@ -82,8 +82,9 @@ This project is heavily inspired by the `Godot Game Engine`.
 ## Includes
 
 - Annotations
-  - `ColorValue`
-- Math
+  - `ColorValue`  (from package `colex`)
+  - `Self`        (from standard `typing` or from package `typing-extensions`)
+- Math (from package `linflex`)
   - `lerp`
   - `sign`
   - `clamp`
@@ -106,11 +107,14 @@ This project is heavily inspired by the `Godot Game Engine`.
   - `Clock`
   - `DeltaClock`
   - `Screen`
+  - `Scene`
 - Datastructures
   - `AnimationSet`
   - `Hitbox`
 - Functions
   - `load_texture`
+- Decorators
+  - `group`
 - Singletons
   - `AssetLoader`
 - Components

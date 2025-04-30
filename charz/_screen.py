@@ -3,19 +3,29 @@ from __future__ import annotations
 import os
 import sys
 from enum import Enum, unique, auto
+from typing import TypeGuard
 
 from linflex import Vec2i
 from colex import ColorValue, RESET
 
 from ._camera import Camera, CameraMode
+from ._node import Node
 from ._components._transform import Transform
 from ._components._texture import Texture
-from ._annotations import FileLike, Renderable
+from ._scene import Scene
+from ._grouping import Group
+from ._annotations import FileLike, Renderable, TextureNode
 
 
-CONSOLE_CLEAR_CODE = "\x1b[2J\x1b[H"
-CURSOR_HIDE_CODE = "\x1b[?25l"
-CURSOR_SHOW_CODE = "\x1b[?25h"
+@unique
+class ConsoleCode(str, Enum):
+    CLEAR = "\x1b[2J\x1b[H"
+
+
+@unique
+class CursorCode(str, Enum):
+    HIDE = "\x1b[?25l"
+    SHOW = "\x1b[?25h"
 
 
 @unique
@@ -68,18 +78,22 @@ class Screen(metaclass=ScreenClassProperties):
         self.buffer = []
         self.clear()  # for populating the screen buffer
 
+    @staticmethod
+    def _is_texture_nodes(nodes: list[Node]) -> TypeGuard[list[TextureNode]]:
+        return all(isinstance(node, Texture) for node in nodes)
+
     def on_startup(self) -> None:
         if self.is_using_ansi():
             if self.initial_clear:
-                self.stream.write(CONSOLE_CLEAR_CODE)
+                self.stream.write(ConsoleCode.CLEAR)
                 self.stream.flush()
             if self.hide_cursor:
-                self.stream.write(CURSOR_HIDE_CODE)
+                self.stream.write(CursorCode.HIDE)
                 self.stream.flush()
 
     def on_cleanup(self) -> None:
         if self.hide_cursor and self.is_using_ansi():
-            self.stream.write(CURSOR_SHOW_CODE)
+            self.stream.write(CursorCode.SHOW)
             self.stream.flush()
         if self.final_clear:
             old_fill = self.transparency_fill
@@ -118,12 +132,12 @@ class Screen(metaclass=ScreenClassProperties):
         return Vec2i(self.width, self.height)
 
     @size.setter
-    def size(self, value: Vec2i) -> None:
-        width, height = value.to_tuple()
+    def size(self, size: Vec2i) -> None:
+        width, height = size
         if not isinstance(width, int):
-            raise ValueError(f"width cannot be of type '{type(value)}', expected 'int'")
+            raise ValueError(f"width cannot be of type '{type(size)}', expected 'int'")
         if not isinstance(height, int):
-            raise ValueError(f"height cannot be of type '{type(value)}', expected 'int'")
+            raise ValueError(f"height cannot be of type '{type(size)}', expected 'int'")
         self.width = width
         self.height = height
         self._resize_if_necessary()
@@ -174,6 +188,7 @@ class Screen(metaclass=ScreenClassProperties):
     def render(self, node: Renderable, /) -> None:  # noqa: C901
         if not node.is_globally_visible():  # skip if node is invisible
             return
+        # TODO: remove this block, as it no longer serves a purpouse
         # current camera should never be None or other class than 'Camera',
         # or subclass of it
         if Camera.current is None or not isinstance(Camera.current, Camera):
@@ -266,10 +281,13 @@ class Screen(metaclass=ScreenClassProperties):
     def refresh(self) -> None:
         self._resize_if_necessary()
         self.clear()
-        for node in sorted(  # NOTE: iterator becomes a `list`
-            # NOTE: `list` is faster than `tuple`, when copying
-            list(Texture.texture_instances.values()),  # iterate a copy
-            key=lambda node: node.z_index,
-        ):
-            self.render(node)
+
+        # NOTE: `list` is faster than `tuple`, when copying
+        texture_nodes = list(Scene.current.groups[Group.TEXTURE].values())
+        assert self._is_texture_nodes(
+            texture_nodes
+        ), f"Node in group '{Group.TEXTURE}' missing 'Texture' component"
+        sorted_by_z_index = sorted(texture_nodes, key=lambda node: node.z_index)
+        for texture_node in sorted_by_z_index:
+            self.render(texture_node)
         self.show()

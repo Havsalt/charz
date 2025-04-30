@@ -6,7 +6,7 @@ from typing_extensions import Self
 
 from ._clock import Clock, DeltaClock
 from ._screen import Screen
-from ._node import Node
+from ._scene import Scene
 
 
 class EngineMixinSorter(type):
@@ -30,40 +30,44 @@ class Engine(metaclass=EngineMixinSorter):
     fps: float | None = 16
     clock: Clock = DeltaClock()
     screen: Screen = Screen()
-    _is_running: bool = False  # using setter and getter to prevent subclass def overriding
+    # using setter and getter to prevent subclass def overriding
+    _is_running: bool = False
 
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         instance = super().__new__(cls, *args, **kwargs)
         # set `.clock.tps` with `.fps` set from class attribute
         instance.clock.tps = instance.fps
         return instance
-    
+
     @property
     def is_running(self) -> bool:
         return self._is_running
-    
+
     @is_running.setter
     def is_running(self, run_state: bool) -> None:
         self._is_running = run_state
 
     def update(self, delta: float) -> None: ...
 
-    def run(self) -> None:
+    def run(self) -> None:  # main loop function
+        # handle special ANSI codes to setup
         self.screen.on_startup()
 
-        delta = self.clock.delta  # initial delta
-        self._is_running = True
+        # activate control property
+        self.is_running = True
 
-        while self._is_running:  # main loop
-            self.update(delta)
-            for queued_node in Node._queued_nodes:
-                queued_node._free()
-            Node._queued_nodes *= 0  # NOTE: faster way to do `.clear()`
-            # NOTE: `list` is faster than `tuple`, when copying
-            for node in list(Node.node_instances.values()):  # iterating copy
-                node.update(delta)
+        while self.is_running:  # main loop
+            # update engine
+            self.update(self.clock.delta)
+
+            # update nodes in current scene and scene itself
+            Scene.current.process(self.clock.delta)
+
+            # render
             self.screen.refresh()
-            self.clock.tick()
-            delta = self.clock.delta
 
+            # sleep remaining time
+            self.clock.tick()
+
+        # run cleanup function
         self.screen.on_cleanup()

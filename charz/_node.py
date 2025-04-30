@@ -5,6 +5,9 @@ from typing import Any, ClassVar
 
 from typing_extensions import Self
 
+from ._grouping import Group, group
+from ._scene import Scene
+
 
 class NodeMixinSorter(type):
     """Node metaclass for initializing `Node` subclass after other `mixin` classes"""
@@ -23,16 +26,14 @@ class NodeMixinSorter(type):
         return new_type
 
 
+@group(Group.NODE)
 class Node(metaclass=NodeMixinSorter):
-    _queued_nodes: ClassVar[list[Node]] = []
     _uid_counter: ClassVar[count[int]] = count(0, 1)
-    node_instances: ClassVar[dict[int, Node]] = {}
 
     def __new__(cls, *_args: Any, **_kwargs: Any) -> Self:
         # NOTE: additional args and kwargs are ignored!
         instance = super().__new__(cls)
         instance.uid = next(Node._uid_counter)
-        Node.node_instances[instance.uid] = instance
         return instance
 
     uid: int  # is set in `Node.__new__`
@@ -57,8 +58,7 @@ class Node(metaclass=NodeMixinSorter):
     def update(self, delta: float) -> None: ...
 
     def queue_free(self) -> None:
-        if self not in Node._queued_nodes:
-            Node._queued_nodes.append(self)
+        if self not in Scene.current._queued_nodes:
+            Scene.current._queued_nodes.append(self)
 
-    def _free(self) -> None:
-        del Node.node_instances[self.uid]
+    def _free(self) -> None: ...  # overridden by using `@group`

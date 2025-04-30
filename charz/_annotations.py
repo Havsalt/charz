@@ -13,8 +13,9 @@ from __future__ import annotations as _annotations
 
 from typing import (
     TypeVar as _TypeVar,
+    TypeAlias as _TypeAlias,
+    Hashable as _Hashable,
     Protocol as _Protocol,
-    ClassVar as _ClassVar,
     runtime_checkable as _runtime_checkable,
     TYPE_CHECKING as _TYPE_CHECKING,
 )
@@ -24,7 +25,10 @@ from linflex import (
     Vec2i as _Vec2i,
 )
 from colex import ColorValue as _ColorValue
-from typing_extensions import Self as _Self
+from typing_extensions import (
+    LiteralString as _LiteralString,
+    Self as _Self,
+)
 
 if _TYPE_CHECKING:
     from ._clock import DeltaClock as _DeltaClock
@@ -37,6 +41,7 @@ if _TYPE_CHECKING:
 
 T = _TypeVar("T")
 _T_contra = _TypeVar("_T_contra", contravariant=True)
+GroupID: _TypeAlias = _LiteralString | int | _Hashable
 
 
 @_runtime_checkable
@@ -52,6 +57,7 @@ class Engine(_Protocol):
     clock: _DeltaClock
     screen: _Screen
     _is_running: bool
+
     @property
     def is_running(self) -> bool: ...
     @is_running.setter
@@ -60,7 +66,6 @@ class Engine(_Protocol):
 
 @_runtime_checkable
 class Node(_Protocol):
-    node_instances: _ClassVar[dict[int, Node]]
     uid: int
 
     def __init__(self) -> None: ...
@@ -112,7 +117,6 @@ class TransformNode(
 
 
 class TextureComponent(_Protocol):
-    texture_instances: _ClassVar[dict[int, TextureNode]]
     texture: list[str]
     visible: bool
     centered: bool
@@ -203,7 +207,6 @@ class AnimatedNode(
 
 
 class ColliderComponent(_Protocol):
-    collider_instances: _ClassVar[dict[int, ColliderNode]]
     hitbox: _Hitbox
     disabled: bool
 

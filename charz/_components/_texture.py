@@ -2,14 +2,14 @@ from __future__ import annotations
 
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, ClassVar
+from typing import Any
 
 from linflex import Vec2i
 from typing_extensions import Self
 
 from .. import text
 from .._asset_loader import AssetLoader
-from .._annotations import TextureNode
+from .._grouping import Group, group
 
 
 # TODO: in future versions, add caching
@@ -52,12 +52,10 @@ def load_texture(
     return texture
 
 
+@group(Group.TEXTURE)
 class Texture:  # Component (mixin class)
-    texture_instances: ClassVar[dict[int, TextureNode]] = {}
-
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         instance = super().__new__(cls, *args, **kwargs)
-        Texture.texture_instances[instance.uid] = instance  # type: ignore
         if (class_texture := getattr(instance, "texture", None)) is not None:
             instance.texture = deepcopy(class_texture)
         else:
@@ -128,10 +126,6 @@ class Texture:  # Component (mixin class)
         if not self.texture:
             return Vec2i.ZERO
         return Vec2i(
-            len(max(self.texture, key=len)),  # size of longest line
+            len(max(self.texture, key=len)),  # length of longest line
             len(self.texture),  # line count
         )
-
-    def _free(self) -> None:
-        del Texture.texture_instances[self.uid]  # type: ignore
-        super()._free()  # type: ignore

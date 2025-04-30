@@ -7,8 +7,9 @@ An object oriented terminal game engine
 Includes
 --------
 
-- Annotations (from package `colex`)
-  - `ColorValue`
+- Annotations
+  - `ColorValue`  (from package `colex`)
+  - `Self`        (from standard `typing` or from package `typing-extensions`)
 - Math (from package `linflex`)
   - `lerp`
   - `sign`
@@ -32,12 +33,15 @@ Includes
   - `Clock`
   - `DeltaClock`
   - `Screen`
+  - `Scene`
 - Datastructures
   - `Animation`
   - `AnimationSet`
   - `Hitbox`
 - Functions
   - `load_texture`
+- Decorators
+  - `group`
 - Components
   - `Transform`
   - `Texture`
@@ -59,7 +63,10 @@ __all__ = [
     "DeltaClock",
     "Screen",
     "Camera",
+    "Scene",
+    "group",
     "Node",
+    "Self",
     "Node2D",
     "Transform",
     "lerp",
@@ -91,6 +98,12 @@ from typing import (
 )
 
 # re-exports
+import sys as _sys
+
+if _sys.version_info >= (3, 11):
+    from typing import Self
+else:
+    from typing_extensions import Self
 from linflex import lerp, sign, clamp, Vec2, Vec2i, Vec3
 from colex import ColorValue
 
@@ -99,6 +112,8 @@ from ._engine import Engine
 from ._clock import Clock, DeltaClock
 from ._screen import Screen
 from ._camera import Camera
+from ._scene import Scene
+from ._grouping import group
 from ._node import Node
 from ._animation import Animation, AnimationSet
 from ._components._transform import Transform
