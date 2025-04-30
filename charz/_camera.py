@@ -29,14 +29,16 @@ class CameraClassAttributes(NodeMixinSorter):
         return self._current
 
     @current.setter
-    def current(self, new: Camera | None) -> None:
-        if new is None:
-            self._current = Camera()
-        else:
-            self._current = new
+    def current(self, new: Camera) -> None:
+        self._current = new
 
 
 class Camera(Transform, Node, metaclass=CameraClassAttributes):
+    """`Camera` for controlling location of viewport in the world, per `Scene`
+
+    A default `Camera` will be used if not explicitly set
+    """
+
     mode: CameraMode = CameraMode.FIXED
 
     def __init__(
