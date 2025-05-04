@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 from colex import ColorValue
-from linflex import Vec2
-from typing_extensions import Self
+from charz_core import Node, Vec2, Self
 
-from .._node import Node
 from ._sprite import Sprite
 
 

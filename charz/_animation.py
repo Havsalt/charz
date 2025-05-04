@@ -5,7 +5,7 @@ from functools import partial
 from pathlib import Path
 from copy import deepcopy
 
-from typing_extensions import Self
+from charz_core import Self
 
 from ._components._texture import load_texture
 from ._asset_loader import AssetLoader

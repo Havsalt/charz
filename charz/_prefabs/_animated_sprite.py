@@ -1,9 +1,8 @@
 from __future__ import annotations
 
 from colex import ColorValue
-from linflex import Vec2
+from charz_core import Node, Vec2
 
-from .._node import Node
 
 from .._animation import AnimationSet
 from .._components._animated import Animated

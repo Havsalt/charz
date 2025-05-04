@@ -5,7 +5,7 @@ from copy import deepcopy
 from enum import Enum, unique, auto
 from typing import Any
 
-from typing_extensions import Self
+from charz_core import Self
 
 from .._animation import AnimationSet, Animation
 from .._annotations import AnimatedNode

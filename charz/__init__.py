@@ -17,7 +17,7 @@ Includes
   - `Vec2`
   - `Vec2i`
   - `Vec3`
-- Modules
+- Submodules
   - `text`
     - `fill`
     - `flip_h`
@@ -26,8 +26,6 @@ Includes
     - `flip_lines_h`
     - `flip_lines_v`
     - `rotate`
-  - `colex`    (dependency)
-  - `keyboard` (optional dependency)
 - Framework
   - `Engine`
   - `Clock`
@@ -42,6 +40,8 @@ Includes
   - `load_texture`
 - Decorators
   - `group`
+- Enums
+  - `Group`
 - Components
   - `Transform`
   - `Texture`
@@ -49,83 +49,98 @@ Includes
   - `Animated`
   - `Collider`
 - Nodes
-  - `Camera`
   - `Node`
   - `Node2D`
+  - `Camera`
   - `Sprite`
   - `Label`
   - `AnimatedSprite`
 """
 
 __all__ = [
-    "Engine",
-    "Clock",
-    "DeltaClock",
-    "Screen",
-    "Camera",
-    "Scene",
-    "group",
-    "Node",
+    # Annotations
+    "ColorValue",
     "Self",
-    "Node2D",
-    "Transform",
+    # Math
     "lerp",
     "sign",
     "clamp",
     "Vec2",
     "Vec2i",
     "Vec3",
-    "load_texture",
-    "Texture",
-    "Color",
-    "ColorValue",
-    "Label",
-    "Sprite",
-    "Animated",
-    "AnimatedSprite",
+    # Submodules
+    "text",
+    # Framework
+    "Engine",
+    "Clock",
+    "DeltaClock",
+    "Screen",
+    "Scene",
+    "AssetLoader",
+    # Datastructures
     "Animation",
     "AnimationSet",
-    "Collider",
     "Hitbox",
-    "SimpleMovement",
+    # Functions
+    "load_texture",
+    # Decorators
+    "group",
+    # Enums
+    "Group",
+    # Singletons
     "AssetLoader",
-    "text",
+    # Components
+    "Transform",
+    "Texture",
+    "Color",
+    "Animated",
+    "Collider",
+    # Nodes
+    "Node",
+    "Node2D",
+    "Camera",
+    "Sprite",
+    "Label",
+    "AnimatedSprite",
 ]
 
-from typing import (
-    TYPE_CHECKING as _TYPE_CHECKING,
-    Literal as _Literal,
-)
+from typing import TYPE_CHECKING as _TYPE_CHECKING
 
 # re-exports
-import sys as _sys
-
-if _sys.version_info >= (3, 11):
-    from typing import Self
-else:
-    from typing_extensions import Self
-from linflex import lerp, sign, clamp, Vec2, Vec2i, Vec3
 from colex import ColorValue
+
+# re-exports from `charz-core`
+from charz_core import (
+    Self,
+    lerp,
+    sign,
+    clamp,
+    Vec2,
+    Vec2i,
+    Vec3,
+    Clock,
+    DeltaClock,
+    Scene,
+    group,
+    Transform,
+    Node,
+    Node2D,
+    Camera,
+)
 
 # exports
 from ._engine import Engine
-from ._clock import Clock, DeltaClock
 from ._screen import Screen
-from ._camera import Camera
-from ._scene import Scene
-from ._grouping import group
-from ._node import Node
+from ._asset_loader import AssetLoader
+from ._grouping import Group
 from ._animation import Animation, AnimationSet
-from ._components._transform import Transform
 from ._components._texture import load_texture, Texture
 from ._components._color import Color
 from ._components._animated import Animated
 from ._components._collision import Collider, Hitbox
-from ._prefabs._node2d import Node2D
-from ._prefabs._label import Label
 from ._prefabs._sprite import Sprite
+from ._prefabs._label import Label
 from ._prefabs._animated_sprite import AnimatedSprite
-from ._asset_loader import AssetLoader
 from . import text
 
 
@@ -134,8 +149,8 @@ if _TYPE_CHECKING:
     from ._components._simple_movement import SimpleMovement
 
 # lazy exports
-# NOTE: add to `Literal` and tuple when adding new export
-_lazy_objects: tuple[_Literal["SimpleMovement"]] = ("SimpleMovement",)
+# NOTE: add to `_lazy_objects` when adding new export
+_lazy_objects = ("SimpleMovement",)
 _loaded_objects: dict[str, object] = {
     name: obj
     for name, obj in globals().items()
@@ -150,11 +165,12 @@ def __getattr__(name: str) -> object:
         return _loaded_objects[name]
     elif name in _lazy_objects:
         # NOTE: manually add each branch
-        if name == "SimpleMovement":
-            from ._components._simple_movement import SimpleMovement
+        match name:
+            case "SimpleMovement":
+                from ._components._simple_movement import SimpleMovement
 
-            _loaded_objects[name] = SimpleMovement
-            return _loaded_objects[name]
-        else:
-            raise NotImplementedError(f"branch not implemented for '{name}'")
+                _loaded_objects[name] = SimpleMovement
+                return _loaded_objects[name]
+            case _:
+                raise NotImplementedError(f"branch not implemented for '{name}'")
     raise AttributeError(f"module '{__name__}' has no attribute '{name}'")

@@ -1,6 +1,6 @@
 """
-Custom Annotations for Charz
-============================
+Custom Annotations for `charz-core`
+===================================
 
 This file contains private annotations used across this package.
 
@@ -20,24 +20,24 @@ from typing import (
     TYPE_CHECKING as _TYPE_CHECKING,
 )
 
-from linflex import (
+from charz_core import (
     Vec2 as _Vec2,
     Vec2i as _Vec2i,
 )
 from colex import ColorValue as _ColorValue
-from typing_extensions import (
-    LiteralString as _LiteralString,
-    Self as _Self,
-)
+from typing_extensions import LiteralString as _LiteralString
 
 if _TYPE_CHECKING:
-    from ._clock import DeltaClock as _DeltaClock
+    from charz_core import (
+        DeltaClock as _DeltaClock,
+        Self as _Self,
+    )
     from ._screen import Screen as _Screen
+    from ._components._collision import Hitbox as _Hitbox
     from ._animation import (
         Animation as _Animation,
         AnimationSet as _AnimationMapping,
     )
-    from ._components._collision import Hitbox as _Hitbox
 
 T = _TypeVar("T")
 _T_contra = _TypeVar("_T_contra", contravariant=True)

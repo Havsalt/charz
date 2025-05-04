@@ -4,12 +4,11 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
-from linflex import Vec2i
-from typing_extensions import Self
+from charz_core import Vec2i, Self, group
 
 from .. import text
 from .._asset_loader import AssetLoader
-from .._grouping import Group, group
+from .._grouping import Group
 
 
 # TODO: in future versions, add caching

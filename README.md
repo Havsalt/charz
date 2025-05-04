@@ -91,7 +91,7 @@ This project is heavily inspired by the `Godot Game Engine`.
   - `Vec2`
   - `Vec2i`
   - `Vec3`
-- Modules
+- Submodules
   - `text`
     - `fill`
     - `flip_h`
@@ -100,8 +100,6 @@ This project is heavily inspired by the `Godot Game Engine`.
     - `flip_lines_h`
     - `flip_lines_v`
     - `rotate`
-  - `colex`    (Dependency)
-  - `keyboard` (Optional dependency)
 - Framework
   - `Engine`
   - `Clock`
@@ -115,6 +113,8 @@ This project is heavily inspired by the `Godot Game Engine`.
   - `load_texture`
 - Decorators
   - `group`
+- Enums
+  - `Group`
 - Singletons
   - `AssetLoader`
 - Components
@@ -125,9 +125,9 @@ This project is heavily inspired by the `Godot Game Engine`.
   - `Collider`
   - `SimpleMovement`
 - Nodes
-  - `Camera`
   - `Node`
   - `Node2D`
+  - `Camera`
   - `Sprite`
   - `Label`
   - `AnimatedSprite`

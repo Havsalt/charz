@@ -3,8 +3,7 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Any
 
-from linflex import Vec2
-from typing_extensions import Self
+from charz_core import Vec2, Self
 
 
 class Transform:  # Component (mixin class)

@@ -1,12 +1,10 @@
 from __future__ import annotations
 
 from colex import ColorValue
-from linflex import Vec2
+from charz_core import Node, Node2D, Vec2
 
-from .._node import Node
 from .._components._texture import Texture
 from .._components._color import Color
-from ._node2d import Node2D
 
 
 class Sprite(Color, Texture, Node2D):

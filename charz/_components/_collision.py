@@ -4,10 +4,8 @@ from dataclasses import dataclass
 from copy import deepcopy
 from typing import Any
 
-from linflex import Vec2
-from typing_extensions import Self
+from charz_core import Scene, Vec2, Self
 
-from .._scene import Scene
 from .._grouping import Group
 from .._annotations import ColliderNode
 

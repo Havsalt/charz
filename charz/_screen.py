@@ -5,14 +5,10 @@ import sys
 from enum import Enum, unique, auto
 from typing import TypeGuard
 
-from linflex import Vec2i
 from colex import ColorValue, RESET
+from charz_core import Scene, Camera, Node, Transform, Vec2i
 
-from ._camera import Camera, CameraMode
-from ._node import Node
-from ._components._transform import Transform
 from ._components._texture import Texture
-from ._scene import Scene
 from ._grouping import Group
 from ._annotations import FileLike, Renderable, TextureNode
 
@@ -213,13 +209,13 @@ class Screen(metaclass=ScreenClassProperties):
             anchor = Camera.current.parent
         relative_position = node_global_position - anchor.global_position
 
-        if Camera.current.mode & CameraMode.CENTERED:
+        if Camera.current.mode & Camera.MODE_CENTERED:
             relative_position += self.size / 2
 
         # include half size of camera parent when including size
         viewport_global_position = Camera.current.global_position
         if (
-            Camera.current.mode & CameraMode.INCLUDE_SIZE
+            Camera.current.mode & Camera.MODE_INCLUDE_SIZE
             and Camera.current.parent is not None
             and isinstance(Camera.current.parent, Texture)
         ):

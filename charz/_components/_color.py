@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from colex import ColorValue
-from typing_extensions import Self
+from charz_core import Self
 
 
 class Color:  # Component (mixin class)

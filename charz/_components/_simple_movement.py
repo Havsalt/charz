@@ -4,7 +4,7 @@ __all__ = ("SimpleMovement",)
 
 from typing import TYPE_CHECKING, NoReturn
 
-from linflex import Vec2
+from charz_core import Vec2
 
 from ._transform import Transform
 
