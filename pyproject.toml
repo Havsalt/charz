@@ -1,12 +1,12 @@
 [project]
 name = "charz"
-version = "0.1.0.dev0"
+version = "0.1.0.dev1"
 description = "An object oriented terminal game engine"
 authors = [
     { name = "Havsalt", email = "77575424+Havsalt@users.noreply.github.com" }
 ]
 dependencies = [
-    "charz-core==0.1.0.dev3",
+    "charz-core==0.1.0.dev4",
     "typing-extensions>=4.4.0",
     "colex~=0.3.0",
     "linflex~=0.2.0",
