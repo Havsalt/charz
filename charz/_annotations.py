@@ -28,10 +28,8 @@ from colex import ColorValue as _ColorValue
 from typing_extensions import LiteralString as _LiteralString
 
 if _TYPE_CHECKING:
-    from charz_core import (
-        DeltaClock as _DeltaClock,
-        Self as _Self,
-    )
+    from charz_core import Self as _Self
+    from ._clock import Clock as _Clock
     from ._screen import Screen as _Screen
     from ._components._collision import Hitbox as _Hitbox
     from ._animation import (
@@ -40,6 +38,7 @@ if _TYPE_CHECKING:
     )
 
 T = _TypeVar("T")
+Number = _TypeVar("Number", float, int)
 _T_contra = _TypeVar("_T_contra", contravariant=True)
 GroupID: _TypeAlias = _LiteralString | int | _Hashable
 
@@ -54,7 +53,7 @@ class FileLike(_Protocol[_T_contra]):
 @_runtime_checkable
 class Engine(_Protocol):
     fps: float
-    clock: _DeltaClock
+    clock: _Clock
     screen: _Screen
     _is_running: bool
 
@@ -70,8 +69,7 @@ class Node(_Protocol):
 
     def __init__(self) -> None: ...
     def with_parent(self, parent: Node | None, /) -> _Self: ...
-    def with_process_priority(self, process_priority: int, /) -> _Self: ...
-    def update(self, delta: float) -> None: ...
+    def update(self) -> None: ...
     def queue_free(self) -> None: ...
     def _free(self) -> None: ...
 
@@ -192,7 +190,7 @@ class AnimatedComponent(_Protocol):
     ) -> None: ...
     def play(self, animation_name: str, /) -> None: ...
     def play_backwards(self, animation_name: str, /) -> None: ...
-    def _wrapped_update_animated(self, _delta: float) -> None: ...
+    def _wrapped_update_animated(self) -> None: ...
 
 
 @_runtime_checkable

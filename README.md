@@ -42,27 +42,29 @@ class Player(Sprite):
         " / \\",
     ]
 
-    def update(self, delta: float) -> None:  # This method is called every frame
+    def update(self) -> None:  # This method is called every frame
         if keyboard.is_pressed("a"):
-            self.position.y -= self.SPEED * delta
+            self.position.y -= self.SPEED * Time.delta
         if keyboard.is_pressed("d"):
-            self.position.y += self.SPEED * delta
+            self.position.y += self.SPEED * Time.delta
         if keyboard.is_pressed("s"):
-            self.position.y += self.SPEED * delta
+            self.position.y += self.SPEED * Time.delta
         if keyboard.is_pressed("w"):
-            self.position.y -= self.SPEED * delta
+            self.position.y -= self.SPEED * Time.delta
 
 
 class Game(Engine):
     fps = 12
-    screen = Screen(auto_resize = True)
-    clear_console = True
+    screen = Screen(
+        auto_resize=True,
+        initial_clear=True,
+    )
 
     def __init__(self) -> None:
         Camera.current.mode = Camera.MODE_CENTERED
         self.player = Player(position=Vec2(10, 5))
     
-    def update(self, _delta: float) -> None:
+    def update(self) -> None:
         if keyboard.is_pressed("q"):
             self.is_running = False
         if keyboard.is_pressed("e"):
@@ -116,6 +118,7 @@ This project is heavily inspired by the `Godot Game Engine`.
 - Enums
   - `Group`
 - Singletons
+  - `Time`
   - `AssetLoader`
 - Components
   - `Transform`

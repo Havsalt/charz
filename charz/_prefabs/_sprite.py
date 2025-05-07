@@ -12,7 +12,6 @@ class Sprite(Color, Texture, Node2D):
         self,
         parent: Node | None = None,
         *,
-        process_priority: int | None = None,
         position: Vec2 | None = None,
         rotation: float | None = None,
         top_level: bool | None = None,
@@ -25,7 +24,6 @@ class Sprite(Color, Texture, Node2D):
     ) -> None:
         super().__init__(
             parent=parent,
-            process_priority=process_priority,
             position=position,
             rotation=rotation,
             top_level=top_level,

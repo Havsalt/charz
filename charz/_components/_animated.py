@@ -17,6 +17,7 @@ class PlaybackDirection(Enum):
     BACKWARD = auto()
 
 
+# TODO: add `group` to handle animation progression (setting `texture`), from `Engine`
 class Animated:  # Component (mixin class)
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         instance = super().__new__(cls, *args, **kwargs)
@@ -28,9 +29,9 @@ class Animated:  # Component (mixin class)
         # inject `._wrapped_update_animated()` into `.update()`
         def update_method_factory(instance: AnimatedNode, bound_update):  # noqa: ANN001 ANN202
             @wraps(bound_update)
-            def new_update_method(delta: float) -> None:
-                bound_update(delta)  # TODO: swap order will fix rendering??
-                instance._wrapped_update_animated(delta)
+            def new_update_method() -> None:
+                bound_update()  # TODO: swap order will fix rendering??
+                instance._wrapped_update_animated()
 
             return new_update_method
 
@@ -96,7 +97,7 @@ class Animated:  # Component (mixin class)
         # the actual logic of playing the animation
         # is handled in `_wrapped_update_animated`
 
-    def _wrapped_update_animated(self, _delta: float) -> None:
+    def _wrapped_update_animated(self) -> None:
         if self.current_animation is None:
             self.is_playing = False
             return

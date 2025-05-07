@@ -2,33 +2,26 @@ from __future__ import annotations
 
 import charz_core
 
+from ._clock import Clock
 from ._screen import Screen
+from ._time import Time
 
 
 class Engine(charz_core.Engine):
-    fps: float | None = 16
-    clock = charz_core.DeltaClock()
+    clock: Clock = Clock(fps=16)
     screen: Screen = Screen()
 
-    def run(self) -> None:  # main loop function
+    def process(self) -> None:
+        self.update()
+        charz_core.Scene.current.process()
+        self.screen.refresh()
+        self.clock.tick()
+        Time.delta = self.clock.delta
+
+    def run(self) -> None:  # extended main loop function
+        Time.delta = self.clock.delta
         # handle special ANSI codes to setup
         self.screen.on_startup()
-
-        # activate control property
-        self.is_running = True
-
-        while self.is_running:  # main loop
-            # update engine
-            self.update(self.clock.delta)
-
-            # update nodes in current scene and scene itself
-            charz_core.Scene.current.process(self.clock.delta)
-
-            # render
-            self.screen.refresh()
-
-            # sleep remaining time
-            self.clock.tick()
-
-        # run cleanup function
+        super().run()
+        # run cleanup function to clear output screen
         self.screen.on_cleanup()

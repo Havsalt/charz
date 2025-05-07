@@ -60,7 +60,8 @@ class SimpleMovement:  # Component (mixin class)
         )
 
     # TODO: add automatic wrapping of this function, so no conflict with user `.update`
-    def update(self, delta: float) -> None:
-        super().update(delta)  # type: ignore
+    def update(self) -> None:
+        super().update()  # type: ignore
         assert isinstance(self, Transform), "Missing `Transform` mixin"
-        self.position += self.get_movement_direction() * self.speed * delta
+        # TODO: add `delta` time
+        self.position += self.get_movement_direction() * self.speed

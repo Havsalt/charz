@@ -73,7 +73,6 @@ __all__ = [
     # Framework
     "Engine",
     "Clock",
-    "DeltaClock",
     "Screen",
     "Scene",
     "AssetLoader",
@@ -88,6 +87,7 @@ __all__ = [
     # Enums
     "Group",
     # Singletons
+    "Time",
     "AssetLoader",
     # Components
     "Transform",
@@ -118,8 +118,6 @@ from charz_core import (
     Vec2,
     Vec2i,
     Vec3,
-    Clock,
-    DeltaClock,
     Scene,
     group,
     Transform,
@@ -130,7 +128,9 @@ from charz_core import (
 
 # exports
 from ._engine import Engine
+from ._clock import Clock
 from ._screen import Screen
+from ._time import Time
 from ._asset_loader import AssetLoader
 from ._grouping import Group
 from ._animation import Animation, AnimationSet

@@ -52,4 +52,4 @@ class AssetLoader(metaclass=AssetLoaderClassProperties):
 
     # prevent instantiating, as this class only has class methods and class variables
     def __new__(cls, *_args: Any, **_kwargs: Any) -> NoReturn:
-        raise TypeError(f"{cls.__name__} cannot be instantiated")
+        raise RuntimeError(f"{cls.__name__} cannot be instantiated")

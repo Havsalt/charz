@@ -28,7 +28,7 @@ def load_texture(
         flip_h (bool, optional): flip horizontally. Defaults to False.
         flip_v (bool, optional): flip vertically. Defaults to False.
         fill (bool, optional): fill in to make shape rectangular. Defaults to True.
-        fill_char (str, optional): string of length 1 to fill with. Defaults to " ".
+        fill_char (str, optional): filler string of length 1 to use. Defaults to " ".
 
     Returns:
         list[str]: loaded texture
