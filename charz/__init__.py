@@ -118,7 +118,6 @@ from charz_core import (
     Vec2,
     Vec2i,
     Vec3,
-    Scene,
     group,
     Transform,
     Node,
@@ -132,6 +131,7 @@ from ._clock import Clock
 from ._screen import Screen
 from ._time import Time
 from ._asset_loader import AssetLoader
+from ._scene import Scene
 from ._grouping import Group
 from ._animation import Animation, AnimationSet
 from ._components._texture import load_texture, Texture
