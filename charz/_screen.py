@@ -58,7 +58,9 @@ class Screen(metaclass=ScreenClassProperties):
         margin_bottom: int = 1,
     ) -> None:
         if len(transparency_fill) != 1:
-            raise ValueError(f"string length not equal to 1, got {len(transparency_fill) = }")
+            raise ValueError(
+                f"string length not equal to 1, got {len(transparency_fill) = }"
+            )
         self.width = width
         self.height = height
         self.color_choice = color_choice

@@ -5,10 +5,10 @@ from copy import deepcopy
 from enum import Enum, unique, auto
 from typing import Any
 
-from charz_core import Self
+from charz_core import Self, group
 
 from .._animation import AnimationSet, Animation
-from .._annotations import AnimatedNode
+from .._grouping import Group
 
 
 @unique
@@ -17,7 +17,7 @@ class PlaybackDirection(Enum):
     BACKWARD = auto()
 
 
-# TODO: add `group` to handle animation progression (setting `texture`), from `Engine`
+@group(Group.ANIMATED)
 class Animated:  # Component (mixin class)
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         instance = super().__new__(cls, *args, **kwargs)
@@ -25,18 +25,7 @@ class Animated:  # Component (mixin class)
             instance.animations = deepcopy(class_animations)
         else:
             instance.animations = AnimationSet()
-
-        # inject `._wrapped_update_animated()` into `.update()`
-        def update_method_factory(instance: AnimatedNode, bound_update):  # noqa: ANN001 ANN202
-            @wraps(bound_update)
-            def new_update_method() -> None:
-                bound_update()  # TODO: swap order will fix rendering??
-                instance._wrapped_update_animated()
-
-            return new_update_method
-
-        instance.update = update_method_factory(instance, instance.update)  # type: ignore
-        return instance  # type: ignore
+        return instance
 
     animations: AnimationSet
     current_animation: Animation | None = None
@@ -79,11 +68,11 @@ class Animated:  # Component (mixin class)
             raise ValueError(f"animation not found: '{animation_name}'")
         self.current_animation = getattr(self.animations, animation_name)
         self.is_playing = True
-        self._is_on_last_frame = False
         self._playback_direction = PlaybackDirection.FORAWRD
+        self._is_on_last_frame = False
         self._frame_index = 0
         # the actual logic of playing the animation
-        # is handled in `_wrapped_update_animated`
+        # is handled in `.update_animation`
 
     def play_backwards(self, animation_name: str, /) -> None:
         if not hasattr(self.animations, animation_name):
@@ -91,13 +80,13 @@ class Animated:  # Component (mixin class)
         self.current_animation = getattr(self.animations, animation_name)
         assert isinstance(self.current_animation, Animation)
         self.is_playing = True
-        self._is_on_last_frame = False
         self._playback_direction = PlaybackDirection.BACKWARD
+        self._is_on_last_frame = False
         self._frame_index = len(self.current_animation.frames) - 1
         # the actual logic of playing the animation
-        # is handled in `_wrapped_update_animated`
+        # is handled in `.update_animation`
 
-    def _wrapped_update_animated(self) -> None:
+    def update_animation(self) -> None:
         if self.current_animation is None:
             self.is_playing = False
             return
@@ -107,6 +96,17 @@ class Animated:  # Component (mixin class)
         # using `min` and `max` instead of `clamp`
         # for better linting (`int` instead of `int | float`)
         index_change = 1 if self._playback_direction is PlaybackDirection.FORAWRD else -1
+
+        if self.is_playing and self.repeat and self._is_on_last_frame:
+            self._is_on_last_frame = False
+            first_index = (
+                0
+                if self._playback_direction is PlaybackDirection.FORAWRD
+                else frame_count - 1
+            )
+            self._frame_index = first_index
+            return
+        # progress frame index
         self._frame_index = min(
             frame_count - 1,
             max(
@@ -114,19 +114,14 @@ class Animated:  # Component (mixin class)
                 self._frame_index + index_change,
             ),
         )
-
-        if self._is_on_last_frame:
-            if self.repeat:
-                self._frame_index = 0
-                self._is_on_last_frame = False
-            else:
-                self.is_playing = False
-
         last_index = (
             frame_count - 1
             if self._playback_direction is PlaybackDirection.FORAWRD
             else 0
         )
-        # state variable to ensure last frame is shown
+        # state variable to ensure last frame is shown when `.repeat` is `True`
         if self._frame_index == last_index:
-            self._is_on_last_frame = True
+            if self.repeat:
+                self._is_on_last_frame = True
+            else:
+                self.is_playing = False
