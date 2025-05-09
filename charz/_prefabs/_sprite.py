@@ -3,11 +3,11 @@ from __future__ import annotations
 from colex import ColorValue
 from charz_core import Node, Node2D, Vec2
 
-from .._components._texture import Texture
-from .._components._color import Color
+from .._components._texture import TextureComponent
+from .._components._color import ColorComponent
 
 
-class Sprite(Color, Texture, Node2D):
+class Sprite(ColorComponent, TextureComponent, Node2D):
     def __init__(
         self,
         parent: Node | None = None,

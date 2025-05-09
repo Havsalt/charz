@@ -43,11 +43,11 @@ Includes
 - Enums
   - `Group`
 - Components
-  - `Transform`
-  - `Texture`
-  - `Color`
-  - `Animated`
-  - `Collider`
+  - `TransformComponent`
+  - `TextureComponent`
+  - `ColorComponent`
+  - `AnimatedComponent`
+  - `ColliderComponent`
 - Nodes
   - `Node`
   - `Node2D`
@@ -90,11 +90,11 @@ __all__ = [
     "Time",
     "AssetLoader",
     # Components
-    "Transform",
-    "Texture",
-    "Color",
-    "Animated",
-    "Collider",
+    "TransformComponent",
+    "TextureComponent",
+    "ColorComponent",
+    "AnimatedComponent",
+    "ColliderComponent",
     # Nodes
     "Node",
     "Node2D",
@@ -119,7 +119,7 @@ from charz_core import (
     Vec2i,
     Vec3,
     group,
-    Transform,
+    TransformComponent,
     Node,
     Node2D,
     Camera,
@@ -134,10 +134,10 @@ from ._asset_loader import AssetLoader
 from ._scene import Scene
 from ._grouping import Group
 from ._animation import Animation, AnimationSet
-from ._components._texture import load_texture, Texture
-from ._components._color import Color
-from ._components._animated import Animated
-from ._components._collision import Collider, Hitbox
+from ._components._texture import load_texture, TextureComponent
+from ._components._color import ColorComponent
+from ._components._animated import AnimatedComponent
+from ._components._collision import ColliderComponent, Hitbox
 from ._prefabs._sprite import Sprite
 from ._prefabs._label import Label
 from ._prefabs._animated_sprite import AnimatedSprite
@@ -146,11 +146,11 @@ from . import text
 
 # provide correct completion help - even if the required feature is not active
 if _TYPE_CHECKING:
-    from ._components._simple_movement import SimpleMovement
+    from ._components._simple_movement import SimpleMovementComponent
 
 # lazy exports
 # NOTE: add to `_lazy_objects` when adding new export
-_lazy_objects = ("SimpleMovement",)
+_lazy_objects = ("SimpleMovementComponent",)
 _loaded_objects: dict[str, object] = {
     name: obj
     for name, obj in globals().items()
@@ -166,10 +166,10 @@ def __getattr__(name: str) -> object:
     elif name in _lazy_objects:
         # NOTE: manually add each branch
         match name:
-            case "SimpleMovement":
-                from ._components._simple_movement import SimpleMovement
+            case "SimpleMovementComponent":
+                from ._components._simple_movement import SimpleMovementComponent
 
-                _loaded_objects[name] = SimpleMovement
+                _loaded_objects[name] = SimpleMovementComponent
                 return _loaded_objects[name]
             case _:
                 raise NotImplementedError(f"branch not implemented for '{name}'")

@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-__all__ = ("SimpleMovement",)
+__all__ = ("SimpleMovementComponent",)
 
 from typing import TYPE_CHECKING, NoReturn
 
-from charz_core import Vec2
-
-from ._transform import Transform
+from charz_core import TransformComponent, Vec2
 
 if TYPE_CHECKING:
     import keyboard
@@ -14,7 +12,7 @@ else:
     keyboard = None
 
 
-def __getattr__(name: str) -> type[SimpleMovement] | NoReturn:
+def __getattr__(name: str) -> type[SimpleMovementComponent] | NoReturn:
     try:
         global keyboard  # noqa: PLW0603
         if keyboard is None:
@@ -29,10 +27,10 @@ def __getattr__(name: str) -> type[SimpleMovement] | NoReturn:
         ) from error
     if name not in __all__:
         raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
-    return SimpleMovement
+    return SimpleMovementComponent
 
 
-class SimpleMovement:  # Component (mixin class)
+class SimpleMovementComponent:  # Component (mixin class)
     speed: float = 16
 
     def is_moving_left(self) -> bool:
@@ -62,6 +60,6 @@ class SimpleMovement:  # Component (mixin class)
     # TODO: add automatic wrapping of this function, so no conflict with user `.update`
     def update(self) -> None:
         super().update()  # type: ignore
-        assert isinstance(self, Transform), "Missing `Transform` mixin"
+        assert isinstance(self, TransformComponent), "Missing `TransformComponent`"
         # TODO: add `delta` time
         self.position += self.get_movement_direction() * self.speed

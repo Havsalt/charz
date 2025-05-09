@@ -18,7 +18,7 @@ class PlaybackDirection(Enum):
 
 
 @group(Group.ANIMATED)
-class Animated:  # Component (mixin class)
+class AnimatedComponent:  # Component (mixin class)
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         instance = super().__new__(cls, *args, **kwargs)
         if (class_animations := getattr(instance, "animations", None)) is not None:

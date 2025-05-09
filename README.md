@@ -121,12 +121,12 @@ This project is heavily inspired by the `Godot Game Engine`.
   - `Time`
   - `AssetLoader`
 - Components
-  - `Transform`
-  - `Texture`
-  - `Color`
-  - `Animated`
-  - `Collider`
-  - `SimpleMovement`
+  - `TransformComponent`
+  - `TextureComponent`
+  - `ColorComponent`
+  - `AnimatedComponent`
+  - `ColliderComponent`
+  - `SimpleMovementComponent`
 - Nodes
   - `Node`
   - `Node2D`

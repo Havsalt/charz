@@ -16,7 +16,7 @@ class Hitbox:
     centered: bool = False
 
 
-class Collider:  # Component (mixin class)
+class ColliderComponent:  # Component (mixin class)
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         instance = super().__new__(cls, *args, **kwargs)
         if (class_hitbox := getattr(instance, "hitbox", None)) is not None:
@@ -44,7 +44,7 @@ class Collider:  # Component (mixin class)
                 continue
             assert isinstance(
                 node, ColliderNode
-            ), f"Node {node} missing 'Collider' component"
+            ), f"Node {node} missing 'ColliderComponent' component"
             if self.is_colliding_with(node):
                 colliders.append(node)
         return colliders
@@ -56,7 +56,7 @@ class Collider:  # Component (mixin class)
                 continue
             assert isinstance(
                 node, ColliderNode
-            ), f"Node {node} missing 'Collider' component"
+            ), f"Node {node} missing 'ColliderComponent' component"
             if self.is_colliding_with(node):
                 return True
         return False
@@ -74,5 +74,5 @@ class Collider:  # Component (mixin class)
         return start <= colldier_node.global_position < end
 
     def _free(self) -> None:
-        del Collider.collider_instances[self.uid]  # type: ignore
+        del ColliderComponent.collider_instances[self.uid]  # type: ignore
         super()._free()  # type: ignore

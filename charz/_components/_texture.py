@@ -52,7 +52,7 @@ def load_texture(
 
 
 @group(Group.TEXTURE)
-class Texture:  # Component (mixin class)
+class TextureComponent:  # Component (mixin class)
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         instance = super().__new__(cls, *args, **kwargs)
         if (class_texture := getattr(instance, "texture", None)) is not None:
@@ -106,7 +106,7 @@ class Texture:  # Component (mixin class)
             return False
         parent = self.parent  # type: ignore
         while parent is not None:
-            if not isinstance(parent, Texture):
+            if not isinstance(parent, TextureComponent):
                 return True
             if not parent.visible:
                 return False

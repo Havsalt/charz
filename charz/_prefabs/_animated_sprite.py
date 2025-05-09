@@ -4,11 +4,11 @@ from colex import ColorValue
 from charz_core import Node, Vec2
 
 from .._animation import AnimationSet
-from .._components._animated import Animated
+from .._components._animated import AnimatedComponent
 from ._sprite import Sprite
 
 
-class AnimatedSprite(Animated, Sprite):
+class AnimatedSprite(AnimatedComponent, Sprite):
     def __init__(
         self,
         parent: Node | None = None,

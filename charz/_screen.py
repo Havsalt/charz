@@ -6,9 +6,9 @@ from enum import Enum, unique, auto
 from typing import TypeGuard
 
 from colex import ColorValue, RESET
-from charz_core import Scene, Camera, Node, Transform, Vec2i
+from charz_core import Scene, Camera, Node, TransformComponent, Vec2i
 
-from ._components._texture import Texture
+from ._components._texture import TextureComponent
 from ._grouping import Group
 from ._annotations import FileLike, Renderable, TextureNode
 
@@ -80,7 +80,7 @@ class Screen(metaclass=ScreenClassProperties):
 
     @staticmethod
     def _is_texture_nodes(nodes: list[Node]) -> TypeGuard[list[TextureNode]]:
-        return all(isinstance(node, Texture) for node in nodes)
+        return all(isinstance(node, TextureComponent) for node in nodes)
 
     def on_startup(self) -> None:
         if self.is_using_ansi():
@@ -208,7 +208,7 @@ class Screen(metaclass=ScreenClassProperties):
         if (
             not Camera.current.top_level
             and Camera.current.parent is not None
-            and isinstance(Camera.current.parent, Transform)
+            and isinstance(Camera.current.parent, TransformComponent)
         ):
             anchor = Camera.current.parent
         relative_position = node_global_position - anchor.global_position
@@ -221,7 +221,7 @@ class Screen(metaclass=ScreenClassProperties):
         if (
             Camera.current.mode & Camera.MODE_INCLUDE_SIZE
             and Camera.current.parent is not None
-            and isinstance(Camera.current.parent, Texture)
+            and isinstance(Camera.current.parent, TextureComponent)
         ):
             # adds half of camera's parent's texture size
             # TODO: cache `.parent.texture_size` for the whole iteration in main loop
@@ -286,7 +286,7 @@ class Screen(metaclass=ScreenClassProperties):
         texture_nodes = list(Scene.current.groups[Group.TEXTURE].values())
         assert self._is_texture_nodes(
             texture_nodes
-        ), f"Node in group '{Group.TEXTURE}' missing 'Texture' component"
+        ), f"Node in group '{Group.TEXTURE}' missing 'TextureComponent'"
         sorted_by_z_index = sorted(texture_nodes, key=lambda node: node.z_index)
         for texture_node in sorted_by_z_index:
             self.render(texture_node)
