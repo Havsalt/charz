@@ -7,7 +7,6 @@ authors = [
 ]
 dependencies = [
     "charz-core==0.1.0.dev7",
-    "typing-extensions>=4.4.0",
     "colex~=0.3.0",
     "linflex~=0.2.0",
 ]
