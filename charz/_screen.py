@@ -282,11 +282,11 @@ class Screen(metaclass=ScreenClassProperties):
         self._resize_if_necessary()
         self.clear()
 
-        # NOTE: `list` is faster than `tuple`, when copying
-        texture_nodes = list(Scene.current.groups[Group.TEXTURE].values())
-        assert self._is_texture_nodes(
-            texture_nodes
-        ), f"Node in group '{Group.TEXTURE}' missing 'TextureComponent'"
+        # NOTE: using underlying `list` because it's faster than `tuple`, when copying
+        texture_nodes = Scene.current.get_group_members(Group.TEXTURE)
+        assert self._is_texture_nodes(texture_nodes), (
+            f"Node in group '{Group.TEXTURE}' missing 'TextureComponent'"
+        )
         sorted_by_z_index = sorted(texture_nodes, key=lambda node: node.z_index)
         for texture_node in sorted_by_z_index:
             self.render(texture_node)
