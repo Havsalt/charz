@@ -6,7 +6,7 @@ authors = [
     { name = "Havsalt", email = "77575424+Havsalt@users.noreply.github.com" }
 ]
 dependencies = [
-    "charz-core==0.1.0.dev7",
+    "charz-core==0.1.0.dev8",
     "colex~=0.3.0",
 ]
 readme = "README.md"
