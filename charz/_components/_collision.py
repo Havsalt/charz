@@ -42,9 +42,9 @@ class ColliderComponent:  # Component (mixin class)
         for node in Scene.current.groups[Group.COLLIDER].values():
             if self is node:
                 continue
-            assert isinstance(
-                node, ColliderNode
-            ), f"Node {node} missing 'ColliderComponent' component"
+            assert isinstance(node, ColliderNode), (
+                f"Node {node} missing 'ColliderComponent' component"
+            )
             if self.is_colliding_with(node):
                 colliders.append(node)
         return colliders
@@ -54,9 +54,9 @@ class ColliderComponent:  # Component (mixin class)
         for node in Scene.current.groups[Group.COLLIDER].values():
             if self is node:
                 continue
-            assert isinstance(
-                node, ColliderNode
-            ), f"Node {node} missing 'ColliderComponent' component"
+            assert isinstance(node, ColliderNode), (
+                f"Node {node} missing 'ColliderComponent' component"
+            )
             if self.is_colliding_with(node):
                 return True
         return False

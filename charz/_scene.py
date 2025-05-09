@@ -10,9 +10,9 @@ class Scene(charz_core.Scene):
     def process(self) -> None:
         super().process()
         for animated_node in charz_core.Scene.current.get_group_members(Group.ANIMATED):
-            assert isinstance(
-                animated_node, AnimatedComponent
-            ), f"node {animated_node} missing `AnimatedComponent`"
+            assert isinstance(animated_node, AnimatedComponent), (
+                f"node {animated_node} missing `AnimatedComponent`"
+            )
             animated_node.update_animation()
 
 
