@@ -8,7 +8,6 @@ authors = [
 dependencies = [
     "charz-core==0.1.0.dev7",
     "colex~=0.3.0",
-    "linflex~=0.2.0",
 ]
 readme = "README.md"
 license = { file = "LICENSE" }
