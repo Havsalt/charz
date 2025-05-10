@@ -56,12 +56,16 @@ class TextureComponent:  # Component (mixin class)
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         instance = super().__new__(cls, *args, **kwargs)
         if (class_texture := getattr(instance, "texture", None)) is not None:
-            instance.texture = deepcopy(class_texture)
+            if instance.unique_texture:
+                instance.texture = deepcopy(class_texture)
+            else:
+                instance.texture = class_texture
         else:
             instance.texture = []
         return instance
 
     texture: list[str]
+    unique_texture: bool = True
     visible: bool = True
     centered: bool = False
     z_index: int = 0

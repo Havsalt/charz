@@ -116,6 +116,7 @@ class TransformNode(
 
 class TextureComponent(_Protocol):
     texture: list[str]
+    unique_texture: bool
     visible: bool
     centered: bool
     z_index: int
