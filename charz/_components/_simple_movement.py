@@ -6,6 +6,8 @@ from typing import TYPE_CHECKING, NoReturn
 
 from charz_core import TransformComponent, Vec2
 
+from .._time import Time
+
 if TYPE_CHECKING:
     import keyboard
 else:
@@ -61,5 +63,4 @@ class SimpleMovementComponent:  # Component (mixin class)
     def update(self) -> None:
         super().update()  # type: ignore
         assert isinstance(self, TransformComponent), "Missing `TransformComponent`"
-        # TODO: add `delta` time
-        self.position += self.get_movement_direction() * self.speed
+        self.position += self.get_movement_direction() * self.speed * Time.delta
