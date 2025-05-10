@@ -224,7 +224,7 @@ class Screen(metaclass=ScreenClassProperties):
             and isinstance(Camera.current.parent, TextureComponent)
         ):
             # adds half of camera's parent's texture size
-            # TODO: cache `.parent.texture_size` for the whole iteration in main loop
+            # TODO: cache `.parent.get_texture_size()` for the whole iteration in main loop
             viewport_global_position += Camera.current.parent.get_texture_size() / 2
 
         actual_size = self.get_actual_size()

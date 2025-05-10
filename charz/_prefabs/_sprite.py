@@ -48,7 +48,7 @@ class Sprite(ColorComponent, TextureComponent, Node2D):
             + f"#{self.uid}"
             + f":{round(self.position, 2)}"
             + f":{round(self.rotation, 2)}R"
-            + f":{'{}x{}'.format(*self.texture_size.to_tuple())}"
+            + f":{'{}x{}'.format(*self.get_texture_size())}"
             + f":{repr(self.color)}"
             + ")"
         )
