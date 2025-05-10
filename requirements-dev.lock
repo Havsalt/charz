@@ -10,7 +10,7 @@
 #   universal: false
 
 -e file:.
-charz-core==0.1.0.dev7
+charz-core==0.1.0.dev9
     # via charz
 colex==0.3.1
     # via charz
@@ -21,8 +21,7 @@ exceptiongroup==1.2.2
 iniconfig==2.1.0
     # via pytest
 keyboard==0.13.5
-linflex==0.2.2
-    # via charz
+linflex==0.3.0
     # via charz-core
 packaging==25.0
     # via pytest
@@ -33,6 +32,5 @@ pytest==8.3.5
 tomli==2.2.1
     # via pytest
 typing-extensions==4.13.2
-    # via charz
     # via charz-core
     # via linflex
