@@ -225,11 +225,11 @@ class Screen(metaclass=ScreenClassProperties):
         ):
             # adds half of camera's parent's texture size
             # TODO: cache `.parent.texture_size` for the whole iteration in main loop
-            viewport_global_position += Camera.current.parent.texture_size / 2
+            viewport_global_position += Camera.current.parent.get_texture_size() / 2
 
         actual_size = self.get_actual_size()
 
-        texture_size = node.texture_size  # store as variable for performance
+        texture_size = node.get_texture_size()  # store as variable for performance
         x = int(relative_position.x)
         y = int(relative_position.y)
         if node.centered:

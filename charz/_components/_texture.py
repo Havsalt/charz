@@ -113,8 +113,7 @@ class TextureComponent:  # Component (mixin class)
             parent = parent.parent  # type: ignore
         return True
 
-    @property
-    def texture_size(self) -> Vec2i:
+    def get_texture_size(self) -> Vec2i:
         """Get the size of the texture
 
         Computed in O(n*m), where n is the number of lines and m is the length of the longest line
