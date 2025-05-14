@@ -44,9 +44,9 @@ class Player(Sprite):
 
     def update(self) -> None:  # This method is called every frame
         if keyboard.is_pressed("a"):
-            self.position.y -= self.SPEED * Time.delta
+            self.position.x -= self.SPEED * Time.delta
         if keyboard.is_pressed("d"):
-            self.position.y += self.SPEED * Time.delta
+            self.position.x += self.SPEED * Time.delta
         if keyboard.is_pressed("s"):
             self.position.y += self.SPEED * Time.delta
         if keyboard.is_pressed("w"):
