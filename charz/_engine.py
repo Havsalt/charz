@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import charz_core
 
+from ._scene import Scene
 from ._clock import Clock
 from ._screen import Screen
 from ._time import Time
@@ -13,7 +14,7 @@ class Engine(charz_core.Engine):
 
     def process(self) -> None:
         self.update()
-        charz_core.Scene.current.process()
+        Scene.current.process()
         self.screen.refresh()
         self.clock.tick()
         Time.delta = self.clock.delta
