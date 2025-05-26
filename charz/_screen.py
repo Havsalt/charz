@@ -2,15 +2,17 @@ from __future__ import annotations
 
 import os
 import sys
+from math import cos, sin, floor
 from enum import Enum, unique, auto
-from typing import TypeGuard
+from typing import TypeGuard, Iterable
 
 from colex import ColorValue, RESET
 from charz_core import Scene, Camera, Node, TransformComponent, Vec2i
 
+from . import text
 from ._components._texture import TextureComponent
 from ._grouping import Group
-from ._annotations import FileLike, Renderable, TextureNode
+from ._annotations import FileLike, Renderable, TextureNode, Char
 
 
 @unique
@@ -40,7 +42,7 @@ class ScreenClassProperties(type):
 class Screen(metaclass=ScreenClassProperties):
     stream: FileLike[str] = sys.stdout  # default stream, may be redirected
     # screen texture buffer with (char, color) tuple
-    buffer: list[list[tuple[str, ColorValue | None]]]
+    buffer: list[list[tuple[Char, ColorValue | None]]]
 
     def __init__(
         self,
@@ -185,66 +187,92 @@ class Screen(metaclass=ScreenClassProperties):
             for _ in range(self.height)
         ]
 
-    def render(self, node: Renderable, /) -> None:  # noqa: C901
-        if not node.is_globally_visible():  # skip if node is invisible
-            return
+    def render_all(self, nodes: Iterable[Renderable], /) -> None:
+        nodes_sorted_by_z_index = sorted(nodes, key=lambda node: node.z_index)
 
-        color: ColorValue | None = getattr(node, "color")  # noqa: B009
-        # TODO: implement rotation when rendering
-        # node_global_rotation = node.global_rotation
-        node_global_position = node.global_position
+        # include half size of camera parent when including size
+        viewport_global_position = Camera.current.global_position
+
+        if Camera.current.mode & Camera.MODE_INCLUDE_SIZE and isinstance(
+            Camera.current.parent, TextureComponent
+        ):
+            # adds half of camera's parent's texture size
+            viewport_global_position += Camera.current.parent.get_texture_size() / 2
 
         # determine whether to use use the parent of current camera
         # or its parent as anchor for viewport
         anchor = Camera.current
-        if (
-            not Camera.current.top_level
-            and Camera.current.parent is not None
-            and isinstance(Camera.current.parent, TransformComponent)
+        if not Camera.current.top_level and isinstance(
+            Camera.current.parent, TransformComponent
         ):
             anchor = Camera.current.parent
-        relative_position = node_global_position - anchor.global_position
 
-        if Camera.current.mode & Camera.MODE_CENTERED:
-            relative_position += self.size / 2
+        for node in nodes_sorted_by_z_index:
+            if not node.is_globally_visible():
+                continue
 
-        # include half size of camera parent when including size
-        viewport_global_position = Camera.current.global_position
-        if (
-            Camera.current.mode & Camera.MODE_INCLUDE_SIZE
-            and Camera.current.parent is not None
-            and isinstance(Camera.current.parent, TextureComponent)
-        ):
-            # adds half of camera's parent's texture size
-            # TODO: cache `.parent.get_texture_size()` for the whole iteration in main loop
-            viewport_global_position += Camera.current.parent.get_texture_size() / 2
+            # cache and lookup node properties/attributes
+            node_global_position = node.global_position
+            node_global_rotation = node.global_rotation
+            node_color: ColorValue | None = getattr(node, "color")  # noqa: B009
 
-        actual_size = self.get_actual_size()
+            relative_position = node_global_position - anchor.global_position
 
-        texture_size = node.get_texture_size()  # store as variable for performance
-        x = int(relative_position.x)
-        y = int(relative_position.y)
-        if node.centered:
-            x = int(relative_position.x - (texture_size.x / 2))
-            y = int(relative_position.y - (texture_size.y / 2))
+            if Camera.current.mode & Camera.MODE_CENTERED:
+                relative_position.x += self.width / 2
+                relative_position.y += self.height / 2
 
-        # TODO: consider nodes with rotation
-        # out of bounds
-        if x + texture_size.x < 0 or x > actual_size.x:
-            return
-        if y + texture_size.y < 0 or y > actual_size.y:
-            return
+            # offset from centering
+            offset_x = 0
+            offset_y = 0
+            if node.centered:
+                node_texture_size = node.get_texture_size()
+                offset_x = node_texture_size.x / 2
+                offset_y = node_texture_size.y / 2
 
-        for y_offset, line in enumerate(node.texture):
-            y_final = y + y_offset
-            for x_offset, char in enumerate(line):
-                if char == node.transparency:  # skip transparent char
-                    continue
-                x_final = x + x_offset
-                # insert char into screen buffer if visible
-                if 0 <= x_final < actual_size.x and 0 <= y_final < actual_size.y:
-                    self.buffer[y_final][x_final] = (char, color)
-        # TODO: implement render with rotation
+            # TODO: improve performance by using simpler solution when no rotation
+            # iterate over each cell, for each row
+            for h, row in enumerate(node.texture):
+                for w, char in enumerate(row):
+                    if char == node.transparency:
+                        continue
+
+                    # adjust starting point based on centering
+                    x_diff = w - offset_x
+                    y_diff = h - offset_y
+
+                    # apply rotation using upper-left as the origin
+                    # NOTE: `-node_global_rotation` mean counter-clockwise
+                    neg_node_global_rotation = (
+                        -node_global_rotation
+                    )  # cache using variable
+                    rotated_x = (
+                        cos(neg_node_global_rotation) * x_diff
+                        - sin(neg_node_global_rotation) * y_diff
+                    )
+                    rotated_y = (
+                        sin(neg_node_global_rotation) * x_diff
+                        + cos(neg_node_global_rotation) * y_diff
+                    )
+
+                    # translate to final screen position
+                    final_x = relative_position.x + rotated_x
+                    final_y = relative_position.y + rotated_y
+
+                    # apply horizontal index snap
+                    char_index = floor(final_x)
+                    # do horizontal boundary check
+                    if char_index < 0 or char_index >= self.width:
+                        continue
+
+                    # apply vertical index snap
+                    row_index = floor(final_y)
+                    if row_index < 0 or row_index >= self.height:
+                        continue
+
+                    # insert rotated char into screen buffer
+                    rotated_char = text.rotate(char, node_global_rotation)
+                    self.buffer[row_index][char_index] = (rotated_char, node_color)
 
     def show(self) -> None:
         actual_size = self.get_actual_size()
@@ -273,13 +301,7 @@ class Screen(metaclass=ScreenClassProperties):
     def refresh(self) -> None:
         self._resize_if_necessary()
         self.clear()
-
         # NOTE: using underlying `list` because it's faster than `tuple`, when copying
         texture_nodes = Scene.current.get_group_members(Group.TEXTURE)
-        assert self._is_texture_nodes(texture_nodes), (
-            f"Node in group '{Group.TEXTURE}' missing 'TextureComponent'"
-        )
-        sorted_by_z_index = sorted(texture_nodes, key=lambda node: node.z_index)
-        for texture_node in sorted_by_z_index:
-            self.render(texture_node)
+        self.render_all(texture_nodes)  # type: ignore  # skip asserts
         self.show()

@@ -21,13 +21,16 @@ from __future__ import annotations as _annotations
 from math import tau as _TAU
 
 
+# NOTE: I marked variables with underscores as they are not for export,
+#       since this is a publicly exported module of `charz`
+
 # IDEA: make TextTranslator (as in Transform props),
 #       as public export,
 #       and wrap methods of 1 default instance with module functions in this file
 
 
 # predefined horizontal conversions
-_h_conversions: dict[str, str] = {  # horizontal flip
+_horizontal_conversions: dict[str, str] = {  # horizontal flip
     "/": "\\",
     "(": ")",
     "[": "]",
@@ -37,19 +40,19 @@ _h_conversions: dict[str, str] = {  # horizontal flip
     "d": "b",
     "q": "p",
 }
-# mirroring `_h_conversions`
+# mirroring `_horizontal_conversions`
 # fmt: off
-_h_conversions.update({
+_horizontal_conversions.update({
     value: key
-    for key, value in _h_conversions.items()
+    for key, value in _horizontal_conversions.items()
 })
-# unmirrored `_h_conversions` for monodirectional translations
-_h_conversions.update({
+# unmirrored `_horizontal_conversions` for monodirectional translations
+_horizontal_conversions.update({
     "7": "<"
 })
 # fmt: on
 # predefined vertical conversions
-_v_conversions: dict[str, str] = {  # vertical flip
+_vertical_conversions: dict[str, str] = {  # vertical flip
     "/": "\\",
     ".": "'",
     ",": "`",
@@ -61,41 +64,46 @@ _v_conversions: dict[str, str] = {  # vertical flip
     "v": "^",
     "V": "A",
 }
-# mirroring `_v_conversions`
+# mirroring `_vertical_conversions`
 # fmt: off
-_v_conversions.update({
+_vertical_conversions.update({
     value: key
-    for key, value in _v_conversions.items()
+    for key, value in _vertical_conversions.items()
 })
 # fmt: on
-# unmirrored `_v_conversions` for monodirectional translations
+# unmirrored `_vertical_conversions` for monodirectional translations
 # fmt: off
-# _v_conversions.update({
+# _vertical_conversions.update({
 #     # none for now...
 # })
 # fmt: on
 # predefined rotational conversions
-_r_conversions: dict[str, tuple[str, ...]] = {  # rotational
-    "|": ("|", "\\", "-", "/"),
+_rotational_conversions: dict[str, tuple[str, ...]] = {  # rotational
+    "-": ("-", "/", "|", "\\", "-", "/", "|", "\\"),
     ".": (".", "'"),
     "b": ("b", "p", "q", "d"),
     "9": ("9", "6"),
 }
-# (I marked vars with underscore as they are not for export, and this is a public module)
-# creating mirrored {char: variants} pairs, for pairs already defined in `_r_conversions`
-# mirror `_r_conversions` (adds variants as their own keys)
-for _options in list(_r_conversions.values()):
+
+# creating mirrored {char: variants} pairs,
+# for pairs already defined in `_rotational_conversions`
+
+# mirror `_rotational_conversions` (adds variants as their own keys)
+for _options in list(_rotational_conversions.values()):
     for _idx, _value in enumerate(_options):
-        if _idx == 0:  # does not need to re-add the initial pair
+        if _idx == 0:  # skip existing pair
             continue
-        assert _value not in _r_conversions, "cannot add existing value: " + repr(_value)
+        if _value in _rotational_conversions:
+            # some char variants occur multiple times
+            # - define `_rotational_conversions` keys using "resting variants"
+            continue
         _before = _options[:_idx]
         _after = _options[_idx:]
         _new_values = (*_after, *_before)
-        _r_conversions[_value] = _new_values
-# unmirrored `_r_conversions` for spesific lookup translations
+        _rotational_conversions[_value] = _new_values
+# unmirrored `_rotational_conversions` for spesific lookup translations
 # fmt: off
-# _r_conversions.update({
+# _rotational_conversions.update({
 #     # none for now...
 # })
 # fmt: on
@@ -124,7 +132,7 @@ def flip_h(line: str, /) -> str:
     Returns:
         list[str]: flipped line or character
     """
-    return "".join(_h_conversions.get(char, char) for char in reversed(line))
+    return "".join(_horizontal_conversions.get(char, char) for char in reversed(line))
 
 
 def flip_v(line: str, /) -> str:
@@ -136,7 +144,7 @@ def flip_v(line: str, /) -> str:
     Returns:
         list[str]: flipped line or character
     """
-    return "".join(_v_conversions.get(char, char) for char in line)
+    return "".join(_vertical_conversions.get(char, char) for char in line)
 
 
 def fill_lines(lines: list[str], *, fill_char: str = " ") -> list[str]:
@@ -191,11 +199,11 @@ def rotate(char: str, /, angle: float) -> str:
     Returns:
         str: rotated character or original character
     """
-    if char in _r_conversions:
-        sector_count = len(_r_conversions[char])
+    if char in _rotational_conversions:
+        sector_count = len(_rotational_conversions[char])
         sector_rads = _TAU / sector_count
         half_sector_rads = sector_rads / 2
         total_rads = (angle + half_sector_rads) % _TAU
         index = int(total_rads / sector_rads) % sector_count
-        return _r_conversions[char][index]
+        return _rotational_conversions[char][index]
     return char
