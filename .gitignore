@@ -5,7 +5,6 @@ dev[0-9].py
 beta-dist
 test-animations/
 ecs_dev.py
-charz-core-latest/
 
 # temp
 _controller_support.py
