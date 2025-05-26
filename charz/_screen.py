@@ -188,14 +188,6 @@ class Screen(metaclass=ScreenClassProperties):
     def render(self, node: Renderable, /) -> None:  # noqa: C901
         if not node.is_globally_visible():  # skip if node is invisible
             return
-        # TODO: remove this block, as it no longer serves a purpouse
-        # current camera should never be None or other class than 'Camera',
-        # or subclass of it
-        if Camera.current is None or not isinstance(Camera.current, Camera):
-            raise TypeError(
-                "'Camera.current' cannot be of type "
-                f"'{type(Camera.current)}' while rendering"
-            )
 
         color: ColorValue | None = getattr(node, "color")  # noqa: B009
         # TODO: implement rotation when rendering
