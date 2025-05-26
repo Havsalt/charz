@@ -43,7 +43,7 @@ class ColliderComponent:  # Component (mixin class)
             if self is node:
                 continue
             assert isinstance(node, ColliderNode), (
-                f"Node {node} missing 'ColliderComponent' component"
+                f"Node {node} missing 'ColliderComponent'"
             )
             if self.is_colliding_with(node):
                 colliders.append(node)
@@ -55,7 +55,7 @@ class ColliderComponent:  # Component (mixin class)
             if self is node:
                 continue
             assert isinstance(node, ColliderNode), (
-                f"Node {node} missing 'ColliderComponent' component"
+                f"Node {node} missing 'ColliderComponent'"
             )
             if self.is_colliding_with(node):
                 return True
