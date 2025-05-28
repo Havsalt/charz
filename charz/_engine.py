@@ -19,10 +19,10 @@ class Engine(charz_core.Engine):
         self.clock.tick()
         Time.delta = self.clock.delta
 
-    def run(self) -> None:  # extended main loop function
+    def run(self) -> None:  # Extended main loop function
         Time.delta = self.clock.delta
-        # handle special ANSI codes to setup
+        # Handle special ANSI codes to setup
         self.screen.on_startup()
         super().run()
-        # run cleanup function to clear output screen
+        # Run cleanup function to clear output screen
         self.screen.on_cleanup()

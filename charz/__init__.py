@@ -106,10 +106,10 @@ __all__ = [
 
 from typing import TYPE_CHECKING as _TYPE_CHECKING
 
-# re-exports
+# Re-exports from `colex`
 from colex import ColorValue
 
-# re-exports from `charz-core`
+# Re-exports from `charz-core`
 from charz_core import (
     Self,
     lerp,
@@ -125,7 +125,7 @@ from charz_core import (
     Camera,
 )
 
-# exports
+# Exports
 from ._engine import Engine
 from ._clock import Clock
 from ._screen import Screen
@@ -144,12 +144,12 @@ from ._prefabs._animated_sprite import AnimatedSprite
 from . import text
 
 
-# provide correct completion help - even if the required feature is not active
+# Provide correct completion help - Even if the required feature is not active
 if _TYPE_CHECKING:
     from ._components._simple_movement import SimpleMovementComponent
 
-# lazy exports
-# NOTE: add to `_lazy_objects` when adding new export
+# Lazy exports
+# NOTE: Add to `_lazy_objects` when adding new export
 _lazy_objects = ("SimpleMovementComponent",)
 _loaded_objects: dict[str, object] = {
     name: obj
@@ -158,13 +158,13 @@ _loaded_objects: dict[str, object] = {
 }
 
 
-# lazy load to properly load optional dependencies along the standard exports
-# TODO: check if there is a step here that can be skipped
+# Lazy load to properly load optional dependencies along the standard exports
+# TODO: Check if there is a step here that can be skipped
 def __getattr__(name: str) -> object:
     if name in _loaded_objects:
         return _loaded_objects[name]
     elif name in _lazy_objects:
-        # NOTE: manually add each branch
+        # NOTE: Manually add each case branch
         match name:
             case "SimpleMovementComponent":
                 from ._components._simple_movement import SimpleMovementComponent
@@ -172,5 +172,5 @@ def __getattr__(name: str) -> object:
                 _loaded_objects[name] = SimpleMovementComponent
                 return _loaded_objects[name]
             case _:
-                raise NotImplementedError(f"branch not implemented for '{name}'")
-    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+                raise NotImplementedError(f"Case branch not implemented for '{name}'")
+    raise AttributeError(f"Module '{__name__}' has no attribute '{name}'")

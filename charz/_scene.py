@@ -16,9 +16,9 @@ class Scene(charz_core.Scene):
             animated_node.update_animation()
 
 
-# TODO: make this automatic
-# set current scene to this spesific default implementation
-# - this is done automatically after this point,
+# TODO: Make this automatic
+# Set current scene to this spesific default implementation
+# - This is done automatically after this point,
 #   as long as `charz.Scene` is used,
 #   and not `charz_core.Scene` is called `.current` on
 Scene.current = Scene()

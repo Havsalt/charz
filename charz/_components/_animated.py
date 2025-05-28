@@ -36,7 +36,7 @@ class AnimatedComponent:  # Component (mixin class)
     _is_on_last_frame: bool = False
 
     def with_animations(self, /, **animations: Animation) -> Self:
-        # NOTE: additive
+        # NOTE: Additive
         for animation_name, animation in animations.items():
             setattr(self.animations, animation_name, animation)
         return self
@@ -47,7 +47,7 @@ class AnimatedComponent:  # Component (mixin class)
         animation: Animation,
         /,
     ) -> Self:
-        # NOTE: additive
+        # NOTE: Additive
         self.add_animation(animation_name, animation)
         return self
 
@@ -65,25 +65,25 @@ class AnimatedComponent:  # Component (mixin class)
 
     def play(self, animation_name: str, /) -> None:
         if not hasattr(self.animations, animation_name):
-            raise ValueError(f"animation not found: '{animation_name}'")
+            raise ValueError(f"Animation not found: '{animation_name}'")
         self.current_animation = getattr(self.animations, animation_name)
         self.is_playing = True
         self._playback_direction = PlaybackDirection.FORAWRD
         self._is_on_last_frame = False
         self._frame_index = 0
-        # the actual logic of playing the animation
+        # The actual logic of playing the animation
         # is handled in `.update_animation`
 
     def play_backwards(self, animation_name: str, /) -> None:
         if not hasattr(self.animations, animation_name):
-            raise ValueError(f"animation not found: '{animation_name}'")
+            raise ValueError(f"Animation not found: '{animation_name}'")
         self.current_animation = getattr(self.animations, animation_name)
         assert isinstance(self.current_animation, Animation)
         self.is_playing = True
         self._playback_direction = PlaybackDirection.BACKWARD
         self._is_on_last_frame = False
         self._frame_index = len(self.current_animation.frames) - 1
-        # the actual logic of playing the animation
+        # The actual logic of playing the animation
         # is handled in `.update_animation`
 
     def update_animation(self) -> None:
@@ -93,8 +93,6 @@ class AnimatedComponent:  # Component (mixin class)
 
         self.texture = self.current_animation.frames[self._frame_index]
         frame_count = len(self.current_animation.frames)
-        # using `min` and `max` instead of `clamp`
-        # for better linting (`int` instead of `int | float`)
         index_change = 1 if self._playback_direction is PlaybackDirection.FORAWRD else -1
 
         if self.is_playing and self.repeat and self._is_on_last_frame:
@@ -106,7 +104,7 @@ class AnimatedComponent:  # Component (mixin class)
             )
             self._frame_index = first_index
             return
-        # progress frame index
+        # Progress frame index
         self._frame_index = min(
             frame_count - 1,
             max(
@@ -119,7 +117,7 @@ class AnimatedComponent:  # Component (mixin class)
             if self._playback_direction is PlaybackDirection.FORAWRD
             else 0
         )
-        # state variable to ensure last frame is shown when `.repeat` is `True`
+        # State variable to ensure last frame is shown when `.repeat` is `True`
         if self._frame_index == last_index:
             if self.repeat:
                 self._is_on_last_frame = True

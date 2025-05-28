@@ -9,10 +9,10 @@ class NonNegative(Generic[Number]):
     def __init__(self, value: Number, /) -> None:
         if not isinstance(value, Number.__constraints__):
             raise TypeError(
-                f"attribute '{self._name[1:]}' must be {self._valid_types_message()}"
+                f"Attribute '{self._name[1:]}' must be {self._valid_types_message()}"
             )
         if value < 0:
-            raise ValueError(f"attribute '{self._name[1:]}' must be non-negative")
+            raise ValueError(f"Attribute '{self._name[1:]}' must be non-negative")
         self.value = value
 
     def __set_name__(self, _owner: type, name: str) -> None:
@@ -24,10 +24,10 @@ class NonNegative(Generic[Number]):
     def __set__(self, instance: Any, value: Number) -> None:  # noqa: ANN401
         if not isinstance(value, Number.__constraints__):
             raise TypeError(
-                f"attribute '{self._name[1:]}' must be {self._valid_types_message()}"
+                f"Attribute '{self._name[1:]}' must be {self._valid_types_message()}"
             )
         if value < 0:
-            raise ValueError(f"attribute '{self._name[1:]}' must be non-negative")
+            raise ValueError(f"Attribute '{self._name[1:]}' must be non-negative")
         setattr(instance, self._name, value)
 
     def _valid_types_message(self) -> str:

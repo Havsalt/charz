@@ -11,7 +11,7 @@ from .._asset_loader import AssetLoader
 from .._grouping import Group
 
 
-# TODO: in future versions, add caching
+# TODO: In future versions, add caching
 def load_texture(
     texture_path: Path | str,
     /,
@@ -21,17 +21,17 @@ def load_texture(
     fill: bool = True,
     fill_char: str = " ",
 ) -> list[str]:
-    """Loads texture from file
+    """Load texture from file
 
     Args:
-        texture_path (Path | str): path to file with texture.
-        flip_h (bool, optional): flip horizontally. Defaults to False.
-        flip_v (bool, optional): flip vertically. Defaults to False.
-        fill (bool, optional): fill in to make shape rectangular. Defaults to True.
-        fill_char (str, optional): filler string of length 1 to use. Defaults to " ".
+        texture_path (Path | str): Path to file with texture.
+        flip_h (bool, optional): Flip horizontally. Defaults to False.
+        flip_v (bool, optional): Flip vertically. Defaults to False.
+        fill (bool, optional): Fill in to make shape rectangular. Defaults to True.
+        fill_char (str, optional): Filler string of length 1 to use. Defaults to " ".
 
     Returns:
-        list[str]: loaded texture
+        list[str]: Foaded texture
     """
     # fmt: off
     file = (
@@ -42,7 +42,7 @@ def load_texture(
     # fmt: on
     content = file.read_text(encoding="utf-8")
     texture = content.splitlines()
-    if fill:  # NOTE: this fill logic has to be before flipping
+    if fill:  # NOTE: This fill logic has to be before flipping
         texture = text.fill_lines(texture, fill_char=fill_char)
     if flip_h:
         texture = text.flip_lines_h(texture)
@@ -100,11 +100,11 @@ class TextureComponent:  # Component (mixin class)
     def show(self) -> None:
         self.visible = True
 
-    def is_globally_visible(self) -> bool:  # global visibility
-        """Checks whether the node and its ancestors are visible
+    def is_globally_visible(self) -> bool:
+        """Check whether the node and its ancestors are visible
 
         Returns:
-            bool: global visibility
+            bool: Blobal visibility
         """
         if not self.visible:
             return False
@@ -120,14 +120,15 @@ class TextureComponent:  # Component (mixin class)
     def get_texture_size(self) -> Vec2i:
         """Get the size of the texture
 
-        Computed in O(n*m), where n is the number of lines and m is the length of the longest line
+        Computed in O(n*m), where n is the number of lines
+        and m is the length of the longest line
 
         Returns:
-            Vec2i: texture size
-        """  # noqa: E501
+            Vec2i: Texture size
+        """
         if not self.texture:
             return Vec2i.ZERO
         return Vec2i(
-            len(max(self.texture, key=len)),  # length of longest line
-            len(self.texture),  # line count
+            len(max(self.texture, key=len)),  # Length of longest line
+            len(self.texture),  # Line count
         )

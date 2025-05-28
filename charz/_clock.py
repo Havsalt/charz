@@ -27,7 +27,7 @@ class Clock:
         self._last_tick = time.perf_counter()
 
     def __str__(self) -> str:
-        fps = self.fps  # assign to temp var to use prettier formatting on next line
+        fps = self.fps  # Assign to temp var to use prettier formatting on next line
         return f"{self.__class__.__name__}({fps=})"
 
     @property
@@ -39,11 +39,11 @@ class Clock:
         """Sleeps for the remaining time to maintain desired `fps`"""
         current_time = time.perf_counter()
 
-        if self.fps == 0:  # skip sleeping if `.fps` is zero
+        if self.fps == 0:  # Skip sleeping if `.fps` is zero
             self._last_tick = current_time
             return
 
-        target_delta = 1 / self.fps  # seconds
+        target_delta = 1 / self.fps  # Seconds
         elapsed_time = current_time - self._last_tick
         sleep_time = target_delta - elapsed_time
         if sleep_time > 0:

@@ -40,8 +40,8 @@ class ScreenClassProperties(type):
 
 
 class Screen(metaclass=ScreenClassProperties):
-    stream: FileLike[str] = sys.stdout  # default stream, may be redirected
-    # screen texture buffer with (char, color) tuple
+    stream: FileLike[str] = sys.stdout  # Default stream, may be redirected
+    # Screen texture buffer with (char, color) tuple
     buffer: list[list[tuple[Char, ColorValue | None]]]
 
     def __init__(
@@ -61,14 +61,14 @@ class Screen(metaclass=ScreenClassProperties):
     ) -> None:
         if len(transparency_fill) != 1:
             raise ValueError(
-                f"string length not equal to 1, got {len(transparency_fill) = }"
+                f"String length not equal to 1, got {len(transparency_fill) = }"
             )
         self.width = width
         self.height = height
         self.color_choice = color_choice
         if stream is not None:
             self.stream = stream
-            # NOTE: uses class variable `Screen.stream` by default
+            # NOTE: Uses class variable `Screen.stream` by default
         self.margin_right = margin_right
         self.margin_bottom = margin_bottom
         self._auto_resize = auto_resize
@@ -78,7 +78,7 @@ class Screen(metaclass=ScreenClassProperties):
         self._resize_if_necessary()
         self.transparency_fill = transparency_fill
         self.buffer = []
-        self.clear()  # for populating the screen buffer
+        self.clear()  # For populating the screen buffer
 
     @staticmethod
     def _is_texture_nodes(nodes: list[Node]) -> TypeGuard[list[TextureNode]]:
@@ -114,12 +114,12 @@ class Screen(metaclass=ScreenClassProperties):
         self._resize_if_necessary()
 
     def _resize_if_necessary(self) -> None:
-        # NOTE: does not mutate screen buffer
+        # NOTE: Does not mutate screen buffer
         if self.auto_resize:
             try:
                 fileno = self.stream.fileno()
             except (ValueError, OSError):
-                # do not resize if not proper `.stream.fileno()` is available,
+                # Do not resize if not proper `.stream.fileno()` is available,
                 # like `io.StringIO.fileno()`
                 return
             try:
@@ -137,15 +137,15 @@ class Screen(metaclass=ScreenClassProperties):
     def size(self, size: Vec2i) -> None:
         width, height = size
         if not isinstance(width, int):
-            raise ValueError(f"width cannot be of type '{type(size)}', expected 'int'")
+            raise ValueError(f"Width cannot be of type '{type(size)}', expected 'int'")
         if not isinstance(height, int):
-            raise ValueError(f"height cannot be of type '{type(size)}', expected 'int'")
+            raise ValueError(f"Height cannot be of type '{type(size)}', expected 'int'")
         self.width = width
         self.height = height
         self._resize_if_necessary()
 
     def is_using_ansi(self) -> bool:
-        """Returns whether its using ANSI escape and color codes
+        """Return whether its using ANSI escape and color codes
 
         Checks first `.color_choice`. Returns `True` if set to `ALWAYS`,
         and `False` if set to `NEVER`. If set to `AUTO`, check whether a `tty` is detected
@@ -164,7 +164,7 @@ class Screen(metaclass=ScreenClassProperties):
                 is_a_tty = os.isatty(fileno)
             except OSError:
                 is_a_tty = False
-        # is not a tty or `ColorChoice.NEVER`
+        # Is not a TTY or is `ColorChoice.NEVER`
         return self.color_choice is ColorChoice.AUTO and is_a_tty
 
     def get_actual_size(self) -> Vec2i:
@@ -182,7 +182,7 @@ class Screen(metaclass=ScreenClassProperties):
 
     def clear(self) -> None:
         self.buffer = [
-            # (char, color) group
+            # Pair structure: (char, color)
             [(self.transparency_fill, None) for _ in range(self.width)]
             for _ in range(self.height)
         ]
@@ -190,16 +190,16 @@ class Screen(metaclass=ScreenClassProperties):
     def render_all(self, nodes: Iterable[Renderable], /) -> None:
         nodes_sorted_by_z_index = sorted(nodes, key=lambda node: node.z_index)
 
-        # include half size of camera parent when including size
+        # Include half size of camera parent when including size
         viewport_global_position = Camera.current.global_position
 
         if Camera.current.mode & Camera.MODE_INCLUDE_SIZE and isinstance(
             Camera.current.parent, TextureComponent
         ):
-            # adds half of camera's parent's texture size
+            # Adds half of camera's parent's texture size
             viewport_global_position += Camera.current.parent.get_texture_size() / 2
 
-        # determine whether to use use the parent of current camera
+        # Determine whether to use use the parent of current camera
         # or its parent as anchor for viewport
         anchor = Camera.current
         if not Camera.current.top_level and isinstance(
@@ -211,7 +211,7 @@ class Screen(metaclass=ScreenClassProperties):
             if not node.is_globally_visible():
                 continue
 
-            # cache and lookup node properties/attributes
+            # Cache and lookup node properties/attributes
             node_global_position = node.global_position
             node_global_rotation = node.global_rotation
             node_color: ColorValue | None = getattr(node, "color")  # noqa: B009
@@ -222,7 +222,7 @@ class Screen(metaclass=ScreenClassProperties):
                 relative_position.x += self.width / 2
                 relative_position.y += self.height / 2
 
-            # offset from centering
+            # Offset from centering
             offset_x = 0
             offset_y = 0
             if node.centered:
@@ -230,22 +230,21 @@ class Screen(metaclass=ScreenClassProperties):
                 offset_x = node_texture_size.x / 2
                 offset_y = node_texture_size.y / 2
 
-            # TODO: improve performance by using simpler solution when no rotation
-            # iterate over each cell, for each row
+            # TODO: Improve performance by using simpler solution when no rotation
+            #     - Iterate over each cell, for each row
             for h, row in enumerate(node.texture):
                 for w, char in enumerate(row):
                     if char == node.transparency:
                         continue
 
-                    # adjust starting point based on centering
+                    # Adjust starting point based on centering
                     x_diff = w - offset_x
                     y_diff = h - offset_y
 
-                    # apply rotation using upper-left as the origin
-                    # NOTE: `-node_global_rotation` mean counter-clockwise
-                    neg_node_global_rotation = (
-                        -node_global_rotation
-                    )  # cache using variable
+                    # Apply rotation using upper-left as the origin
+                    # NOTE: `-node_global_rotation` means counter clockwise
+                    # Cache using variable
+                    neg_node_global_rotation = -node_global_rotation
                     rotated_x = (
                         cos(neg_node_global_rotation) * x_diff
                         - sin(neg_node_global_rotation) * y_diff
@@ -255,28 +254,28 @@ class Screen(metaclass=ScreenClassProperties):
                         + cos(neg_node_global_rotation) * y_diff
                     )
 
-                    # translate to final screen position
+                    # Translate to final screen position
                     final_x = relative_position.x + rotated_x
                     final_y = relative_position.y + rotated_y
 
-                    # apply horizontal index snap
+                    # Apply horizontal index snap
                     char_index = floor(final_x)
-                    # do horizontal boundary check
+                    # Do horizontal boundary check
                     if char_index < 0 or char_index >= self.width:
                         continue
 
-                    # apply vertical index snap
+                    # Apply vertical index snap
                     row_index = floor(final_y)
                     if row_index < 0 or row_index >= self.height:
                         continue
 
-                    # insert rotated char into screen buffer
+                    # Insert rotated char into screen buffer
                     rotated_char = text.rotate(char, node_global_rotation)
                     self.buffer[row_index][char_index] = (rotated_char, node_color)
 
     def show(self) -> None:
         actual_size = self.get_actual_size()
-        # construct frame
+        # Construct frame from screen buffer
         out = ""
         is_using_ansi = self.is_using_ansi()
         for lino, row in enumerate(self.buffer[: actual_size.y], start=1):
@@ -288,20 +287,20 @@ class Screen(metaclass=ScreenClassProperties):
                         out += RESET + color + char
                 else:
                     out += char
-            if lino != actual_size.y:  # not at end
+            if lino != actual_size.y:  # Not at end
                 out += "\n"
         if is_using_ansi:
             out += RESET
             cursor_move_code = f"\x1b[{actual_size.y - 1}A" + "\r"
             out += cursor_move_code
-        # write and flush
+        # Write and flush
         self.stream.write(out)
         self.stream.flush()
 
     def refresh(self) -> None:
         self._resize_if_necessary()
         self.clear()
-        # NOTE: using underlying `list` because it's faster than `tuple`, when copying
+        # NOTE: Using underlying `list` because it's faster than `tuple`, when copying
         texture_nodes = Scene.current.get_group_members(Group.TEXTURE)
-        self.render_all(texture_nodes)  # type: ignore  # skip asserts
+        self.render_all(texture_nodes)  # type: ignore  # Skip asserts
         self.show()

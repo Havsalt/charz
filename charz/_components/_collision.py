@@ -64,7 +64,7 @@ class ColliderComponent:  # Component (mixin class)
     def is_colliding_with(self, colldier_node: ColliderNode, /) -> bool:
         if self.disabled or colldier_node.disabled:
             return False
-        # TODO: consider `.global_rotation`
+        # TODO: Consider `.global_rotation`
         assert isinstance(self, ColliderNode)
         start = self.global_position
         end = self.global_position + self.hitbox.size

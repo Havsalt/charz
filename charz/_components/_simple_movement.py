@@ -23,12 +23,12 @@ def __getattr__(name: str) -> type[SimpleMovementComponent] | NoReturn:
             keyboard = _keyboard
     except ModuleNotFoundError as error:
         raise ModuleNotFoundError(
-            "module 'keyboard' was not found,"
+            "Module 'keyboard' was not found,"
             " use 'charz' with 'keyboard' or 'all' feature flag,"
             " like depending on 'charz[keyboard]' in 'pyproject.toml'"
         ) from error
     if name not in __all__:
-        raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+        raise AttributeError(f"Module '{__name__}' has no attribute '{name}'")
     return SimpleMovementComponent
 
 
@@ -59,7 +59,7 @@ class SimpleMovementComponent:  # Component (mixin class)
             self.is_moving_down() - self.is_moving_up(),
         )
 
-    # TODO: add automatic wrapping of this function, so no conflict with user `.update`
+    # TODO: Add automatic wrapping of this function, so no conflict with user `.update`
     def update(self) -> None:
         super().update()  # type: ignore
         assert isinstance(self, TransformComponent), "Missing `TransformComponent`"

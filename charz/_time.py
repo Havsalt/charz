@@ -17,6 +17,7 @@ class Time(metaclass=TimeClassProperties):
     usually accessed in `Node.update`
     """
 
-    # prevent instantiating, as this class only has class methods and class variables
+    # Prevent instantiating,
+    # as this class only has class methods and class variables
     def __new__(cls, *_args: Any, **_kwargs: Any) -> NoReturn:
         raise RuntimeError(f"{cls.__name__} cannot be instantiated")

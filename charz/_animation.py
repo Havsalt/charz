@@ -13,12 +13,17 @@ from . import text
 
 
 class AnimationClassProperties(type):
-    _folder_path: Path = Path.cwd()
+    """`Animation` class properties
 
-    # NOTE: This has to be set before importing local files in your project:
-    # from charz importing ..., Animation, ...
-    # Animation.folder_path = "src/animations"
-    # from .local_file importing ...
+    `NOTE`: Class properties has to be called
+    before importing local files in your project:
+
+    >>> from charz import ..., Animation, ...
+    >>> Animation.folder_path = "src/animations"
+    >>> from .local_file import ...
+    """
+
+    _folder_path: Path = Path.cwd()
 
     @property
     def folder_path(cls) -> Path:
@@ -28,7 +33,7 @@ class AnimationClassProperties(type):
     def folder_path(cls, new_path: Path | str) -> None:
         cls._folder_path = Path(new_path)
         if not cls._folder_path.exists():
-            raise ValueError("invalid animation root folder path")
+            raise ValueError("Invalid animation root folder path")
 
 
 class Animation(metaclass=AnimationClassProperties):
@@ -47,8 +52,8 @@ class Animation(metaclass=AnimationClassProperties):
         fill_char: str = " ",
         unique: bool = True,
     ) -> Self:
-        instance = super().__new__(cls)  # omit calling `__init__`
-        # the negated parameters creates unique list instances,
+        instance = super().__new__(cls)  # Omit calling `__init__`
+        # The negated parameters creates unique list instances,
         # so only copy if they are not present and `unique` is true,
         # else it would be copying an extra time for no reason
         if unique and not reverse and not flip_h and not flip_v and not fill:
@@ -56,7 +61,7 @@ class Animation(metaclass=AnimationClassProperties):
         else:
             generator = frames
 
-        if fill:  # NOTE: this fill logic has to be before flipping
+        if fill:  # NOTE: This fill logic has to be before flipping
             generator = map(partial(text.fill_lines, fill_char=fill_char), generator)
         if flip_h:
             generator = map(text.flip_lines_h, generator)
@@ -78,14 +83,14 @@ class Animation(metaclass=AnimationClassProperties):
         fill: bool = True,
         fill_char: str = " ",
     ) -> None:
-        """Loads an `Animation` given a path to the folder where the animation is stored
+        """Load an `Animation` given a path to the folder where the animation is stored
 
         Args:
-            folder_path (Path | str): path to folder where animation frames are stored as files.
-            flip_h (bool, optional): flip frames horizontally. Defaults to False.
-            flip_v (bool, optional): flip frames vertically. Defaults to False.
-            fill (bool, optional): fill in to make shape of frames rectangular. Defaults to True.
-            fill_char (str, optional): string of length 1 to fill with. Defaults to " ".
+            folder_path (Path | str): Path to folder where animation frames are stored as files.
+            flip_h (bool, optional): Flip frames horizontally. Defaults to False.
+            flip_v (bool, optional): Flip frames vertically. Defaults to False.
+            fill (bool, optional): Fill in to make shape of frames rectangular. Defaults to True.
+            fill_char (str, optional): String of length 1 to fill with. Defaults to " ".
         """  # noqa: E501
         frame_directory = (
             Path.cwd()
@@ -94,7 +99,7 @@ class Animation(metaclass=AnimationClassProperties):
             .iterdir()
         )
         generator = map(load_texture, frame_directory)
-        if fill:  # NOTE: this fill logic has to be before flipping
+        if fill:  # NOTE: This fill logic has to be before flipping
             generator = map(partial(text.fill_lines, fill_char=fill_char), generator)
         if flip_h:
             generator = map(text.flip_lines_h, generator)
@@ -105,21 +110,22 @@ class Animation(metaclass=AnimationClassProperties):
         self.frames = list(generator)
 
     def __repr__(self) -> str:
-        # should never be empty, but if the programmer did it, show empty frame count
+        # Should never be empty, but if the programmer did it,
+        # show empty frame count as 'N/A'
         if not self.frames:
             return f"{self.__class__.__name__}(N/A)"
         longest = 0
         shortest = 0
         tallest = 0
         lowest = 0
-        # these are used as temporary variables in loop
+        # Variables used in loop to count sizes
         local_longest = 0
         local_shortest = 0
         local_tallest = 0
         local_lowest = 0
         for frame in self.frames:
-            # compare all time best against best results per iteration
-            # allow empty frame and frame with empty lines
+            # Compare all time best against best results per iteration
+            # Allow empty frame and frame with empty lines
             if not frame or not any(frame):
                 continue
             local_longest = len(max(frame, key=len))

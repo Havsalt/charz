@@ -23,7 +23,7 @@ class AssetLoaderClassProperties(type):
     def texture_root(cls, new_path: Path | str) -> None:
         cls._texture_root = Path(new_path)
         if not cls._texture_root.exists():
-            raise ValueError("invalid sprite root folder path")
+            raise ValueError("Invalid sprite root folder path")
 
     @property
     def animation_root(cls) -> Path:
@@ -33,7 +33,7 @@ class AssetLoaderClassProperties(type):
     def animation_root(cls, new_path: Path | str) -> None:
         cls._animation_root = Path(new_path)
         if not cls.animation_root.exists():
-            raise ValueError("invalid animation root folder path")
+            raise ValueError("Invalid animation root folder path")
 
 
 @final
@@ -44,12 +44,13 @@ class AssetLoader(metaclass=AssetLoaderClassProperties):
     as it is typical to use `load_texture` in a class definition
     when subclassing `Sprite`:
 
-    >>> from charz importing ..., AssetLoader, ...
+    >>> from charz import ..., AssetLoader, ...
     >>> AssetLoader.texture_root = "src/sprites"
     >>> AssetLoader.animation_root = "src/animations"
-    >>> from .local_file importing ...
+    >>> from .local_file import ...
     """
 
-    # prevent instantiating, as this class only has class methods and class variables
+    # Prevent instantiating,
+    # as this class only has class methods and class variables
     def __new__(cls, *_args: Any, **_kwargs: Any) -> NoReturn:
         raise RuntimeError(f"{cls.__name__} cannot be instantiated")

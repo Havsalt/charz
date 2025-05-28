@@ -24,13 +24,13 @@ from math import tau as _TAU
 # NOTE: I marked variables with underscores as they are not for export,
 #       since this is a publicly exported module of `charz`
 
-# IDEA: make TextTranslator (as in Transform props),
+# IDEA: Make TextTranslator (as in Transform props),
 #       as public export,
 #       and wrap methods of 1 default instance with module functions in this file
 
 
-# predefined horizontal conversions
-_horizontal_conversions: dict[str, str] = {  # horizontal flip
+# Predefined horizontal conversions
+_horizontal_conversions: dict[str, str] = {
     "/": "\\",
     "(": ")",
     "[": "]",
@@ -40,19 +40,19 @@ _horizontal_conversions: dict[str, str] = {  # horizontal flip
     "d": "b",
     "q": "p",
 }
-# mirroring `_horizontal_conversions`
+# Mirroring `_horizontal_conversions`
 # fmt: off
 _horizontal_conversions.update({
     value: key
     for key, value in _horizontal_conversions.items()
 })
-# unmirrored `_horizontal_conversions` for monodirectional translations
+# Unmirrored `_horizontal_conversions` for monodirectional translations
 _horizontal_conversions.update({
     "7": "<"
 })
 # fmt: on
-# predefined vertical conversions
-_vertical_conversions: dict[str, str] = {  # vertical flip
+# Predefined vertical conversions
+_vertical_conversions: dict[str, str] = {
     "/": "\\",
     ".": "'",
     ",": "`",
@@ -64,140 +64,141 @@ _vertical_conversions: dict[str, str] = {  # vertical flip
     "v": "^",
     "V": "A",
 }
-# mirroring `_vertical_conversions`
+# Mirroring `_vertical_conversions`
 # fmt: off
 _vertical_conversions.update({
     value: key
     for key, value in _vertical_conversions.items()
 })
 # fmt: on
-# unmirrored `_vertical_conversions` for monodirectional translations
+# Unmirrored `_vertical_conversions` for monodirectional translations
 # fmt: off
 # _vertical_conversions.update({
-#     # none for now...
+#     # None for now...
 # })
 # fmt: on
-# predefined rotational conversions
-_rotational_conversions: dict[str, tuple[str, ...]] = {  # rotational
+# Predefined rotational conversions
+_rotational_conversions: dict[str, tuple[str, ...]] = {
     "-": ("-", "/", "|", "\\", "-", "/", "|", "\\"),
     ".": (".", "'"),
     "b": ("b", "p", "q", "d"),
     "9": ("9", "6"),
 }
 
-# creating mirrored {char: variants} pairs,
+# Creating mirrored {char: variants} pairs,
 # for pairs already defined in `_rotational_conversions`
 
-# mirror `_rotational_conversions` (adds variants as their own keys)
+# Mirror `_rotational_conversions` (adds variants as their own keys)
 for _options in list(_rotational_conversions.values()):
     for _idx, _value in enumerate(_options):
-        if _idx == 0:  # skip existing pair
+        if _idx == 0:  # Skip existing initial pair
             continue
         if _value in _rotational_conversions:
-            # some char variants occur multiple times
-            # - define `_rotational_conversions` keys using "resting variants"
+            # Some char variants occur multiple times
+            # NOTE: Define `_rotational_conversions` keys using "resting variants"
             continue
         _before = _options[:_idx]
         _after = _options[_idx:]
         _new_values = (*_after, *_before)
         _rotational_conversions[_value] = _new_values
-# unmirrored `_rotational_conversions` for spesific lookup translations
+# Unmirrored `_rotational_conversions` for spesific lookup translations
 # fmt: off
 # _rotational_conversions.update({
-#     # none for now...
+#     # None for now...
 # })
 # fmt: on
 
 
 def fill(line: str, *, width: int, fill_char: str = " ") -> str:
-    """Fills a single left-justified line with a string of length 1
+    """Fill a single left-justified line with a string of length `1`
 
     Args:
-        line (str): line to be filled
-        width (int): maximum width of output string
-        fill_char (str, optional): string of length 1 to fill line with. Defaults to " ".
+        line (str): Line to be filled
+        width (int): Maximum width of output string
+        fill_char (str, optional): String of length `1` to fill line. Defaults to " ".
 
     Returns:
-        str: line filled with fill character
+        str: Line filled with fill character
     """
     return line.ljust(width, fill_char)
 
 
 def flip_h(line: str, /) -> str:
-    """Flips a single line horizontally. Also works with a single character
+    """Flip a single line horizontally. Also works with a single character
 
     Args:
-        line (list[str]): content to ble flipped
+        line (list[str]): Content to ble flipped
 
     Returns:
-        list[str]: flipped line or character
+        list[str]: Flipped line or character
     """
     return "".join(_horizontal_conversions.get(char, char) for char in reversed(line))
 
 
 def flip_v(line: str, /) -> str:
-    """Flips a single line vertically. Also works with a single character
+    """Flip a single line vertically. Also works with a single character
 
     Args:
-        line (list[str]): content to ble flipped
+        line (list[str]): Content to ble flipped
 
     Returns:
-        list[str]: flipped line or character
+        list[str]: Flipped line or character
     """
     return "".join(_vertical_conversions.get(char, char) for char in line)
 
 
 def fill_lines(lines: list[str], *, fill_char: str = " ") -> list[str]:
-    """Fill lines with fill character, based on longest line.
+    """Fill lines with fill character, based on longest line
+
     Usefull for filling textures, so that it gets a nice rectangular shape.
     Good for centering and flipping textures.
 
     Args:
-        lines (list[str]): lines to be filled
-        fill_char (str, optional): string of length 1 to fill line with. Defaults to " ".
+        lines (list[str]): Lines to be filled
+        fill_char (str, optional): String of length `1` to fill line. Defaults to " ".
 
     Returns:
-        list[str]: rectangular filled lines
+        list[str]: Rectangular filled lines
     """
-    if not any(lines):  # allow empty lines
-        return []  # but still return unique list
+    if not any(lines):  # Allow empty lines
+        return []  # But still return unique list
     longest = len(max(lines, key=len))
     return [fill(line, width=longest, fill_char=fill_char) for line in lines]
 
 
 def flip_lines_h(lines: list[str], /) -> list[str]:
-    """Flips lines horizontally. Usefull for flipping textures
+    """Flip lines horizontally. Usefull for flipping textures
 
     Args:
-        lines (list[str]): lines of strings or texture
+        lines (list[str]): Lines of strings or texture
 
     Returns:
-        list[str]: flipped content
+        list[str]: Flipped content
     """
     return [flip_h(line) for line in lines]
 
 
 def flip_lines_v(lines: list[str], /) -> list[str]:
-    """Flips lines vertically. Usefull for flipping textures
+    """Flip lines vertically. Usefull for flipping textures
 
     Args:
-        lines (list[str]): lines of strings or texture
+        lines (list[str]): Lines of strings or texture
 
     Returns:
-        list[str]: flipped content
+        list[str]: Flipped content
     """
     return [flip_v(line) for line in reversed(lines)]
 
 
 def rotate(char: str, /, angle: float) -> str:
-    """Returns symbol when rotated by angle counter clockwise
+    """Return symbol when rotated by angle counter clockwise
 
     Args:
-        char (str): character to rotate
-        angle (float): counter clockwise rotation in radians
+        char (str): Character to rotate
+        angle (float): Counter clockwise rotation in radians
 
     Returns:
-        str: rotated character or original character
+        str: Rotated character or original character
     """
     if char in _rotational_conversions:
         sector_count = len(_rotational_conversions[char])
