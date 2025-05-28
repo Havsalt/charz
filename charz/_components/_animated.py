@@ -4,7 +4,7 @@ from copy import deepcopy
 from enum import Enum, unique, auto
 from typing import Any
 
-from charz_core import Self, group
+from charz_core import Self, group, clamp
 
 from .._animation import AnimationSet, Animation
 from .._grouping import Group
@@ -104,13 +104,12 @@ class AnimatedComponent:  # Component (mixin class)
             self._frame_index = first_index
             return
         # Progress frame index
-        self._frame_index = min(
+        self._frame_index = clamp(
+            self._frame_index + index_change,
+            0,
             frame_count - 1,
-            max(
-                0,
-                self._frame_index + index_change,
-            ),
         )
+        # Check if hit end of animation, last frame index
         last_index = (
             frame_count - 1
             if self._playback_direction is PlaybackDirection.FORAWRD
