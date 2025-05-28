@@ -86,7 +86,7 @@ class Animation(metaclass=AnimationClassProperties):
         """Load an `Animation` given a path to the folder where the animation is stored
 
         Args:
-            folder_path (Path | str): Path to folder where animation frames are stored as files.
+            animation_path (Path | str): Path to folder where animation frames are stored as files.
             flip_h (bool, optional): Flip frames horizontally. Defaults to False.
             flip_v (bool, optional): Flip frames vertically. Defaults to False.
             fill (bool, optional): Fill in to make shape of frames rectangular. Defaults to True.
