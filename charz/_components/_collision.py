@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from copy import deepcopy
 from typing import Any
 
-from charz_core import Scene, Vec2, Self
+from charz_core import Scene, Vec2, Self, group
 
 from .._grouping import Group
 from .._annotations import ColliderNode
@@ -16,6 +16,7 @@ class Hitbox:
     centered: bool = False
 
 
+@group(Group.COLLIDER)
 class ColliderComponent:  # Component (mixin class)
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         instance = super().__new__(cls, *args, **kwargs)
@@ -38,7 +39,8 @@ class ColliderComponent:  # Component (mixin class)
 
     def get_colliders(self) -> list[ColliderNode]:
         assert isinstance(self, ColliderNode)
-        colliders: list[ColliderNode] = []
+        nodes_collided_with: list[ColliderNode] = []
+        # NOTE: Iterate `dict_values` instead of creating a `list`
         for node in Scene.current.groups[Group.COLLIDER].values():
             if self is node:
                 continue
@@ -46,8 +48,8 @@ class ColliderComponent:  # Component (mixin class)
                 f"Node {node} missing 'ColliderComponent'"
             )
             if self.is_colliding_with(node):
-                colliders.append(node)
-        return colliders
+                nodes_collided_with.append(node)
+        return nodes_collided_with
 
     def is_colliding(self) -> bool:
         assert isinstance(self, ColliderNode)
@@ -72,7 +74,3 @@ class ColliderComponent:  # Component (mixin class)
             start -= self.hitbox.size / 2
             end -= self.hitbox.size / 2
         return start <= colldier_node.global_position < end
-
-    def _free(self) -> None:
-        del ColliderComponent.collider_instances[self.uid]  # type: ignore
-        super()._free()  # type: ignore
