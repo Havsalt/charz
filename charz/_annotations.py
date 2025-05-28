@@ -41,7 +41,6 @@ T = _TypeVar("T")
 Number = _TypeVar("Number", float, int)
 _T_contra = _TypeVar("_T_contra", contravariant=True)
 Char: _TypeAlias = str  # Signifying `str` of length `1`
-GroupID: _TypeAlias = _LiteralString | int | _Hashable
 
 
 @_runtime_checkable
