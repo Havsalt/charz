@@ -161,7 +161,6 @@ _loaded_objects: dict[str, object] = {
 
 
 # Lazy load to properly load optional dependencies along the standard exports
-# TODO: Check if there is a step here that can be skipped
 def __getattr__(name: str) -> object:
     if name in _loaded_objects:
         return _loaded_objects[name]
