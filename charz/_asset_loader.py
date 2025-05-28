@@ -5,15 +5,8 @@ from typing import Any, NoReturn, final
 
 
 class AssetLoaderClassProperties(type):
-    # class variables for configuartion
     _texture_root: Path = Path.cwd()
     _animation_root: Path = Path.cwd()
-
-    # NOTE: These have to be set before importing local files in your project:
-    # from charz importing ..., AssetLoader, ...
-    # AssetLoader.texture_root = "src/sprites"
-    # AssetLoader.animation_root = "src/animations"
-    # from .local_file importing ...
 
     @property
     def texture_root(cls) -> Path:
@@ -50,7 +43,5 @@ class AssetLoader(metaclass=AssetLoaderClassProperties):
     >>> from .local_file import ...
     """
 
-    # Prevent instantiating,
-    # as this class only has class methods and class variables
     def __new__(cls, *_args: Any, **_kwargs: Any) -> NoReturn:
         raise RuntimeError(f"{cls.__name__} cannot be instantiated")
