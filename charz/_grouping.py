@@ -6,7 +6,6 @@ from enum import unique
 import charz_core
 
 
-# TODO: Use `StrEnum` for Python 3.11+
 # NOTE: Variants of the enum produces the same hash as if it was using normal `str`
 if sys.version_info >= (3, 11):
     from enum import StrEnum, auto
