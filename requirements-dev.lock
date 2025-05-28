@@ -16,21 +16,21 @@ colex==0.3.1
     # via charz
 colorama==0.4.6
     # via pytest
-exceptiongroup==1.2.2
+exceptiongroup==1.3.0
     # via pytest
 iniconfig==2.1.0
     # via pytest
 keyboard==0.13.5
-linflex==0.3.0
+linflex==0.3.1
     # via charz-core
 packaging==25.0
     # via pytest
-pluggy==1.5.0
+pluggy==1.6.0
     # via pytest
-pygame==2.6.1
 pytest==8.3.5
 tomli==2.2.1
     # via pytest
 typing-extensions==4.13.2
     # via charz-core
+    # via exceptiongroup
     # via linflex
