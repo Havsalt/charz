@@ -26,6 +26,20 @@ rye add charz
 
 ## Getting started
 
+Add to project with `keyboard` feature:
+
+```bash
+pip install charz[keyboard]
+```
+
+or
+
+```bash
+rye add charz --features keyboard
+```
+
+Copy this code into the entry point (`main.py` or `__init__.py`)
+
 ```python
 import colex              # Color constants and styling
 import keyboard           # For taking key inputs
@@ -75,6 +89,18 @@ class Game(Engine):
 if __name__ == "__main__":
     game = Game()
     game.run()
+```
+
+`Note`: If using `rye`, replace:
+
+```py
+if __name__ == "__main__":
+```
+
+with
+
+```py
+def main() -> None:
 ```
 
 ## Rational
