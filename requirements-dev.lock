@@ -10,7 +10,7 @@
 #   universal: false
 
 -e file:.
-charz-core==0.1.0.dev9
+charz-core==0.1.0.dev10
     # via charz
 colex==0.3.1
     # via charz

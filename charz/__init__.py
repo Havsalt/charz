@@ -14,6 +14,7 @@ Includes
   - `lerp`
   - `sign`
   - `clamp`
+  - `move_toward`
   - `Vec2`
   - `Vec2i`
   - `Vec3`
@@ -29,7 +30,6 @@ Includes
 - Framework
   - `Engine`
   - `Clock`
-  - `DeltaClock`
   - `Screen`
   - `Scene`
 - Datastructures
@@ -65,6 +65,7 @@ __all__ = [
     "lerp",
     "sign",
     "clamp",
+    "move_toward",
     "Vec2",
     "Vec2i",
     "Vec3",
@@ -115,6 +116,7 @@ from charz_core import (
     lerp,
     sign,
     clamp,
+    move_toward,
     Vec2,
     Vec2i,
     Vec3,

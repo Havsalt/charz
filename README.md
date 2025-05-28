@@ -90,6 +90,7 @@ This project is heavily inspired by the `Godot Game Engine`.
   - `lerp`
   - `sign`
   - `clamp`
+  - `move_toward`
   - `Vec2`
   - `Vec2i`
   - `Vec3`
@@ -105,7 +106,6 @@ This project is heavily inspired by the `Godot Game Engine`.
 - Framework
   - `Engine`
   - `Clock`
-  - `DeltaClock`
   - `Screen`
   - `Scene`
 - Datastructures
