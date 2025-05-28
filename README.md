@@ -137,9 +137,7 @@ This project is heavily inspired by the `Godot Game Engine`.
 
 ## Regarding testing
 
-Tests for `charz` are currently manual and only somewhat implemented. Until I find a testing tool I like, things will be manual, just so I know if the critical parts work.
-
-**NOTE**: Tests cannot be run from `current working directory` at the moment! I'll just monkeypatch it to run on my machine *-famose last words*.
+Tests for `charz` are currently manual and only somewhat implemented. The plan is to use `pytest`, however, it's hard to make work since `charz` is meant for long-running tasks, including IO.
 
 ## Versioning
 
