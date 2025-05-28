@@ -160,7 +160,7 @@ def fill_lines(lines: list[str], *, fill_char: str = " ") -> list[str]:
     Returns:
         list[str]: Rectangular filled lines
     """
-    if not any(lines):  # Allow empty lines
+    if not lines:  # Allow when there are no lines
         return []  # But still return unique list
     longest = len(max(lines, key=len))
     return [fill(line, width=longest, fill_char=fill_char) for line in lines]
