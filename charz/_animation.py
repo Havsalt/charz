@@ -12,31 +12,7 @@ from ._asset_loader import AssetLoader
 from . import text
 
 
-class AnimationClassProperties(type):
-    """`Animation` class properties
-
-    `NOTE`: Class properties has to be called
-    before importing local files in your project:
-
-    >>> from charz import ..., Animation, ...
-    >>> Animation.folder_path = "src/animations"
-    >>> from .local_file import ...
-    """
-
-    _folder_path: Path = Path.cwd()
-
-    @property
-    def folder_path(cls) -> Path:
-        return cls._folder_path
-
-    @folder_path.setter
-    def folder_path(cls, new_path: Path | str) -> None:
-        cls._folder_path = Path(new_path)
-        if not cls._folder_path.exists():
-            raise ValueError("Invalid animation root folder path")
-
-
-class Animation(metaclass=AnimationClassProperties):
+class Animation:
     __slots__ = ("frames",)
 
     @classmethod
