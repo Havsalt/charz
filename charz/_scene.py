@@ -1,24 +1,17 @@
 from __future__ import annotations
 
-import charz_core
+from charz_core import Scene
 
 from ._grouping import Group
-from ._components._animated import AnimatedComponent
 
 
-class Scene(charz_core.Scene):
-    def process(self) -> None:
-        super().process()
-        for animated_node in charz_core.Scene.current.get_group_members(Group.ANIMATED):
-            assert isinstance(animated_node, AnimatedComponent), (
-                f"node {animated_node} missing `AnimatedComponent`"
-            )
-            animated_node.update_animation()
+# Define additional frame tasks
 
 
-# TODO: Make this automatic
-# Set current scene to this spesific default implementation
-# - This is done automatically after this point,
-#   as long as `charz.Scene` is used,
-#   and not `charz_core.Scene` is called `.current` on
-Scene.current = Scene()
+def update_animations(current_scene: Scene) -> None:
+    for animated_node in current_scene.get_group_members(Group.ANIMATED):
+        animated_node.update_animation()  # type: ignore  # Skip asserts
+
+
+# Register additional frame tasks
+Scene.frame_tasks[70] = update_animations
