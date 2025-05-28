@@ -4,15 +4,15 @@ import os
 import sys
 from math import cos, sin, floor
 from enum import Enum, unique, auto
-from typing import TypeGuard, Iterable
+from typing import Iterable
 
 from colex import ColorValue, RESET
-from charz_core import Scene, Camera, Node, TransformComponent, Vec2i
+from charz_core import Scene, Camera, TransformComponent, Vec2i
 
 from . import text
 from ._components._texture import TextureComponent
 from ._grouping import Group
-from ._annotations import FileLike, Renderable, TextureNode, Char
+from ._annotations import FileLike, Renderable, Char
 
 
 @unique
@@ -79,10 +79,6 @@ class Screen(metaclass=ScreenClassProperties):
         self.transparency_fill = transparency_fill
         self.buffer = []
         self.clear()  # For populating the screen buffer
-
-    @staticmethod
-    def _is_texture_nodes(nodes: list[Node]) -> TypeGuard[list[TextureNode]]:
-        return all(isinstance(node, TextureComponent) for node in nodes)
 
     def on_startup(self) -> None:
         if self.is_using_ansi():
