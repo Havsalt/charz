@@ -13,8 +13,8 @@ class TimeClassProperties(type):
 class Time(metaclass=TimeClassProperties):
     """`Time` is a class namespace used to store delta time
 
-    `Time.delta` is computed by `Clock`, handled by `Engine`,
-    usually accessed in `Node.update`
+    `Time.delta` is computed by `Clock`, handled by `Engine` frame task,
+    usually used in `Node.update`
     """
 
     # Prevent instantiating,
