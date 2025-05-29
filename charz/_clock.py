@@ -26,7 +26,7 @@ class Clock:
         self._delta = 1 / self.fps
         self._last_tick = time.perf_counter()
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         fps = self.fps  # Assign to temp var to use prettier formatting on next line
         return f"{self.__class__.__name__}({fps=})"
 
