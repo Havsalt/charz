@@ -41,3 +41,29 @@ class AnimatedSprite(AnimatedComponent, Sprite):
             self.animations = animations
         if repeat is not None:
             self.repeat = repeat
+
+    def __repr__(self) -> str:
+        visual_frame_sizes: list[str] = []
+        animation_count = len(self.animations.__dict__)
+        if animation_count:
+            for animation in self.animations.__dict__.values():
+                visual_frame_size = f"{0}x{1}->{2}x{3}".format(
+                    *animation.get_smallest_frame_dimensions(),
+                    *animation.get_largest_frame_dimensions(),
+                )
+                visual_frame_sizes.append(visual_frame_size)
+        else:
+            visual_frame_sizes.append("N/A")
+
+        return (
+            self.__class__.__name__
+            + "("
+            + f"#{self.uid}"
+            + f":{round(self.position, 2)}"
+            + f":{round(self.rotation, 2)}R"
+            + f":{'{}x{}'.format(*self.get_texture_size())}"
+            + f":{repr(self.color)}"
+            + f":A={animation_count},"
+            + ",".join(visual_frame_sizes)
+            + ")"
+        )
