@@ -116,8 +116,8 @@ class Animation:
             self.__class__.__name__
             + "("
             + f"{len(self.frames)}"
-            + ":{0}x{1}".format(*self.get_smallest_frame_dimensions())
-            + "->{0}x{1}".format(*self.get_largest_frame_dimensions())
+            + ":{}x{}".format(*self.get_smallest_frame_dimensions())
+            + "->{}x{}".format(*self.get_largest_frame_dimensions())
             + ")"
         )
 
