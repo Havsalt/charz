@@ -4,8 +4,9 @@ from types import SimpleNamespace
 from functools import partial
 from pathlib import Path
 from copy import deepcopy
+from typing import Iterator
 
-from charz_core import Self
+from charz_core import Vec2i, Self
 
 from ._components._texture import load_texture
 from ._asset_loader import AssetLoader
@@ -115,13 +116,39 @@ class Animation:
             self.__class__.__name__
             + "("
             + f"{len(self.frames)}"
-            + f":{shortest}x{lowest}"
-            + f"->{longest}x{tallest}"
+            + ":{0}x{1}".format(*self.get_smallest_frame_dimensions())
+            + "->{0}x{1}".format(*self.get_largest_frame_dimensions())
             + ")"
         )
 
+    def get_smallest_frame_dimensions(self) -> Vec2i:
+        best_shortest = 0
+        best_lowest = 0
+        for frame in self.frames:
+            if not frame or not any(frame):
+                continue
+            this_iter_shortest = len(min(frame, key=len))
+            best_shortest = min(best_shortest, this_iter_shortest)
+            this_iter_lowest = len(frame)
+            best_lowest = min(best_lowest, this_iter_lowest)
+        return Vec2i(best_shortest, best_lowest)
+
+    def get_largest_frame_dimensions(self) -> Vec2i:
+        best_longest = 0
+        best_tallest = 0
+        for frame in self.frames:
+            if not frame or not any(frame):
+                continue
+            this_iter_longest = len(max(frame, key=len))
+            best_longest = max(best_longest, this_iter_longest)
+            this_iter_tallest = len(frame)
+            best_tallest = max(best_tallest, this_iter_tallest)
+        return Vec2i(best_longest, best_tallest)
+
 
 class AnimationSet(SimpleNamespace):
+    __dict__: dict[str, Animation]
+
     def __init__(self, **animations: Animation) -> None:
         super().__init__(**animations)
 
@@ -130,3 +157,6 @@ class AnimationSet(SimpleNamespace):
 
     def __setattr__(self, name: str, value: Animation) -> None:
         return super().__setattr__(name, value)
+
+    def __iter__(self) -> Iterator[Animation]:
+        return iter(self.__dict__.values())
