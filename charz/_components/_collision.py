@@ -79,17 +79,16 @@ class ColliderComponent:  # Component (mixin class)
         Returns:
             list[ColliderNode]: List of colliders that this node is colliding with.
         """
-        assert isinstance(self, ColliderNode)
+        assert isinstance(self, ColliderComponent)
         nodes_collided_with: list[ColliderNode] = []
-        # NOTE: Iterate `dict_values` instead of creating a `list`
+        # NOTE: Iterate `dict_values` instead of creating a `list` for speed
         for node in Scene.current.groups[Group.COLLIDER].values():
             if self is node:
                 continue
-            assert isinstance(node, ColliderNode), (
-                f"Node {node} missing 'ColliderComponent'"
-            )
-            if self.is_colliding_with(node):
-                nodes_collided_with.append(node)
+            # Ignoring incorrect type because group `Group.Collider`
+            # should only contain `ColliderNode` instances
+            if self.is_colliding_with(node):  # type: ignore
+                nodes_collided_with.append(node)  # type: ignore
         return nodes_collided_with
 
     def is_colliding(self) -> bool:
@@ -101,14 +100,13 @@ class ColliderComponent:  # Component (mixin class)
         Returns:
             bool: Whether this node is colliding with any other collider node.
         """
-        assert isinstance(self, ColliderNode)
+        assert isinstance(self, ColliderComponent)
         for node in Scene.current.groups[Group.COLLIDER].values():
             if self is node:
                 continue
-            assert isinstance(node, ColliderNode), (
-                f"Node {node} missing 'ColliderComponent'"
-            )
-            if self.is_colliding_with(node):
+            # Ignoring incorrect type because group `Group.Collider`
+            # should only contain `ColliderNode` instances
+            if self.is_colliding_with(node):  # type: ignore
                 return True
         return False
 
@@ -137,6 +135,8 @@ class ColliderComponent:  # Component (mixin class)
         for axis in axes:
             min_a, max_a = self._get_projection_range(corners_a, axis)
             min_b, max_b = self._get_projection_range(corners_b, axis)
+            # Hitbox margin is negative space inside the hitbox,
+            # extending from the edges
             if (
                 max_a - self.hitbox.margin < min_b
                 or max_b - collider_node.hitbox.margin < min_a
@@ -147,15 +147,15 @@ class ColliderComponent:  # Component (mixin class)
 
     @staticmethod
     def _get_corners(node: ColliderNode) -> list[Vec2]:
-        position = node.global_position
+        global_position = node.global_position
+        global_rotation = node.global_rotation
         size = node.hitbox.size
-        angle = node.global_rotation
 
         # Center the hitbox if needed
         if node.hitbox.centered:
-            position = position - size / 2
+            global_position = global_position - size / 2
 
-        # Define corners relative to pos
+        # Define corners relative to position
         corners = [
             Vec2(0, 0),
             Vec2(size.x, 0),
@@ -164,22 +164,26 @@ class ColliderComponent:  # Component (mixin class)
         ]
 
         # Rotate corners around the hitbox center
-        if angle != 0.0:
-            center = position + size / 2
+        if global_rotation != 0.0:
+            center = global_position
+            if node.hitbox.centered:
+                center += size / 2  # Adjust center for centered hitbox
             rotated = []
             for corner in corners:
-                rel = position + corner - center
+                relative = global_position + corner - center
                 rotated_corner = (
                     Vec2(
-                        rel.x * cos(angle) - rel.y * sin(angle),
-                        rel.x * sin(angle) + rel.y * cos(angle),
+                        relative.x * cos(global_rotation)
+                        - relative.y * sin(global_rotation),
+                        relative.x * sin(global_rotation)
+                        + relative.y * cos(global_rotation),
                     )
                     + center
                 )
                 rotated.append(rotated_corner)
             return rotated
         else:
-            return [position + corner for corner in corners]
+            return [global_position + corner for corner in corners]
 
     @staticmethod
     def _get_projection_range(corners: list[Vec2], axis: Vec2) -> tuple[float, float]:
