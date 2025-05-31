@@ -25,8 +25,9 @@ class NonNegative(Generic[Number]):
 
     def __init__(self, value: Number, /) -> None:
         """Initialize the descriptor with a non-negative value.
+
         Args:
-        value (Number): The initial value, must be non-negative.
+            value (Number): The initial value, must be non-negative.
         """
         if not isinstance(value, Number.__constraints__):
             raise TypeError(
