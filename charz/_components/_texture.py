@@ -105,6 +105,15 @@ class TextureComponent:  # Component (mixin class)
         self.texture = texture_or_line
         return self
 
+    def with_unique_texture(self) -> Self:
+        """Chained method to create a unique copy of texture as use that as `texture`.
+
+        Returns:
+            Self: Same node instance with a unique texture copy.
+        """
+        self.texture = deepcopy(self.texture)
+        return self
+
     def with_visibility(self, state: bool = True, /) -> Self:
         """Chained method to set the visibility of the node.
 
