@@ -33,7 +33,14 @@ def load_texture(
 
     Returns:
         list[str]: Loaded texture
+
+    Raises:
+        ValueError: If `fill_char` is not of length `1`.
     """
+    if len(fill_char) != 1:
+        raise ValueError(
+            f"Parameter 'fill_char' must of length 1, got {len(fill_char) = }"
+        )
     # fmt: off
     file = (
         Path.cwd()
