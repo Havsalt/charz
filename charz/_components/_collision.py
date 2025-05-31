@@ -20,11 +20,13 @@ class Hitbox:
         `centered`: `bool` - Whether hitbox is centered around the node's global position.
             Defaults to `False`, meaning the hitbox starts at the node's position,
             and expanding to the right and downwards.
+        `disabled`: bool = False
         `margin`: `float` - Inverse margin around the hitbox for collision detection.
     """
 
     size: Vec2
     centered: bool = False
+    disabled: bool = False
     margin: float = 1.0
 
 
@@ -55,7 +57,6 @@ class ColliderComponent:  # Component (mixin class)
         return instance
 
     hitbox: Hitbox
-    disabled: bool = False
 
     def with_hitbox(self, hitbox: Hitbox, /) -> Self:
         """Chained method to set the hitbox.
@@ -67,18 +68,6 @@ class ColliderComponent:  # Component (mixin class)
             Self: Same node instance.
         """
         self.hitbox = hitbox
-        return self
-
-    def with_disabled(self, state: bool = True, /) -> Self:
-        """Chained method to set the disabled state of the collider.
-
-        Args:
-            state (bool): Whether to disable the collider. Defaults to True.
-
-        Returns:
-            Self: Same node instance.
-        """
-        self.disabled = state
         return self
 
     def get_colliders(self) -> list[ColliderNode]:
@@ -136,7 +125,7 @@ class ColliderComponent:  # Component (mixin class)
         Returns:
             bool: Whether this node is colliding with the other collider node.
         """
-        if self.disabled or collider_node.disabled:
+        if self.hitbox.disabled or collider_node.hitbox.disabled:
             return False
 
         corners_a = self._get_corners(self)  # type: ignore
