@@ -12,7 +12,7 @@ from charz_core import Scene, Camera, TransformComponent, Vec2i
 from . import text
 from ._components._texture import TextureComponent
 from ._grouping import Group
-from ._annotations import FileLike, Renderable, Char
+from ._annotations import TextureNode, FileLike, Renderable, Char
 
 
 @unique
@@ -413,7 +413,10 @@ class Screen(metaclass=ScreenClassProperties):
         """
         self._resize_if_necessary()
         self.clear()
-        # NOTE: Using underlying `list` because it's faster than `tuple`, when copying
-        texture_nodes = Scene.current.get_group_members(Group.TEXTURE)
-        self.render_all(texture_nodes)  # type: ignore  # Skip asserts
+        # NOTE: Uses underlying `list` because it's faster than `tuple` when copying
+        texture_nodes = Scene.current.get_group_members(
+            Group.TEXTURE,
+            type_hint=TextureNode,
+        )
+        self.render_all(texture_nodes)
         self.show()
