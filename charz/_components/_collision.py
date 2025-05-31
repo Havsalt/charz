@@ -165,9 +165,7 @@ class ColliderComponent:  # Component (mixin class)
 
         # Rotate corners around the hitbox center
         if global_rotation != 0.0:
-            center = global_position
-            if node.hitbox.centered:
-                center += size / 2  # Adjust center for centered hitbox
+            center = global_position + size / 2
             rotated = []
             for corner in corners:
                 relative = global_position + corner - center
