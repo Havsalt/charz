@@ -16,14 +16,16 @@ class Clock:
 
     fps = NonNegative[float](0)
 
-    def __init__(self, *, fps: float | None = None) -> None:
+    def __init__(self, *, fps: float = 0) -> None:
         """Initialize with optional `fps`.
 
+        `NOTE` When `fps` is set to `0`, it will **not** do any sleeping,
+        which means `delta` will be updated and nothing else happens.
+
         Args:
-            fps (float | None, optional): Frames per second. Defaults to None.
+            fps (float, optional): Frames per second. Defaults to 0.
         """
-        if fps is not None:
-            self.fps = fps
+        self.fps = fps
         self._delta = 1 / self.fps
         self._last_tick = time.perf_counter()
 
