@@ -51,7 +51,6 @@ class SimpleMovementComponent:  # Component (mixin class)
         `is_moving_up`
         `is_moving_down`
         `get_movement_direction`
-        `get_movement_direction_strengths`
     """
 
     speed: float = 16
@@ -107,20 +106,6 @@ class SimpleMovementComponent:  # Component (mixin class)
 
         Returns:
             `Vec2`: Raw direction vector.
-        """
-        return Vec2(
-            self.is_moving_right() - self.is_moving_left(),
-            self.is_moving_down() - self.is_moving_up(),
-        )
-
-    def get_movement_direction_strengths(self) -> Vec2:
-        """Get the movement direction strengths of the node.
-
-        Useful is overriding the key bindings for movement,
-        using a `controller` (PS3/4, Xbox, etc.), or other input methods.
-
-        Returns:
-            `Vec2`: Raw direction strengths vector.
         """
         return Vec2(
             self.is_moving_right() - self.is_moving_left(),
