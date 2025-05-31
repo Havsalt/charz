@@ -65,7 +65,7 @@ class Screen(metaclass=ScreenClassProperties):
         height: int = 12,
         *,
         auto_resize: bool = False,
-        initial_clear: bool = False,
+        initial_clear: bool = True,
         final_clear: bool = True,
         hide_cursor: bool = True,
         transparency_fill: str = " ",
@@ -82,7 +82,7 @@ class Screen(metaclass=ScreenClassProperties):
             auto_resize (bool): Whether to automatically resize the screen
                 based on terminal size. Defaults to `False`.
             initial_clear (bool): Whether to clear the screen on startup.
-                Defaults to `False`.
+                Defaults to `True`.
             final_clear (bool): Whether to clear the screen on cleanup.
                 Defaults to `True`.
             hide_cursor (bool): Whether to hide the cursor on startup.
