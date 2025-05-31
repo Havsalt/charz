@@ -226,7 +226,8 @@ class Screen(metaclass=ScreenClassProperties):
         """Return whether its using ANSI escape and color codes.
 
         Checks first `.color_choice`. Returns `True` if set to `ALWAYS`,
-        and `False` if set to `NEVER`. If set to `AUTO`, check whether a `tty` is detected.
+        and `False` if set to `NEVER`.
+        If set to `AUTO`, check whether a `tty` is detected.
 
         Returns:
             bool: `True` if using ANSI codes, `False` otherwise.
