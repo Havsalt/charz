@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from math import cos, sin
 from dataclasses import dataclass
 from copy import deepcopy
 from typing import Any
@@ -19,10 +20,12 @@ class Hitbox:
         `centered`: `bool` - Whether hitbox is centered around the node's global position.
             Defaults to `False`, meaning the hitbox starts at the node's position,
             and expanding to the right and downwards.
+        `margin`: `float` - Inverse margin around the hitbox for collision detection.
     """
 
     size: Vec2
     centered: bool = False
+    margin: float = 1.0
 
 
 @group(Group.COLLIDER)
@@ -120,26 +123,76 @@ class ColliderComponent:  # Component (mixin class)
                 return True
         return False
 
-    def is_colliding_with(self, colldier_node: ColliderNode, /) -> bool:
+    def is_colliding_with(self, collider_node: ColliderNode, /) -> bool:
         """Check if this node is colliding with another collider node.
 
-        This method may be overridden in subclasses to implement custom collision logic.
-        The custom logic is only used when the call is made from this node.
-        This means other colldier nodes will still use their own logic.
+        Uses SAT (Separating Axis Theorem).
+
+        `NOTE` Does not yet fully support rotated hitboxes.
 
         Args:
-            colldier_node (ColliderNode): The other collider node to check collision with.
+            collider_node (ColliderNode): The other collider node to check collision with.
 
         Returns:
             bool: Whether this node is colliding with the other collider node.
         """
-        if self.disabled or colldier_node.disabled:
+        if self.disabled or collider_node.disabled:
             return False
-        # TODO: Consider `.global_rotation`
-        assert isinstance(self, ColliderNode)
-        start = self.global_position
-        end = self.global_position + self.hitbox.size
-        if self.hitbox.centered:
-            start -= self.hitbox.size / 2
-            end -= self.hitbox.size / 2
-        return start <= colldier_node.global_position < end
+
+        corners_a = self._get_corners(self)  # type: ignore
+        corners_b = self._get_corners(collider_node)
+
+        # Axes to test: x and y
+        axes = [Vec2(1, 0), Vec2(0, 1)]
+
+        for axis in axes:
+            min_a, max_a = self._get_projection_range(corners_a, axis)
+            min_b, max_b = self._get_projection_range(corners_b, axis)
+            if (
+                max_a - self.hitbox.margin < min_b
+                or max_b - collider_node.hitbox.margin < min_a
+            ):
+                return False  # Separating axis found
+
+        return True  # No separating axis found, collision detected
+
+    @staticmethod
+    def _get_corners(node: ColliderNode) -> list[Vec2]:
+        position = node.global_position
+        size = node.hitbox.size
+        angle = node.global_rotation
+
+        # Center the hitbox if needed
+        if node.hitbox.centered:
+            position = position - size / 2
+
+        # Define corners relative to pos
+        corners = [
+            Vec2(0, 0),
+            Vec2(size.x, 0),
+            Vec2(size.x, size.y),
+            Vec2(0, size.y),
+        ]
+
+        # Rotate corners around the hitbox center
+        if angle != 0.0:
+            center = position + size / 2
+            rotated = []
+            for corner in corners:
+                rel = position + corner - center
+                rotated_corner = (
+                    Vec2(
+                        rel.x * cos(angle) - rel.y * sin(angle),
+                        rel.x * sin(angle) + rel.y * cos(angle),
+                    )
+                    + center
+                )
+                rotated.append(rotated_corner)
+            return rotated
+        else:
+            return [position + corner for corner in corners]
+
+    @staticmethod
+    def _get_projection_range(corners: list[Vec2], axis: Vec2) -> tuple[float, float]:
+        projections = [corner.dot(axis) for corner in corners]
+        return min(projections), max(projections)
