@@ -8,6 +8,25 @@ from .._components._color import ColorComponent
 
 
 class Sprite(ColorComponent, TextureComponent, Node2D):
+    r"""`Sprite` node to represent a 2D sprite with texture and color.
+
+    This is the base class for every node that has a texture and color in 2D space.
+    Most of the visual nodes will inherit from this class.
+
+    Subclass `Sprite` and override class attributes to customize look:
+    >>> import colex
+    >>> from charz import Sprite
+    >>> class CustomSprite(Sprite):
+    ...     color = colex.RED
+    ...     transparency = " "
+    ...     centered = True
+    ...     texture = [
+    ...         "  O",
+    ...         "/ | \\",
+    ...         " / \\",
+    ...     ]
+    """
+
     def __init__(
         self,
         parent: Node | None = None,

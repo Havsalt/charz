@@ -9,6 +9,13 @@ from ._sprite import Sprite
 
 
 class AnimatedSprite(AnimatedComponent, Sprite):
+    """`AnimatedSprite` node with multiple textures packed into animations.
+
+    It inherits from `AnimatedComponent` and `Sprite`, allowing it to
+    play animations defined in `AnimationSet` while also being a sprite
+    with a texture, position, rotation, and other visual properties.
+    """
+
     def __init__(
         self,
         parent: Node | None = None,

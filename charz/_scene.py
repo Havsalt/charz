@@ -9,6 +9,7 @@ from ._grouping import Group
 
 
 def update_animations(current_scene: Scene) -> None:
+    """Update animations for all animated nodes in the current scene."""
     for animated_node in current_scene.get_group_members(Group.ANIMATED):
         animated_node.update_animation()  # type: ignore  # Skip asserts
 

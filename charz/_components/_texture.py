@@ -31,7 +31,7 @@ def load_texture(
         fill_char (str, optional): Filler string of length 1 to use. Defaults to " ".
 
     Returns:
-        list[str]: Foaded texture
+        list[str]: Loaded texture
     """
     # fmt: off
     file = (
@@ -53,6 +53,23 @@ def load_texture(
 
 @group(Group.TEXTURE)
 class TextureComponent:  # Component (mixin class)
+    """`TextureComponent` mixin class for node.
+
+    Attributes:
+        `texture`: `list[str]` - The texture data as a list of lines.
+        `unique_texture`: `bool` - Whether the texture is unique per instance.
+        `visible`: `bool` - Visibility state of the node.
+        `centered`: `bool` - Whether the texture is centered.
+        `z_index`: `int` - Z-order for rendering.
+        `transparency`: `str | None` - Character used to signal transparency.
+
+    Methods:
+        `hide`
+        `show`
+        `is_globally_visible`
+        `get_texture_size`
+    """
+
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         instance = super().__new__(cls, *args, **kwargs)
         if (class_texture := getattr(instance, "texture", None)) is not None:
@@ -72,6 +89,16 @@ class TextureComponent:  # Component (mixin class)
     transparency: str | None = None
 
     def with_texture(self, texture_or_line: list[str] | str, /) -> Self:
+        """Chained method to set the texture of the node.
+
+        If a string is provided, it is treated as a single line texture.
+
+        Args:
+            texture_or_line (list[str] | str): Texture data as a list of lines or a single line string.
+
+        Returns:
+            Self: Same node instance.
+        """  # noqa: E501
         if isinstance(texture_or_line, str):
             self.texture = [texture_or_line]
             return self
@@ -79,32 +106,71 @@ class TextureComponent:  # Component (mixin class)
         return self
 
     def with_visibility(self, state: bool = True, /) -> Self:
+        """Chained method to set the visibility of the node.
+
+        Args:
+            state (bool, optional): Visibility state. Defaults to True.
+
+        Returns:
+            Self: Same node instance.
+        """
         self.visible = state
         return self
 
     def with_centering(self, state: bool = True, /) -> Self:
+        """Chained method to set whether the texture is centered.
+
+        Args:
+            state (bool, optional): Centering state. Defaults to True.
+
+        Returns:
+            Self: Same node instance.
+        """
         self.centered = state
         return self
 
     def with_z_index(self, z_index: int, /) -> Self:
+        """Chained method to set the z-index for rendering.
+
+        Args:
+            z_index (int): Z-index value.
+
+        Returns:
+            Self: Same node instance.
+        """
         self.z_index = z_index
         return self
 
     def with_transparency(self, char: str | None, /) -> Self:
+        """Chained method to set the transparency character.
+
+        If `None` is passed, no transparency is applied,
+        which means strings with spaces will be rendered on top
+        of other nodes with texture
+        (as long as it has a greater z-index or the node is newer).
+
+        Args:
+            char (str | None): Transparency character or `None`.
+
+        Returns:
+            Self: Same node instance.
+        """
         self.transparency = char
         return self
 
     def hide(self) -> None:
+        """Set the node to be hidden."""
         self.visible = False
 
     def show(self) -> None:
+        """Set the node to be visible."""
         self.visible = True
 
     def is_globally_visible(self) -> bool:
-        """Check whether the node and its ancestors are visible
+        """Check whether the node and its ancestors are visible.
 
         Returns:
-            bool: Blobal visibility
+            bool: Global visibility.
         """
         if not self.visible:
             return False
@@ -118,13 +184,13 @@ class TextureComponent:  # Component (mixin class)
         return True
 
     def get_texture_size(self) -> Vec2i:
-        """Get the size of the texture
+        """Get the size of the texture.
 
         Computed in O(n*m), where n is the number of lines
-        and m is the length of the longest line
+        and m is the length of the longest line.
 
         Returns:
-            Vec2i: Texture size
+            Vec2i: Texture size.
         """
         if not self.texture:
             return Vec2i.ZERO

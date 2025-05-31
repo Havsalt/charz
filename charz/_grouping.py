@@ -12,6 +12,8 @@ if sys.version_info >= (3, 11):
 
     @unique
     class Group(StrEnum):
+        """Enum containing node groups used in `charz`."""
+
         NODE = charz_core.Group.NODE
         TEXTURE = auto()
         ANIMATED = auto()
@@ -22,6 +24,8 @@ else:
 
     @unique
     class Group(str, Enum):
+        """Enum containing node groups used in `charz`."""
+
         NODE = charz_core.Group.NODE.value
         TEXTURE = "texture"
         ANIMATED = "animated"

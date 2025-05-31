@@ -6,20 +6,21 @@ from ._non_negative import NonNegative
 
 
 class Clock:
-    """`Clock` class, with delta time calculation
+    """`Clock` class, with delta time calculation.
 
     Used to sleep for the remaining time of the current frame,
     until a new frame should be processed.
-    An instance of `Clock` is used by the active `Engine`
+    An instance of `Clock` is used by the active `Engine`.
+    If you don't want the clock to sleep, set `fps` to `0`.
     """
 
     fps = NonNegative[float](0)
 
     def __init__(self, *, fps: float | None = None) -> None:
-        """Initialize with optional `fps`
+        """Initialize with optional `fps`.
 
         Args:
-            fps (float | None, optional): frames per second. Defaults to None.
+            fps (float | None, optional): Frames per second. Defaults to None.
         """
         if fps is not None:
             self.fps = fps
@@ -32,11 +33,14 @@ class Clock:
 
     @property
     def delta(self) -> float:
-        """Read-only attribute for delta time - use `.tick` to mutate"""
+        """Read-only attribute for delta time.
+        
+        Call `tick` to update and mutate properly.
+        """
         return self._delta
 
     def tick(self) -> None:
-        """Sleeps for the remaining time to maintain desired `fps`"""
+        """Sleeps for the remaining time to maintain desired `fps`."""
         current_time = time.perf_counter()
 
         if self.fps == 0:  # Skip sleeping if `.fps` is zero

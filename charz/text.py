@@ -110,55 +110,59 @@ for _options in list(_rotational_conversions.values()):
 
 
 def fill(line: str, *, width: int, fill_char: str = " ") -> str:
-    """Fill a single left-justified line with a string of length `1`
+    """Fill a single left-justified line with a string of length `1`.
 
     Args:
-        line (str): Line to be filled
-        width (int): Maximum width of output string
+        line (str): Line to be filled.
+        width (int): Maximum width of output string.
         fill_char (str, optional): String of length `1` to fill line. Defaults to " ".
 
     Returns:
-        str: Line filled with fill character
+        str: Line filled with fill character.
     """
     return line.ljust(width, fill_char)
 
 
 def flip_h(line: str, /) -> str:
-    """Flip a single line horizontally. Also works with a single character
+    """Flip a single line horizontally.
+
+    Also works with a single character.
 
     Args:
-        line (list[str]): Content to ble flipped
+        line (list[str]): Content to be flipped.
 
     Returns:
-        list[str]: Flipped line or character
+        list[str]: Flipped line or character.
     """
     return "".join(_horizontal_conversions.get(char, char) for char in reversed(line))
 
 
 def flip_v(line: str, /) -> str:
-    """Flip a single line vertically. Also works with a single character
+    """Flip a single line vertically.
+
+    Also works with a single character.
 
     Args:
-        line (list[str]): Content to ble flipped
+        line (list[str]): Content to be flipped.
 
     Returns:
-        list[str]: Flipped line or character
+        list[str]: Flipped line or character.
     """
     return "".join(_vertical_conversions.get(char, char) for char in line)
 
 
 def fill_lines(lines: list[str], *, fill_char: str = " ") -> list[str]:
-    """Fill lines with fill character, based on longest line
+    """Fill lines with fill character, based on longest line.
 
     Usefull for filling textures, so that it gets a nice rectangular shape.
     Good for centering and flipping textures.
 
     Args:
-        lines (list[str]): Lines to be filled
+        lines (list[str]): Lines to be filled.
         fill_char (str, optional): String of length `1` to fill line. Defaults to " ".
 
     Returns:
-        list[str]: Rectangular filled lines
+        list[str]: Rectangular filled lines.
     """
     if not lines:  # Allow when there are no lines
         return []  # But still return unique list
@@ -167,7 +171,9 @@ def fill_lines(lines: list[str], *, fill_char: str = " ") -> list[str]:
 
 
 def flip_lines_h(lines: list[str], /) -> list[str]:
-    """Flip lines horizontally. Usefull for flipping textures
+    """Flip lines horizontally.
+
+    Usefull for flipping textures.
 
     Args:
         lines (list[str]): Lines of strings or texture
@@ -179,26 +185,28 @@ def flip_lines_h(lines: list[str], /) -> list[str]:
 
 
 def flip_lines_v(lines: list[str], /) -> list[str]:
-    """Flip lines vertically. Usefull for flipping textures
+    """Flip lines vertically.
+
+    Usefull for flipping textures.
 
     Args:
-        lines (list[str]): Lines of strings or texture
+        lines (list[str]): Lines of strings or texture.
 
     Returns:
-        list[str]: Flipped content
+        list[str]: Flipped content.
     """
     return [flip_v(line) for line in reversed(lines)]
 
 
 def rotate(char: str, /, angle: float) -> str:
-    """Return symbol when rotated by angle counter clockwise
+    """Return symbol when rotated by angle counter clockwise.
 
     Args:
-        char (str): Character to rotate
-        angle (float): Counter clockwise rotation in radians
+        char (str): Character to rotate.
+        angle (float): Counter clockwise rotation in radians.
 
     Returns:
-        str: Rotated character or original character
+        str: Rotated character or original character.
     """
     if char in _rotational_conversions:
         sector_count = len(_rotational_conversions[char])

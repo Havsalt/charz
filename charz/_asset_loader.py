@@ -5,6 +5,8 @@ from typing import Any, NoReturn, final
 
 
 class AssetLoaderClassProperties(type):
+    """Workaround to add class properties to a `AssetLoader`."""
+
     _texture_root: Path = Path.cwd()
     _animation_root: Path = Path.cwd()
 
@@ -31,12 +33,13 @@ class AssetLoaderClassProperties(type):
 
 @final
 class AssetLoader(metaclass=AssetLoaderClassProperties):
-    """Configuration class for loading assets
+    """Configuration class for loading assets.
 
     Variables have to be set **before** importing local files in your project,
     as it is typical to use `load_texture` in a class definition
-    when subclassing `Sprite`:
+    when subclassing `Sprite`.
 
+    Example usage:
     >>> from charz import ..., AssetLoader, ...
     >>> AssetLoader.texture_root = "src/sprites"
     >>> AssetLoader.animation_root = "src/animations"

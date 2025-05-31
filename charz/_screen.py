@@ -34,12 +34,27 @@ class ColorChoice(Enum):
 
 
 class ScreenClassProperties(type):
+    """Workaround to add class properties to a `AssetLoader`."""
+
     COLOR_CHOICE_AUTO = ColorChoice.AUTO
     COLOR_CHOICE_ALWAYS = ColorChoice.ALWAYS
     COLOR_CHOICE_NEVER = ColorChoice.NEVER
 
 
 class Screen(metaclass=ScreenClassProperties):
+    """`Screen` class, representing a virtual screen for rendering `ASCII` frames.
+
+    An instance of `Screen` is used by the active `Engine`,
+    which is set like this:
+    >>> from charz import Engine, Screen
+    >>> class MyGame(Engine):
+    ...     screen = Screen(
+    ...         width=80,
+    ...         height=24,
+    ...         color_choice=Screen.COLOR_CHOICE_AUTO,
+    ...     )
+    """
+
     stream: FileLike[str] = sys.stdout  # Default stream, may be redirected
     # Screen texture buffer with (char, color) tuple
     buffer: list[list[tuple[Char, ColorValue | None]]]
@@ -59,6 +74,26 @@ class Screen(metaclass=ScreenClassProperties):
         margin_right: int = 1,
         margin_bottom: int = 1,
     ) -> None:
+        """Initialize screen with given width and height.
+
+        Args:
+            width (int): Width of the screen in characters.
+            height (int): Height of the screen in characters.
+            auto_resize (bool): Whether to automatically resize the screen
+                based on terminal size. Defaults to `False`.
+            initial_clear (bool): Whether to clear the screen on startup.
+                Defaults to `False`.
+            final_clear (bool): Whether to clear the screen on cleanup.
+                Defaults to `True`.
+            hide_cursor (bool): Whether to hide the cursor on startup.
+                Defaults to `True`.
+            transparency_fill (str): Character used for transparent pixels.
+                Defaults to a single space character.
+            color_choice (ColorChoice): How colors are handled, defaults to `AUTO`.
+            stream (FileLike[str] | None): Output stream, defaults to `sys.stdout`.
+            margin_right (int): Right margin in characters, defaults to 1.
+            margin_bottom (int): Bottom margin in characters, defaults to 1.
+        """
         if len(transparency_fill) != 1:
             raise ValueError(
                 f"String length not equal to 1, got {len(transparency_fill) = }"
@@ -81,6 +116,15 @@ class Screen(metaclass=ScreenClassProperties):
         self.clear()  # For populating the screen buffer
 
     def on_startup(self) -> None:
+        """Startup hook.
+
+        Called when the screen is being activated.
+        The logic is seperated into this method,
+        as only 1 screen (which normally uses `stdout`) can be active at a time.
+        Multiple screens can be used at the same time,
+        as long as they use a different type of filehandle (like sockets or files),
+        though this is not recommended.
+        """
         if self.is_using_ansi():
             if self.initial_clear:
                 self.stream.write(ConsoleCode.CLEAR)
@@ -90,6 +134,12 @@ class Screen(metaclass=ScreenClassProperties):
                 self.stream.flush()
 
     def on_cleanup(self) -> None:
+        """Cleanup hook.
+
+        Called when the screen is being deactivated.
+        The logic is seperated into this method,
+        as only 1 screen (which normally uses `stdout`) can be active at a time.
+        """
         if self.hide_cursor and self.is_using_ansi():
             self.stream.write(CursorCode.SHOW)
             self.stream.flush()
@@ -102,15 +152,34 @@ class Screen(metaclass=ScreenClassProperties):
 
     @property
     def auto_resize(self) -> bool:
+        """Whether the screen automatically resizes based on terminal size.
+
+        Returns:
+            bool: `True` if auto-resizing is enabled, `False` otherwise.
+        """
         return self._auto_resize
 
     @auto_resize.setter
     def auto_resize(self, state: bool) -> None:
+        """Set whether the screen should automatically resize based on terminal size.
+
+        Args:
+            state (bool): `True` to enable auto-resizing, `False` to disable.
+        """
         self._auto_resize = state
         self._resize_if_necessary()
 
     def _resize_if_necessary(self) -> None:
-        # NOTE: Does not mutate screen buffer
+        """Resize the screen if requirements are met or circumstances have changed.
+
+        This method checks if the screen should be resized based on the
+        `auto_resize` property and the current terminal size.
+        If `auto_resize` is `True`, it attempts to get the terminal size
+        using `os.get_terminal_size(...)`.
+        If successful, it updates the screen dimensions accordingly.
+
+        `NOTE` Does not mutate screen `buffer`.
+        """
         if self.auto_resize:
             try:
                 fileno = self.stream.fileno()
@@ -127,10 +196,23 @@ class Screen(metaclass=ScreenClassProperties):
 
     @property
     def size(self) -> Vec2i:
+        """Get the size of the screen as a `Vec2i`.
+
+        Returns:
+            Vec2i: Width and height of the screen, represented by a `Vec2i`.
+        """
         return Vec2i(self.width, self.height)
 
     @size.setter
     def size(self, size: Vec2i) -> None:
+        """Set the size of the screen.
+
+        Args:
+            size (Vec2i): Width and height, represented by a `Vec2i`.
+
+        Raises:
+            ValueError: If the size `Vec2i` could not be unpacked into `2`x`int`.
+        """
         width, height = size
         if not isinstance(width, int):
             raise ValueError(f"Width cannot be of type '{type(size)}', expected 'int'")
@@ -141,13 +223,13 @@ class Screen(metaclass=ScreenClassProperties):
         self._resize_if_necessary()
 
     def is_using_ansi(self) -> bool:
-        """Return whether its using ANSI escape and color codes
+        """Return whether its using ANSI escape and color codes.
 
         Checks first `.color_choice`. Returns `True` if set to `ALWAYS`,
-        and `False` if set to `NEVER`. If set to `AUTO`, check whether a `tty` is detected
+        and `False` if set to `NEVER`. If set to `AUTO`, check whether a `tty` is detected.
 
         Returns:
-            bool: ansi use
+            bool: `True` if using ANSI codes, `False` otherwise.
         """
         if self.color_choice is ColorChoice.ALWAYS:
             return True
@@ -160,10 +242,22 @@ class Screen(metaclass=ScreenClassProperties):
                 is_a_tty = os.isatty(fileno)
             except OSError:
                 is_a_tty = False
-        # Is not a TTY or is `ColorChoice.NEVER`
+        # Returns `False` if not a TTY or is `ColorChoice.NEVER`
         return self.color_choice is ColorChoice.AUTO and is_a_tty
 
     def get_actual_size(self) -> Vec2i:
+        """Get the actual size of the screen based on terminal size.
+
+        The `width` and `height` of the screen are just theoretical maximums,
+        though the real terminal might be smaller than these values.
+        It also takes into account the right and bottom margins,
+        which are nice if jittering occurs because of not accurate values
+        reported by `os.get_terminal_size(...)`.
+        If `stream` is not set to `stdout`, it will return `width` and `height`.
+
+        Returns:
+            Vec2i: Actual size of the screen, adjusted for terminal size and margins.
+        """
         try:
             fileno = self.stream.fileno()
         except (ValueError, OSError):
@@ -177,6 +271,11 @@ class Screen(metaclass=ScreenClassProperties):
         return Vec2i(actual_width, actual_height)
 
     def clear(self) -> None:
+        """Clear the screen `buffer`.
+
+        It will fill the buffer with the transparency fill character,
+        as well as `None` for the color, per "pixel".
+        """
         self.buffer = [
             # Pair structure: (char, color)
             [(self.transparency_fill, None) for _ in range(self.width)]
@@ -184,6 +283,11 @@ class Screen(metaclass=ScreenClassProperties):
         ]
 
     def render_all(self, nodes: Iterable[Renderable], /) -> None:
+        """Render all nodes provided to the screen buffer.
+
+        Args:
+            nodes (Iterable[Renderable]): Iterable of nodes with `TextureComponent`.
+        """
         nodes_sorted_by_z_index = sorted(nodes, key=lambda node: node.z_index)
 
         # Include half size of camera parent when including size
@@ -270,6 +374,11 @@ class Screen(metaclass=ScreenClassProperties):
                     self.buffer[row_index][char_index] = (rotated_char, node_color)
 
     def show(self) -> None:
+        """Show contents of screen buffer.
+
+        This will print the formatted frame to the screen,
+        if `stream` is set to `stdout`.
+        """
         actual_size = self.get_actual_size()
         # Construct frame from screen buffer
         out = ""
@@ -294,6 +403,14 @@ class Screen(metaclass=ScreenClassProperties):
         self.stream.flush()
 
     def refresh(self) -> None:
+        """Refresh the screen, by performing multiple steps.
+
+        The steps are:
+        1. Resize the screen if necessary.
+        2. Clear the screen buffer.
+        3. Render all texture nodes in the current scene.
+        4. Show the rendered content on the screen.
+        """
         self._resize_if_necessary()
         self.clear()
         # NOTE: Using underlying `list` because it's faster than `tuple`, when copying

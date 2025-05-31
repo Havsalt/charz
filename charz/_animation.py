@@ -14,6 +14,16 @@ from . import text
 
 
 class Animation:
+    """`Animation` dataclass to represent an animation consisting of multiple frames.
+
+    This class allows you to create an animation from a list of frames
+    using `Animation.from_frames`,
+    which are lists of strings representing each frame's texture.
+
+    It is possible to subclass this dataclass, but its not easy to say
+    what more functionality should be added to it.
+    """
+
     __slots__ = ("frames",)
 
     @classmethod
@@ -29,6 +39,20 @@ class Animation:
         fill_char: str = " ",
         unique: bool = True,
     ) -> Self:
+        """Create an `Animation` from a list of frames/textures.
+
+        Args:
+            frames (list[list[str]]): List of frames, where each frame is a list of strings.
+            reverse (bool, optional): Reverse the order of frames. Defaults to False.
+            flip_h (bool, optional): Flip frames horizontally. Defaults to False.
+            flip_v (bool, optional): Flip frames vertically. Defaults to False.
+            fill (bool, optional): Fill in to make shape of frames rectangular. Defaults to True.
+            fill_char (str, optional): String of length 1 to fill with. Defaults to " ".
+            unique (bool, optional): Whether the frames should be unique instances. Defaults to True.
+
+        Returns:
+            Self: An instance of `Animation` (or subclass) with the processed frames.
+        """  # noqa: E501
         instance = super().__new__(cls)  # Omit calling `__init__`
         # The negated parameters creates unique list instances,
         # so only copy if they are not present and `unique` is true,
@@ -60,7 +84,7 @@ class Animation:
         fill: bool = True,
         fill_char: str = " ",
     ) -> None:
-        """Load an `Animation` given a path to the folder where the animation is stored
+        """Load an `Animation` given a path to the folder where the animation is stored.
 
         Args:
             animation_path (Path | str): Path to folder where animation frames are stored as files.
@@ -122,6 +146,11 @@ class Animation:
         )
 
     def get_smallest_frame_dimensions(self) -> Vec2i:
+        """Get the smallest frame dimensions in the animation.
+
+        Returns:
+            Vec2i: A `Vec2i` object containing the width and height of the smallest frame.
+        """
         best_shortest = 0
         best_lowest = 0
         for frame in self.frames:
@@ -134,6 +163,11 @@ class Animation:
         return Vec2i(best_shortest, best_lowest)
 
     def get_largest_frame_dimensions(self) -> Vec2i:
+        """Get the largest frame dimensions in the animation.
+
+        Returns:
+            Vec2i: A `Vec2i` object containing the width and height of the largest frame.
+        """
         best_longest = 0
         best_tallest = 0
         for frame in self.frames:
@@ -147,6 +181,11 @@ class Animation:
 
 
 class AnimationSet(SimpleNamespace):
+    """`AnimationSet` dataclass to represent a collection of animations.
+
+    It is subclassed from `SimpleNamespace` to allow dynamic attribute access.
+    """
+
     __dict__: dict[str, Animation]
 
     def __init__(self, **animations: Animation) -> None:
