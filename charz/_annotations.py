@@ -50,7 +50,6 @@ class FileLike(_Protocol[_T_contra]):
     def fileno(self, /) -> int: ...
 
 
-@_runtime_checkable
 class Engine(_Protocol):
     fps: float
     clock: _Clock
@@ -63,7 +62,6 @@ class Engine(_Protocol):
     def is_running(self, run_state: bool) -> None: ...
 
 
-@_runtime_checkable
 class Node(_Protocol):
     uid: int
 
@@ -106,7 +104,6 @@ class TransformComponent(_Protocol):
     def global_rotation(self, rotation: float) -> None: ...
 
 
-@_runtime_checkable
 class TransformNode(
     TransformComponent,
     Node,
@@ -133,7 +130,6 @@ class TextureComponent(_Protocol):
     def get_texture_size(self) -> _Vec2i: ...
 
 
-@_runtime_checkable
 class TextureNode(
     TextureComponent,
     TransformComponent,
@@ -152,7 +148,6 @@ class ColorComponent(_Protocol):
     ) -> _Self: ...
 
 
-@_runtime_checkable
 class ColorNode(
     ColorComponent,
     TextureComponent,
@@ -162,7 +157,6 @@ class ColorNode(
 ): ...
 
 
-@_runtime_checkable
 class Renderable(
     # `ColorComponent`?
     TextureComponent,
@@ -193,7 +187,6 @@ class AnimatedComponent(_Protocol):
     def update_animation(self) -> None: ...
 
 
-@_runtime_checkable
 class AnimatedNode(
     # `ColorComponent`?
     AnimatedComponent,
@@ -213,7 +206,6 @@ class ColliderComponent(_Protocol):
     def is_colliding(self) -> bool: ...
 
 
-@_runtime_checkable
 class ColliderNode(
     # `ColorComponent`?
     # `TextureComponent`?
