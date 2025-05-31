@@ -20,6 +20,8 @@ from __future__ import annotations as _annotations
 
 from math import tau as _TAU
 
+from ._annotations import Char
+
 
 # NOTE: I marked variables with underscores as they are not for export,
 #       since this is a publicly exported module of `charz`
@@ -109,13 +111,13 @@ for _options in list(_rotational_conversions.values()):
 # fmt: on
 
 
-def fill(line: str, *, width: int, fill_char: str = " ") -> str:
+def fill(line: str, *, width: int, fill_char: Char = " ") -> str:
     """Fill a single left-justified line with a string of length `1`.
 
     Args:
         line (str): Line to be filled.
         width (int): Maximum width of output string.
-        fill_char (str, optional): String of length `1` to fill line. Defaults to " ".
+        fill_char (Char, optional): String of length `1` to fill line. Defaults to " ".
 
     Returns:
         str: Line filled with fill character.
@@ -151,7 +153,7 @@ def flip_v(line: str, /) -> str:
     return "".join(_vertical_conversions.get(char, char) for char in line)
 
 
-def fill_lines(lines: list[str], *, fill_char: str = " ") -> list[str]:
+def fill_lines(lines: list[str], *, fill_char: Char = " ") -> list[str]:
     """Fill lines with fill character, based on longest line.
 
     Usefull for filling textures, so that it gets a nice rectangular shape.
@@ -159,7 +161,7 @@ def fill_lines(lines: list[str], *, fill_char: str = " ") -> list[str]:
 
     Args:
         lines (list[str]): Lines to be filled.
-        fill_char (str, optional): String of length `1` to fill line. Defaults to " ".
+        fill_char (Char, optional): String of length `1` to fill line. Defaults to " ".
 
     Returns:
         list[str]: Rectangular filled lines.
@@ -198,11 +200,11 @@ def flip_lines_v(lines: list[str], /) -> list[str]:
     return [flip_v(line) for line in reversed(lines)]
 
 
-def rotate(char: str, /, angle: float) -> str:
+def rotate(char: Char, /, angle: float) -> str:
     """Return symbol when rotated by angle counter clockwise.
 
     Args:
-        char (str): Character to rotate.
+        char (Char): String of length `1` to rotate.
         angle (float): Counter clockwise rotation in radians.
 
     Returns:

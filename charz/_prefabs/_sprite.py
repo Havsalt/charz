@@ -5,6 +5,7 @@ from charz_core import Node, Node2D, Vec2
 
 from .._components._texture import TextureComponent
 from .._components._color import ColorComponent
+from .._annotations import Char
 
 
 class Sprite(ColorComponent, TextureComponent, Node2D):
@@ -38,7 +39,7 @@ class Sprite(ColorComponent, TextureComponent, Node2D):
         visible: bool | None = None,
         centered: bool | None = None,
         z_index: int | None = None,
-        transparency: str | None = None,
+        transparency: Char | None = None,
         color: ColorValue | None = None,
     ) -> None:
         super().__init__(

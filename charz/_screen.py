@@ -68,7 +68,7 @@ class Screen(metaclass=ScreenClassProperties):
         initial_clear: bool = True,
         final_clear: bool = True,
         hide_cursor: bool = True,
-        transparency_fill: str = " ",
+        transparency_fill: Char = " ",
         color_choice: ColorChoice = ColorChoice.AUTO,
         stream: FileLike[str] | None = None,
         margin_right: int = 1,
@@ -87,7 +87,7 @@ class Screen(metaclass=ScreenClassProperties):
                 Defaults to `True`.
             hide_cursor (bool): Whether to hide the cursor on startup.
                 Defaults to `True`.
-            transparency_fill (str): Character used for transparent pixels.
+            transparency_fill (Char): Character used for transparent pixels.
                 Defaults to a single space character.
             color_choice (ColorChoice): How colors are handled, defaults to `AUTO`.
             stream (FileLike[str] | None): Output stream, defaults to `sys.stdout`.

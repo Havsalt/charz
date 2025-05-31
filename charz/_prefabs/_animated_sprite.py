@@ -6,6 +6,7 @@ from charz_core import Node, Vec2
 from .._animation import AnimationSet
 from .._components._animated import AnimatedComponent
 from ._sprite import Sprite
+from .._annotations import Char
 
 
 class AnimatedSprite(AnimatedComponent, Sprite):
@@ -27,7 +28,7 @@ class AnimatedSprite(AnimatedComponent, Sprite):
         visible: bool | None = None,
         centered: bool | None = None,
         z_index: int | None = None,
-        transparency: str | None = None,
+        transparency: Char | None = None,
         color: ColorValue | None = None,
         animations: AnimationSet | None = None,
         repeat: bool | None = None,

@@ -4,6 +4,7 @@ from colex import ColorValue
 from charz_core import Node, Vec2, Self
 
 from ._sprite import Sprite
+from .._annotations import Char
 
 
 class Label(Sprite):
@@ -36,10 +37,10 @@ class Label(Sprite):
     ...         )
     """
 
-    newline: str = "\n"
+    newline: Char = "\n"
     tab_size: int = 4
-    tab_char: str = "\t"
-    tab_fill: str = " "
+    tab_char: Char = "\t"
+    tab_fill: Char = " "
 
     def __init__(
         self,
@@ -52,13 +53,13 @@ class Label(Sprite):
         visible: bool | None = None,
         centered: bool | None = None,
         z_index: int | None = None,
-        transparency: str | None = None,
+        transparency: Char | None = None,
         color: ColorValue | None = None,
         text: str | None = None,
-        newline: str | None = None,
+        newline: Char | None = None,
         tab_size: int | None = None,
-        tab_char: str | None = None,
-        tab_fill: str | None = None,
+        tab_char: Char | None = None,
+        tab_fill: Char | None = None,
     ) -> None:
         super().__init__(
             parent=parent,
@@ -83,11 +84,11 @@ class Label(Sprite):
         if tab_fill is not None:
             self.tab_fill = tab_fill
 
-    def with_newline(self, newline: str, /) -> Self:
+    def with_newline(self, newline: Char, /) -> Self:
         """Chained method to set the newline character.
 
         Args:
-            newline (str): Newline character to use.
+            newline (Char): Newline character to use.
 
         Returns:
             Self: Same node instance.
@@ -107,11 +108,11 @@ class Label(Sprite):
         self.tab_size = tab_size
         return self
 
-    def with_tab_char(self, tab_char: str, /) -> Self:
+    def with_tab_char(self, tab_char: Char, /) -> Self:
         """Chained method to set the tab character.
 
         Args:
-            tab_char (str): Tab character to use.
+            tab_char (Char): Tab character to use.
 
         Returns:
             Self: Same node instance.
@@ -119,11 +120,11 @@ class Label(Sprite):
         self.tab_char = tab_char
         return self
 
-    def with_tab_fill(self, tab_fill: str, /) -> Self:
+    def with_tab_fill(self, tab_fill: Char, /) -> Self:
         """Chained method to set the tab fill character.
 
         Args:
-            tab_fill (str): Tab fill character to use.
+            tab_fill (Char): Tab fill character to use.
 
         Returns:
             Self: Same node instance.

@@ -9,6 +9,7 @@ from charz_core import Vec2i, Self, group
 from .. import text
 from .._asset_loader import AssetLoader
 from .._grouping import Group
+from .._annotations import Char
 
 
 # TODO: In future versions, add caching
@@ -19,7 +20,7 @@ def load_texture(
     flip_h: bool = False,
     flip_v: bool = False,
     fill: bool = True,
-    fill_char: str = " ",
+    fill_char: Char = " ",
 ) -> list[str]:
     """Load texture from file
 
@@ -28,7 +29,7 @@ def load_texture(
         flip_h (bool, optional): Flip horizontally. Defaults to False.
         flip_v (bool, optional): Flip vertically. Defaults to False.
         fill (bool, optional): Fill in to make shape rectangular. Defaults to True.
-        fill_char (str, optional): Filler string of length 1 to use. Defaults to " ".
+        fill_char (Char, optional): Filler string of length 1 to use. Defaults to " ".
 
     Returns:
         list[str]: Loaded texture
@@ -61,7 +62,7 @@ class TextureComponent:  # Component (mixin class)
         `visible`: `bool` - Visibility state of the node.
         `centered`: `bool` - Whether the texture is centered.
         `z_index`: `int` - Z-order for rendering.
-        `transparency`: `str | None` - Character used to signal transparency.
+        `transparency`: `Char | None` - Character used to signal transparency.
 
     Methods:
         `hide`
@@ -86,19 +87,20 @@ class TextureComponent:  # Component (mixin class)
     visible: bool = True
     centered: bool = False
     z_index: int = 0
-    transparency: str | None = None
+    transparency: Char | None = None
 
-    def with_texture(self, texture_or_line: list[str] | str, /) -> Self:
+    def with_texture(self, texture_or_line: list[str] | str | Char, /) -> Self:
         """Chained method to set the texture of the node.
 
         If a string is provided, it is treated as a single line texture.
 
         Args:
-            texture_or_line (list[str] | str): Texture data as a list of lines or a single line string.
+            texture_or_line (list[str] | str | Char):
+                Texture data as a list of lines, a single line string, or a character.
 
         Returns:
             Self: Same node instance.
-        """  # noqa: E501
+        """
         if isinstance(texture_or_line, str):
             self.texture = [texture_or_line]
             return self
@@ -150,16 +152,17 @@ class TextureComponent:  # Component (mixin class)
         self.z_index = z_index
         return self
 
-    def with_transparency(self, char: str | None, /) -> Self:
+    def with_transparency(self, char: Char | None, /) -> Self:
         """Chained method to set the transparency character.
 
+        Uses a string of length `1` as a transparency character.
         If `None` is passed, no transparency is applied,
         which means strings with spaces will be rendered on top
         of other nodes with texture
         (as long as it has a greater z-index or the node is newer).
 
         Args:
-            char (str | None): Transparency character or `None`.
+            char (Char | None): Transparency character or `None`.
 
         Returns:
             Self: Same node instance.

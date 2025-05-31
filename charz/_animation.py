@@ -11,6 +11,7 @@ from charz_core import Vec2i, Self
 from ._components._texture import load_texture
 from ._asset_loader import AssetLoader
 from . import text
+from ._annotations import Char
 
 
 class Animation:
@@ -36,7 +37,7 @@ class Animation:
         flip_h: bool = False,
         flip_v: bool = False,
         fill: bool = True,
-        fill_char: str = " ",
+        fill_char: Char = " ",
         unique: bool = True,
     ) -> Self:
         """Create an `Animation` from a list of frames/textures.
@@ -47,7 +48,7 @@ class Animation:
             flip_h (bool, optional): Flip frames horizontally. Defaults to False.
             flip_v (bool, optional): Flip frames vertically. Defaults to False.
             fill (bool, optional): Fill in to make shape of frames rectangular. Defaults to True.
-            fill_char (str, optional): String of length 1 to fill with. Defaults to " ".
+            fill_char (Char, optional): String of length `1` to fill with. Defaults to " ".
             unique (bool, optional): Whether the frames should be unique instances. Defaults to True.
 
         Returns:
@@ -82,7 +83,7 @@ class Animation:
         flip_h: bool = False,
         flip_v: bool = False,
         fill: bool = True,
-        fill_char: str = " ",
+        fill_char: Char = " ",
     ) -> None:
         """Load an `Animation` given a path to the folder where the animation is stored.
 
@@ -91,7 +92,7 @@ class Animation:
             flip_h (bool, optional): Flip frames horizontally. Defaults to False.
             flip_v (bool, optional): Flip frames vertically. Defaults to False.
             fill (bool, optional): Fill in to make shape of frames rectangular. Defaults to True.
-            fill_char (str, optional): String of length 1 to fill with. Defaults to " ".
+            fill_char (Char, optional): String of length `1` to fill with. Defaults to " ".
         """  # noqa: E501
         frame_directory = (
             Path.cwd()
