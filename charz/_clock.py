@@ -34,7 +34,7 @@ class Clock:
     @property
     def delta(self) -> float:
         """Read-only attribute for delta time.
-        
+
         Call `tick` to update and mutate properly.
         """
         return self._delta
