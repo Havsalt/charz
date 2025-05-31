@@ -149,23 +149,23 @@ class ColliderComponent:  # Component (mixin class)
     def _get_corners(node: ColliderNode) -> list[Vec2]:
         global_position = node.global_position
         global_rotation = node.global_rotation
-        size = node.hitbox.size
+        hitbox_size = node.hitbox.size
 
         # Center the hitbox if needed
         if node.hitbox.centered:
-            global_position = global_position - size / 2
+            global_position = global_position - hitbox_size / 2
 
         # Define corners relative to position
         corners = [
-            Vec2(0, 0),
-            Vec2(size.x, 0),
-            Vec2(size.x, size.y),
-            Vec2(0, size.y),
+            Vec2.ZERO,
+            Vec2(hitbox_size.x, 0),
+            hitbox_size,
+            Vec2(0, hitbox_size.y),
         ]
 
         # Rotate corners around the hitbox center
         if global_rotation != 0.0:
-            center = global_position + size / 2
+            center = global_position + hitbox_size / 2
             rotated = []
             for corner in corners:
                 relative = global_position + corner - center
