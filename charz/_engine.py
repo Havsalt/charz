@@ -40,6 +40,8 @@ class Engine(charz_core.Engine):
     def run(self) -> None:  # Extended main loop function
         """Run app/game, which will start the main loop.
 
+        The loop will run until `is_running` is set to `False.
+
         This function is also responsible for setting up the `screen`,
         which given as an overridden class attribute of `Engine` subclass.
         """
