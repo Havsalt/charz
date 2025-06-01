@@ -93,6 +93,9 @@ class Screen(metaclass=ScreenClassProperties):
             stream (FileLike[str] | None): Output stream, defaults to `sys.stdout`.
             margin_right (int): Right margin in characters, defaults to 1.
             margin_bottom (int): Bottom margin in characters, defaults to 1.
+
+        Raises:
+            ValueError: If `transparency_fill` is not a string of length `1`.
         """
         if len(transparency_fill) != 1:
             raise ValueError(
@@ -338,6 +341,10 @@ class Screen(metaclass=ScreenClassProperties):
                     if char == node.transparency:
                         continue
 
+                    if len(char) != 1:
+                        raise ValueError(
+                            f"Node {node} has invalid character length: {len(char)} != 1"
+                        )
                     # Adjust starting point based on centering
                     x_diff = w - offset_x
                     y_diff = h - offset_y
