@@ -145,6 +145,9 @@ from ._prefabs._label import Label
 from ._prefabs._animated_sprite import AnimatedSprite
 from . import text
 
+# Import to add scene frame tasks
+from . import _scene_tasks
+
 
 # Provide correct completion help - Even if the required feature is not active
 if _TYPE_CHECKING:
