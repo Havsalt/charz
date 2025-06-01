@@ -6,7 +6,7 @@ from ._grouping import Group
 from ._annotations import AnimatedNode
 
 
-# Define additional frame tasks
+# Define additional frame tasks for `Scene`
 
 
 def update_animations(current_scene: Scene) -> None:
@@ -18,5 +18,5 @@ def update_animations(current_scene: Scene) -> None:
         animated_node.update_animation()
 
 
-# Register additional frame tasks
+# Register additional frame tasks for `Scene`
 Scene.frame_tasks[70] = update_animations
