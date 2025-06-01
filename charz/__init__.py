@@ -124,6 +124,7 @@ from charz_core import (
     TransformComponent,
     Node,
     Node2D,
+    Scene,
     Camera,
 )
 
@@ -133,7 +134,6 @@ from ._clock import Clock
 from ._screen import Screen
 from ._time import Time
 from ._asset_loader import AssetLoader
-from ._scene import Scene
 from ._grouping import Group
 from ._animation import Animation, AnimationSet
 from ._components._texture import load_texture, TextureComponent

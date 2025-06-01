@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import charz_core
+from charz_core import Scene
 
-from ._scene import Scene
 from ._clock import Clock
 from ._screen import Screen
 from ._time import Time
