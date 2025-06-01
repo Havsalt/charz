@@ -4,7 +4,7 @@ import os
 import sys
 from math import cos, sin, floor
 from enum import Enum, unique, auto
-from typing import Iterable
+from typing import Sequence
 
 from colex import ColorValue, RESET
 from charz_core import Scene, Camera, TransformComponent, Vec2i
@@ -286,11 +286,11 @@ class Screen(metaclass=ScreenClassProperties):
             for _ in range(self.height)
         ]
 
-    def render_all(self, nodes: Iterable[Renderable], /) -> None:
+    def render_all(self, nodes: Sequence[Renderable], /) -> None:
         """Render all nodes provided to the screen buffer.
 
         Args:
-            nodes (Iterable[Renderable]): Iterable of nodes with `TextureComponent`.
+            nodes (Sequence[Renderable]): Sequence of nodes with `TextureComponent`.
         """
         nodes_sorted_by_z_index = sorted(nodes, key=lambda node: node.z_index)
 
