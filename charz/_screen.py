@@ -116,7 +116,7 @@ class Screen(metaclass=ScreenClassProperties):
         self._resize_if_necessary()
         self.transparency_fill = transparency_fill
         self.buffer = []
-        self.clear()  # For populating the screen buffer
+        self.reset_buffer()  # For populating the screen buffer
 
     def on_startup(self) -> None:
         """Startup hook.
@@ -149,7 +149,7 @@ class Screen(metaclass=ScreenClassProperties):
         if self.final_clear:
             old_fill = self.transparency_fill
             self.transparency_fill = " "
-            self.clear()
+            self.reset_buffer()
             self.show()
             self.transparency_fill = old_fill
 
@@ -274,7 +274,7 @@ class Screen(metaclass=ScreenClassProperties):
         actual_height = min(self.height, terminal_size.lines - self.margin_bottom)
         return Vec2i(actual_width, actual_height)
 
-    def clear(self) -> None:
+    def reset_buffer(self) -> None:
         """Clear the screen `buffer`.
 
         It will fill the buffer with the transparency fill character,
@@ -421,7 +421,7 @@ class Screen(metaclass=ScreenClassProperties):
         4. Show the rendered content on the screen.
         """
         self._resize_if_necessary()
-        self.clear()
+        self.reset_buffer()
         # NOTE: Uses underlying `list` because it's faster than `tuple` when copying
         texture_nodes = Scene.current.get_group_members(
             Group.TEXTURE,
