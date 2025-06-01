@@ -18,6 +18,7 @@ if sys.version_info >= (3, 11):
         TEXTURE = auto()
         ANIMATED = auto()
         COLLIDER = auto()
+        MOVEMENT = auto()
 
 else:
     from enum import Enum
@@ -30,3 +31,4 @@ else:
         TEXTURE = "texture"
         ANIMATED = "animated"
         COLLIDER = "collider"
+        MOVEMENT = "movement"
