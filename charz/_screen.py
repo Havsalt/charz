@@ -374,6 +374,7 @@ class Screen(metaclass=ScreenClassProperties):
 
                     # Apply vertical index snap
                     row_index = floor(final_y)
+                    # Do vertical boundary check
                     if row_index < 0 or row_index >= self.height:
                         continue
 
