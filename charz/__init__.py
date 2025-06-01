@@ -55,6 +55,8 @@ Includes
   - `Sprite`
   - `Label`
   - `AnimatedSprite`
+- Feature dependent
+  - `SimpleMovementComponent` (when using feature `keyboard`/`all`)
 """
 
 __all__ = [

@@ -93,13 +93,13 @@ if __name__ == "__main__":
 
 `Note`: If using `rye`, replace:
 
-```py
+```python
 if __name__ == "__main__":
 ```
 
 with
 
-```py
+```python
 def main() -> None:
 ```
 
@@ -152,7 +152,6 @@ This project is heavily inspired by the `Godot Game Engine`.
   - `ColorComponent`
   - `AnimatedComponent`
   - `ColliderComponent`
-  - `SimpleMovementComponent`
 - Nodes
   - `Node`
   - `Node2D`
@@ -160,6 +159,16 @@ This project is heavily inspired by the `Godot Game Engine`.
   - `Sprite`
   - `Label`
   - `AnimatedSprite`
+- Feature dependent\*
+  - `SimpleMovementComponent`
+
+\*: Feature dependent imports requires explicit import statements as they are lazy loaded:
+
+```python
+# Example when using star import, with feature dependent import
+from charz import *
+from charz import SimpleMovementComponent
+```
 
 ## Regarding testing
 
