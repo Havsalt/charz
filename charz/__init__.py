@@ -154,8 +154,8 @@ if _TYPE_CHECKING:
 # NOTE: Add to `_lazy_objects` when adding new export
 _lazy_objects = ("SimpleMovementComponent",)
 _loaded_objects: dict[str, object] = {
-    name: obj
-    for name, obj in globals().items()
+    name: lazy_object
+    for name, lazy_object in globals().items()
     if name in __all__ and name not in _lazy_objects
 }
 
