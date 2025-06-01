@@ -12,6 +12,10 @@ class Clock:
     until a new frame should be processed.
     An instance of `Clock` is used by the active `Engine`.
     If you don't want the clock to sleep, set `fps` to `0`.
+
+    Attributes:
+        `fps`: `float` - Frames per second. If `0`, it will not sleep.
+        `delta`: `property[float]` - Read-only attribute for delta time, updated on each tick.
     """
 
     fps = NonNegative[float](0)
