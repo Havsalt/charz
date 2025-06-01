@@ -14,17 +14,18 @@ from typing import (
     TypeVar as _TypeVar,
     TypeAlias as _TypeAlias,
     Protocol as _Protocol,
-    overload as _overload,
     runtime_checkable as _runtime_checkable,
     TYPE_CHECKING as _TYPE_CHECKING,
 )
 
-from charz_core import (
-    Vec2 as _Vec2,
-    Vec2i as _Vec2i,
+from charz_core import Vec2i as _Vec2i
+from charz_core._annotations import (
+    Node,
+    TransformComponent,
+    TransformNode,
+    Engine as _CoreEngine,
 )
 from colex import ColorValue as _ColorValue
-from typing_extensions import LiteralString as _LiteralString
 
 if _TYPE_CHECKING:
     from charz_core import Self as _Self
@@ -49,77 +50,9 @@ class FileLike(_Protocol[_T_contra]):
     def fileno(self, /) -> int: ...
 
 
-class Engine(_Protocol):
-    fps: float
+class Engine(_CoreEngine, _Protocol):
     clock: _Clock
     screen: _Screen
-    _is_running: bool
-
-    @property
-    def is_running(self) -> bool: ...
-    @is_running.setter
-    def is_running(self, run_state: bool) -> None: ...
-
-
-class Node(_Protocol):
-    uid: int
-
-    def __init__(self) -> None: ...
-    def with_parent(self, parent: Node | None, /) -> _Self: ...
-    def update(self) -> None: ...
-    def queue_free(self) -> None: ...
-    def _free(self) -> None: ...
-
-
-class TransformComponent(_Protocol):
-    position: _Vec2
-    rotation: float
-    top_level: bool
-
-    @_overload
-    def with_position(
-        self,
-        position: _Vec2,
-        /,
-    ) -> _Self: ...
-    @_overload
-    def with_position(
-        self,
-        *,
-        x: float,
-        y: float,
-    ) -> _Self: ...
-    @_overload
-    def with_global_position(
-        self,
-        global_position: _Vec2,
-        /,
-    ) -> _Self: ...
-    @_overload
-    def with_global_position(
-        self,
-        *,
-        x: float,
-        y: float,
-    ) -> _Self: ...
-    def with_rotation(self, rotation: float, /) -> _Self: ...
-    def with_global_rotation(self, global_rotation: float, /) -> _Self: ...
-    def with_top_level(self, state: bool = True, /) -> _Self: ...
-    @property
-    def global_position(self) -> _Vec2: ...
-    @global_position.setter
-    def global_position(self, position: _Vec2) -> None: ...
-    @property
-    def global_rotation(self) -> float: ...
-    @global_rotation.setter
-    def global_rotation(self, rotation: float) -> None: ...
-
-
-class TransformNode(
-    TransformComponent,
-    Node,
-    _Protocol,
-): ...
 
 
 class TextureComponent(_Protocol):
@@ -144,8 +77,7 @@ class TextureComponent(_Protocol):
 
 class TextureNode(
     TextureComponent,
-    TransformComponent,
-    Node,
+    TransformNode,
     _Protocol,
 ): ...
 
@@ -162,18 +94,14 @@ class ColorComponent(_Protocol):
 
 class ColorNode(
     ColorComponent,
-    TextureComponent,
-    TransformNode,
-    Node,
+    TextureNode,
     _Protocol,
 ): ...
 
 
 class Renderable(
     # `ColorComponent`?
-    TextureComponent,
-    TransformComponent,
-    Node,
+    TextureNode,
     _Protocol,
 ): ...
 
@@ -205,9 +133,7 @@ class AnimatedComponent(_Protocol):
 class AnimatedNode(
     # `ColorComponent`?
     AnimatedComponent,
-    TextureComponent,
-    TransformComponent,
-    Node,
+    TextureNode,
     _Protocol,
 ): ...
 
@@ -225,7 +151,6 @@ class ColliderNode(
     # `ColorComponent`?
     # `TextureComponent`?
     ColliderComponent,
-    TransformComponent,
-    Node,
+    TransformNode,
     _Protocol,
 ): ...
