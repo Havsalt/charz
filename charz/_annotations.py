@@ -10,12 +10,11 @@ it means a type may or may not implement that field or mixin class.
 
 from __future__ import annotations as _annotations
 
-
 from typing import (
     TypeVar as _TypeVar,
     TypeAlias as _TypeAlias,
-    Hashable as _Hashable,
     Protocol as _Protocol,
+    overload as _overload,
     runtime_checkable as _runtime_checkable,
     TYPE_CHECKING as _TYPE_CHECKING,
 )
@@ -34,7 +33,7 @@ if _TYPE_CHECKING:
     from ._components._collision import Hitbox as _Hitbox
     from ._animation import (
         Animation as _Animation,
-        AnimationSet as _AnimationMapping,
+        AnimationSet as _AnimationSet,
     )
 
 T = _TypeVar("T")
@@ -77,19 +76,31 @@ class TransformComponent(_Protocol):
     rotation: float
     top_level: bool
 
+    @_overload
     def with_position(
         self,
-        position: _Vec2 | None = None,
+        position: _Vec2,
         /,
-        x: float | None = None,
-        y: float | None = None,
     ) -> _Self: ...
+    @_overload
+    def with_position(
+        self,
+        *,
+        x: float,
+        y: float,
+    ) -> _Self: ...
+    @_overload
     def with_global_position(
         self,
-        global_position: _Vec2 | None = None,
+        global_position: _Vec2,
         /,
-        x: float | None = None,
-        y: float | None = None,
+    ) -> _Self: ...
+    @_overload
+    def with_global_position(
+        self,
+        *,
+        x: float,
+        y: float,
     ) -> _Self: ...
     def with_rotation(self, rotation: float, /) -> _Self: ...
     def with_global_rotation(self, global_rotation: float, /) -> _Self: ...
@@ -120,6 +131,7 @@ class TextureComponent(_Protocol):
     transparency: Char | None
 
     def with_texture(self, texture_or_line: list[str] | str | Char, /) -> _Self: ...
+    def with_unique_texture(self) -> _Self: ...
     def with_visibility(self, state: bool = True, /) -> _Self: ...
     def with_centering(self, state: bool = True, /) -> _Self: ...
     def with_z_index(self, z_index: int, /) -> _Self: ...
@@ -167,8 +179,10 @@ class Renderable(
 
 
 class AnimatedComponent(_Protocol):
-    animations: _AnimationMapping
-    current_animation: _Animation | None = None
+    animations: _AnimationSet
+    current_animation: _Animation | None
+    repeat: bool
+    is_playing: bool
 
     def with_animations(self, **animations: _Animation) -> _Self: ...
     def with_animation(
@@ -177,6 +191,7 @@ class AnimatedComponent(_Protocol):
         animation: _Animation,
         /,
     ) -> _Self: ...
+    def with_repeat(self, state: bool = True, /) -> _Self: ...
     def add_animation(
         self,
         animation_name: str,
