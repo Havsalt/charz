@@ -291,6 +291,10 @@ class Screen(metaclass=ScreenClassProperties):
 
         Args:
             nodes (Sequence[Renderable]): Sequence of nodes with `TextureComponent`.
+
+        Raises:
+            ValueError: If a any node has an invalid transparency character length,
+                which is not equal to `1`.
         """
         nodes_sorted_by_z_index = sorted(nodes, key=lambda node: node.z_index)
 
