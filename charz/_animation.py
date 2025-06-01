@@ -53,7 +53,14 @@ class Animation:
 
         Returns:
             Self: An instance of `Animation` (or subclass) with the processed frames.
+
+        Raises:
+            ValueError: If `fill_char` is not of length `1`.
         """  # noqa: E501
+        if len(fill_char) != 1:
+            raise ValueError(
+                f"Parameter 'fill_char' must be of length 1, got {len(fill_char) = }"
+            )
         instance = super().__new__(cls)  # Omit calling `__init__`
         # The negated parameters creates unique list instances,
         # so only copy if they are not present and `unique` is true,
