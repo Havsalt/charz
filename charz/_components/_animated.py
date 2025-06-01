@@ -33,7 +33,7 @@ class AnimatedComponent:  # Component (mixin class)
         `add_animation`
         `play`
         `play_backwards`
-        `update_animation`
+        `progress_animation`
     """
 
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
@@ -123,7 +123,7 @@ class AnimatedComponent:  # Component (mixin class)
         self._is_on_last_frame = False
         self._frame_index = 0
         # The actual logic of playing the animation
-        # is handled in `.update_animation`
+        # is handled in `.progress_animation`
 
     def play_backwards(self, animation_name: str, /) -> None:
         """Play an animation in reverse by its name.
@@ -143,7 +143,7 @@ class AnimatedComponent:  # Component (mixin class)
         self._is_on_last_frame = False
         self._frame_index = len(self.current_animation.frames) - 1
         # The actual logic of playing the animation
-        # is handled in `.update_animation`
+        # is handled in `.progress_animation`
 
     def progress_animation(self) -> None:
         """Progress `1` frame of current animation.
