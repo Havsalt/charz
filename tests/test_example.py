@@ -25,7 +25,7 @@ class Player(Sprite):
 
 
 class Game(Engine):
-    fps = 12
+    clock = Clock(fps=12)
     screen = Screen(
         auto_resize=True,
         initial_clear=True,
@@ -40,7 +40,7 @@ class Game(Engine):
             self.is_running = False
         if keyboard.is_pressed("e"):
             self.player.queue_free()  # `Engine` will drop reference to player
-            # NOTE: Player reference is still kept alive by `App`, but it won't be updated
+            # NOTE: Player reference is still kept alive by `Game`, but it won't be updated
 
 
 if __name__ == "__main__":
