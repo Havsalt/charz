@@ -315,6 +315,12 @@ class Screen(metaclass=ScreenClassProperties):
             if not node.is_globally_visible():
                 continue
 
+            if node.transparency is not None and len(node.transparency) != 1:
+                raise ValueError(
+                    f"Node {node} has invalid transparency character length:"
+                    f"{len(node.transparency)} != 1"
+                )
+
             # Cache and lookup node properties/attributes
             node_global_position = node.global_position
             node_global_rotation = node.global_rotation
@@ -341,10 +347,6 @@ class Screen(metaclass=ScreenClassProperties):
                     if char == node.transparency:
                         continue
 
-                    if len(char) != 1:
-                        raise ValueError(
-                            f"Node {node} has invalid character length: {len(char)} != 1"
-                        )
                     # Adjust starting point based on centering
                     x_diff = w - offset_x
                     y_diff = h - offset_y
