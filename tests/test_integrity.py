@@ -1,1 +1,2 @@
-import charz
+def test_integrity() -> None:
+    import charz
