@@ -115,7 +115,9 @@ class TextureComponent:  # Component (mixin class)
         return self
 
     def with_unique_texture(self) -> Self:
-        """Chained method to create a unique copy of texture as use that as `texture`.
+        """Chained method to create unique copy of `texture`, and use that.
+
+        Uses `deepcopy` to create the copy.
 
         Returns:
             Self: Same node instance with a unique texture copy.
