@@ -162,7 +162,7 @@ class TextureComponent:  # Component (mixin class)
     def with_transparency(self, char: Char | None, /) -> Self:
         """Chained method to set the transparency character.
 
-        Uses a string of length `1` as a transparency character.
+        Uses a string of length `1` as transparency character.
         If `None` is passed, no transparency is applied,
         which means strings with spaces will be rendered on top
         of other nodes with texture
