@@ -16,7 +16,7 @@ class Clock:
     Attributes:
         `fps`: `float` - Frames per second. If `0`, it will not sleep.
         `delta`: `property[float]` - Read-only attribute for delta time,
-            updated on each tick.
+            updated on each `tick` call.
     """
 
     fps = NonNegative[float](0)
