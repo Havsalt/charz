@@ -44,8 +44,9 @@ class ScreenClassProperties(type):
 class Screen(metaclass=ScreenClassProperties):
     """`Screen` class, representing a virtual screen for rendering `ASCII` frames.
 
-    An instance of `Screen` is used by the active `Engine`,
-    which is set like this:
+    An instance of `Screen` is used by the active `Engine`.
+
+    Example:
     >>> from charz import Engine, Screen
     >>> class MyGame(Engine):
     ...     screen = Screen(
