@@ -40,7 +40,8 @@ class Game(Engine):
             self.is_running = False
         if keyboard.is_pressed("e"):
             self.player.queue_free()  # `Engine` will drop reference to player
-            # NOTE: Player reference is still kept alive by `Game`, but it won't be updated
+            # NOTE: Player reference is still kept alive by `Game`,
+            #       but it won't be updated
 
 
 if __name__ == "__main__":
