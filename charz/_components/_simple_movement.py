@@ -74,6 +74,7 @@ class SimpleMovementComponent:  # Component (mixin class)
     """
 
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
+        # Workaround when using `@group`
         return super().__new__(cls, *args, **kwargs)
 
     speed: float = 16
