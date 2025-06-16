@@ -24,7 +24,7 @@ class Label(Sprite):
     - `tab_fill`: The character to use for filling in tabs.
         Default: `" "`
 
-    Example usage:
+    Example:
     >>> import colex
     >>> from charz import Label, Scene
     ... # This will be placed in subclass of either `Engine`/`Scene`
