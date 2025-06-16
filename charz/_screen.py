@@ -46,6 +46,10 @@ class Screen(metaclass=ScreenClassProperties):
 
     An instance of `Screen` is used by the active `Engine`.
 
+    `NOTE` Attribute `stream` is defined at *class level*,
+    which means **all instances will share the same reference**,
+    unless explicitly overridden.
+
     Example:
     >>> from charz import Engine, Screen
     >>> class MyGame(Engine):
@@ -54,10 +58,40 @@ class Screen(metaclass=ScreenClassProperties):
     ...         height=24,
     ...         color_choice=Screen.COLOR_CHOICE_AUTO,
     ...     )
+
+    Attributes:
+        `stream`: `FileLike[str]` - Output stream written to.
+            Defaults to `sys.stdout`.
+        `buffer`: `list[list[tuple[Char, ColorValue | None]]]` - Screen buffer,
+            where each pixel is stored in a 2D `list`,
+            and each pixel is a `tuple` pair of visual character and optional color.
+        `width`: `NonNegative[int]` - Viewport width in character pixels.
+        `height`: `NonNegative[int]` - Viewport height in character pixels.
+        `size`: `property[Vec2i]` - Read-only getter,
+            which packs `width` and `height` into a `Vec2i` instance.
+        `auto_resize`: `property[bool]` - Whether to use terminal size as viewport size.
+        `intial_clear`: `bool` - Whether to clear terminal on startup.
+        `final_clear`: `bool` - Whether to clear screen on cleanup.
+        `hide_cursor`: `bool` - Whether to hide cursor.
+        `transparency_fill`: `Char` - Character used for transparent pixels..
+        `color_choice`: `ColorChoice` - How colors are handled.
+        `margin_right`: `int` - Margin on right side to not draw on.
+        `margin_bottom`: `int` - Margin under to not draw on.
+
+    Hooks:
+        `on_startup`
+        `on_cleanup`
+
+    Methods:
+        `is_using_ansi`
+        `get_actual_size`
+        `reset_buffer`
+        `render_all`
+        `show`
+        `refresh`
     """
 
-    stream: FileLike[str] = sys.stdout  # Default stream, may be redirected
-    # Screen texture buffer with (char, color) tuple
+    stream: FileLike[str] = sys.stdout
     buffer: list[list[tuple[Char, ColorValue | None]]]
 
     def __init__(
@@ -78,9 +112,9 @@ class Screen(metaclass=ScreenClassProperties):
         """Initialize screen with given width and height.
 
         Args:
-            width (int): Width of the screen in characters.
-            height (int): Height of the screen in characters.
-            auto_resize (bool): Whether to automatically resize the screen
+            width (NonNegative[int]): Viewport width of the screen in characters.
+            height (NonNegative[int]): Viewport height of the screen in characters.
+            auto_resize (bool): Whether to automatically resize the screen,
                 based on terminal size. Defaults to `False`.
             initial_clear (bool): Whether to clear the screen on startup.
                 Defaults to `True`.
@@ -89,14 +123,18 @@ class Screen(metaclass=ScreenClassProperties):
             hide_cursor (bool): Whether to hide the cursor on startup.
                 Defaults to `True`.
             transparency_fill (Char): Character used for transparent pixels.
-                Defaults to a single space character.
-            color_choice (ColorChoice): How colors are handled, defaults to `AUTO`.
-            stream (FileLike[str] | None): Output stream, defaults to `sys.stdout`.
-            margin_right (int): Right margin in characters, defaults to 1.
-            margin_bottom (int): Bottom margin in characters, defaults to 1.
+                Defaults to `" "`.
+            color_choice (ColorChoice): How colors are handled.
+                Defaults to `Screen.COLOR_CHOICE_AUTO`.
+            stream (FileLike[str] | None): Output stream.
+                Defaults to `sys.stdout`.
+            margin_right (int): Right margin in characters.
+                Defaults to `1`.
+            margin_bottom (int): Bottom margin in characters.
+                Defaults to `1`.
 
         Raises:
-            ValueError: If `transparency_fill` is not a string of length `1`.
+            ValueError: If `transparency_fill` is not a `str` of length `1`.
         """
         if len(transparency_fill) != 1:
             raise ValueError(
@@ -124,7 +162,8 @@ class Screen(metaclass=ScreenClassProperties):
 
         Called when the screen is being activated.
         The logic is seperated into this method,
-        as only 1 screen (which normally uses `stdout`) can be active at a time.
+        as only 1 screen (which normally uses `sys.stdout`) can be active at a time.
+
         Multiple screens can be used at the same time,
         as long as they use a different type of filehandle (like sockets or files),
         though this is not recommended.
@@ -390,9 +429,9 @@ class Screen(metaclass=ScreenClassProperties):
                     self.buffer[row_index][char_index] = (rotated_char, node_color)
 
     def show(self) -> None:
-        """Show contents of screen buffer.
+        """Show content of screen buffer.
 
-        This will print the formatted frame to the screen,
+        This will print the formatted frame to the terminal,
         if `stream` is set to `stdout`.
         """
         actual_size = self.get_actual_size()
