@@ -20,8 +20,10 @@ class Hitbox:
         `centered`: `bool` - Whether hitbox is centered around the node's global position.
             Defaults to `False`, meaning the hitbox starts at the node's position,
             and expanding to the right and downwards.
-        `disabled`: bool = False
+        `disabled`: `bool` - Whether collision with node is disabled.
+            Defaults to `False`, meaning collision is active on with node.
         `margin`: `float` - Inverse margin around the hitbox for collision detection.
+            Defaults to `1`, and should not be smaller than `1e-2`.
     """
 
     size: Vec2
