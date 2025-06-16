@@ -12,7 +12,6 @@ from .._grouping import Group
 from .._annotations import Char
 
 
-# TODO: In future versions, add caching
 def load_texture(
     texture_path: Path | str,
     /,
@@ -22,17 +21,19 @@ def load_texture(
     fill: bool = True,
     fill_char: Char = " ",
 ) -> list[str]:
-    """Load texture from file
+    """Load texture from file.
+
+    `NOTE` `AssetLoader.texture_root` will be prepended to `texture_path`.
 
     Args:
         texture_path (Path | str): Path to file with texture.
-        flip_h (bool, optional): Flip horizontally. Defaults to False.
-        flip_v (bool, optional): Flip vertically. Defaults to False.
-        fill (bool, optional): Fill in to make shape rectangular. Defaults to True.
-        fill_char (Char, optional): Filler string of length 1 to use. Defaults to " ".
+        flip_h (bool, optional): Flip horizontally. Defaults to `False`.
+        flip_v (bool, optional): Flip vertically. Defaults to `False`.
+        fill (bool, optional): Fill in to make shape rectangular. Defaults to `True`.
+        fill_char (Char, optional): Filler string of length `1` to use. Defaults to `" "`.
 
     Returns:
-        list[str]: Loaded texture
+        list[str]: Loaded texture.
 
     Raises:
         ValueError: If `fill_char` is not of length `1`.
