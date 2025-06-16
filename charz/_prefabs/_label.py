@@ -25,6 +25,7 @@ class Label(Sprite):
         Default: `" "`
 
     Example:
+    --------
     >>> import colex
     >>> from charz import Label, Scene
     ... # This will be placed in subclass of either `Engine`/`Scene`
