@@ -33,7 +33,8 @@ class AnimatedSprite(AnimatedComponent, Sprite):
         animations: AnimationSet | None = None,
         repeat: bool | None = None,
     ) -> None:
-        super().__init__(
+        Sprite.__init__(
+            self,
             parent=parent,
             position=position,
             rotation=rotation,

@@ -62,7 +62,8 @@ class Label(Sprite):
         tab_char: Char | None = None,
         tab_fill: Char | None = None,
     ) -> None:
-        super().__init__(
+        Sprite.__init__(
+            self,
             parent=parent,
             position=position,
             rotation=rotation,

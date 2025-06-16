@@ -42,7 +42,8 @@ class Sprite(ColorComponent, TextureComponent, Node2D):
         transparency: Char | None = None,
         color: ColorValue | None = None,
     ) -> None:
-        super().__init__(
+        Node2D.__init__(
+            self,
             parent=parent,
             position=position,
             rotation=rotation,
