@@ -34,7 +34,7 @@ class ColorChoice(Enum):
 
 
 class ScreenClassProperties(type):
-    """Workaround to add class properties to a `AssetLoader`."""
+    """Workaround to add class properties to `Screen`."""
 
     COLOR_CHOICE_AUTO = ColorChoice.AUTO
     COLOR_CHOICE_ALWAYS = ColorChoice.ALWAYS
