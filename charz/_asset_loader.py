@@ -5,7 +5,7 @@ from typing import Any, NoReturn, final
 
 
 class AssetLoaderClassProperties(type):
-    """Workaround to add class properties to a `AssetLoader`."""
+    """Workaround to add class properties to `AssetLoader`."""
 
     _texture_root: Path = Path.cwd()
     _animation_root: Path = Path.cwd()
