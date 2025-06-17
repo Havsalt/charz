@@ -461,10 +461,10 @@ class Screen(metaclass=ScreenClassProperties):
         """Refresh the screen, by performing multiple steps.
 
         The steps are:
-        1. Resize the screen if necessary.
-        2. Clear the screen buffer.
-        3. Render all texture nodes in the current scene.
-        4. Show the rendered content on the screen.
+        1. Resize screen if necessary.
+        2. Reset screen buffer.
+        3. Render all texture nodes in current scene.
+        4. Show rendered content in terminal.
         """
         self._resize_if_necessary()
         self.reset_buffer()
