@@ -59,6 +59,8 @@ Includes
   - `SimpleMovementComponent` (when using feature `keyboard`/`all`)
 """
 
+from __future__ import annotations as _annotations
+
 __all__ = [
     # Annotations
     "ColorValue",
@@ -107,7 +109,16 @@ __all__ = [
     "AnimatedSprite",
 ]
 
-from typing import TYPE_CHECKING as _TYPE_CHECKING
+from typing import (
+    TYPE_CHECKING as _TYPE_CHECKING,
+    TypeAlias as _TypeAlias,
+    Literal as _Literal,
+    Any as _Any,
+    overload as _overload,
+    get_args as _get_args,
+)
+
+from typing_extensions import assert_never as _assert_never
 
 # Re-exports from `colex`
 from colex import ColorValue
@@ -156,27 +167,31 @@ if _TYPE_CHECKING:
     from ._components._simple_movement import SimpleMovementComponent
 
 # Lazy exports
-# NOTE: Add to `_lazy_objects` when adding new export
-_lazy_objects = ("SimpleMovementComponent",)
-_loaded_objects: dict[str, object] = {
-    name: lazy_object
-    for name, lazy_object in globals().items()
-    if name in __all__ and name not in _lazy_objects
-}
+# NOTE: Literals and `__getattr__` case branches has to be implemented manually
+_LazyNames: _TypeAlias = _Literal["SimpleMovementComponent"]
+# NOTE: Add string to `Literal` when a new branch is added
+# _LazyNames: _TypeAlias = _Literal["SimpleMovementComponent", "ExampleLazyObject"]
+_lazy_object_names = _get_args(_LazyNames)
+_lazy_loaded_objects: dict[str, _Any] = {}
 
 
 # Lazy load to properly load optional dependencies along the standard exports
-def __getattr__(name: str) -> object:
-    if name in _loaded_objects:
-        return _loaded_objects[name]
-    elif name in _lazy_objects:
+# NOTE: Using "type: ignore" since it takes multiple branches to work properly
+@_overload
+def __getattr__(name: _Literal["SimpleMovementComponent"]): ...  # type: ignore
+# @_overload
+# def __getattr__(name: _Literal["ExampleLazyObject"]): ...
+def __getattr__(name: _LazyNames):
+    if name in _lazy_loaded_objects:
+        return _lazy_loaded_objects[name]
+    elif name in _lazy_object_names:
         # NOTE: Manually add each case branch
         match name:
             case "SimpleMovementComponent":
                 from ._components._simple_movement import SimpleMovementComponent
 
-                _loaded_objects[name] = SimpleMovementComponent
-                return _loaded_objects[name]
+                _lazy_loaded_objects[name] = SimpleMovementComponent
+                return _lazy_loaded_objects[name]
             case _:
-                raise NotImplementedError(f"Case branch not implemented for '{name}'")
+                _assert_never(name)
     raise AttributeError(f"Module '{__name__}' has no attribute '{name}'")
