@@ -33,7 +33,7 @@ class Clock:
         which means `delta` will be updated and nothing else happens.
 
         Args:
-            fps (float, optional): Frames per second. Defaults to 0.
+            fps (float, optional): Frames per second. Defaults to `0`.
         """
         self.fps = fps
         self._delta = 1 / self.fps
