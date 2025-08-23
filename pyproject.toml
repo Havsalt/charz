@@ -45,6 +45,8 @@ managed = true
 dev-dependencies = [
     "keyboard>=0.13.5",
     "pytest>=8.3.4",
+    "pydoc-markdown~=4.8",
+    "pydoc-markdown-havsalt==0.1.0",
 ]
 
 [tool.hatch.metadata]
@@ -52,6 +54,37 @@ allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["charz"]
+
+[[tool.pydoc-markdown.loaders]]
+type = "python"
+packages = ["charz"]
+
+[[tool.pydoc-markdown.processors]]
+type = "google"
+
+[[tool.pydoc-markdown.processors]]
+type = "filter"
+documented_only = true
+
+[tool.pydoc-markdown.renderer]
+type = "pydoc_markdown_havsalt.RuffMarkdownRenderer"
+filename = "DOCS.md"
+page_title = "Documentation for `charz`"
+render_page_title = true
+render_toc = true
+insert_header_anchors = true
+code_headers = true
+descriptive_class_title = "Class "
+descriptive_module_title = true
+add_module_prefix = true
+add_method_class_prefix = true
+
+[tool.pydoc-markdown.renderer.header_level_by_type]
+Module = 1
+Function = 2
+Class = 2
+Variable = 3
+Method = 3
 
 [tool.ruff]
 output-format = "grouped"

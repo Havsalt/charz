@@ -1,31 +1,38 @@
 from __future__ import annotations
 
+import charz_core
+from charz_core import Node, Vec2
 from colex import ColorValue
-from charz_core import Node, Node2D, Vec2
 
 from .._components._texture import TextureComponent
 from .._components._color import ColorComponent
 from .._annotations import Char
 
 
-class Sprite(ColorComponent, TextureComponent, Node2D):
+class Sprite(ColorComponent, TextureComponent, charz_core.Node2D):
     r"""`Sprite` node to represent a 2D sprite with texture and color.
 
     This is the base class for every node that has a texture and color in 2D space.
     Most of the visual nodes will inherit from this class.
 
-    Subclass `Sprite` and override class attributes to customize look:
-    >>> import colex
-    >>> from charz import Sprite
-    >>> class CustomSprite(Sprite):
-    ...     color = colex.RED
-    ...     transparency = " "
-    ...     centered = True
-    ...     texture = [
-    ...         "  O",
-    ...         "/ | \\",
-    ...         " / \\",
-    ...     ]
+    Example:
+
+    Subclassing `Sprite` and overriding class attributes to customize look:
+
+    ```python
+    import colex
+    from charz import Sprite
+
+    class CustomSprite(Sprite):
+        color = colex.RED
+        transparency = " "
+        centered = True
+        texture = [
+            "  O",
+            "/ | \\",
+            " / \\",
+        ]
+    ```
     """
 
     def __init__(
@@ -42,7 +49,7 @@ class Sprite(ColorComponent, TextureComponent, Node2D):
         transparency: Char | None = None,
         color: ColorValue | None = None,
     ) -> None:
-        Node2D.__init__(
+        charz_core.Node2D.__init__(
             self,
             parent=parent,
             position=position,

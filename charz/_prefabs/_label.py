@@ -24,18 +24,41 @@ class Label(Sprite):
     - `tab_fill`: The character to use for filling in tabs.
         Default: `" "`
 
-    Example:
-    --------
-    >>> import colex
-    >>> from charz import Label, Scene
-    ... # This will be placed in subclass of either `Engine`/`Scene`
-    >>> class MenuPage(Scene):
-    ...     def __init__(self) -> None:
-    ...         self.label = Label(
-    ...             text="Welcome to the game!\nPress [Enter] to start.",
-    ...             color=colex.BLUE,
-    ...             centered=True,
-    ...         )
+    Examples:
+
+    Creating a `Label` instance inside a `Scene.__init__`:
+
+    ```python
+    import colex
+    from charz import Scene, Label
+
+    class MenuPage(Scene):
+        def __init__(self) -> None:
+            self.label = Label(
+                text="Welcome to the game!\nPress [Enter] to start.",
+                color=colex.BLUE,
+                centered=True,
+            )
+    ```
+
+    Creating the `Label` at top level in `Engine.__init__`:
+
+    ```python
+    import colex
+    from charz import Engine, Label
+
+    class MyGame(Engine):
+        def __init__(self) -> None:
+            self.label = Label(
+                text="Welcome to the game!\nPress [Enter] to start.",
+                color=colex.BLUE,
+                centered=True,
+            )
+    ...
+    ...
+    game = MyGame()
+    game.run()
+    ```
     """
 
     newline: Char = "\n"

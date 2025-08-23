@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from types import SimpleNamespace
+import types
 from functools import partial
 from pathlib import Path
 from copy import deepcopy
@@ -188,10 +188,10 @@ class Animation:
         return Vec2i(best_longest, best_tallest)
 
 
-class AnimationSet(SimpleNamespace):
+class AnimationSet(types.SimpleNamespace):
     """`AnimationSet` dataclass to represent a collection of animations.
 
-    It is subclassed from `SimpleNamespace` to allow dynamic attribute access.
+    It is subclassed from `types.SimpleNamespace` to allow dynamic attribute access.
     """
 
     __dict__: dict[str, Animation]
@@ -207,3 +207,8 @@ class AnimationSet(SimpleNamespace):
 
     def __iter__(self) -> Iterator[Animation]:
         return iter(self.__dict__.values())
+
+
+def some(foo: int) -> float:
+    """Foobar"""
+    return 2

@@ -13,8 +13,26 @@ class AnimatedSprite(AnimatedComponent, Sprite):
     """`AnimatedSprite` node with multiple textures packed into animations.
 
     It inherits from `AnimatedComponent` and `Sprite`, allowing it to
-    play animations defined in `AnimationSet` while also being a sprite
+    play animations defined in its `AnimationSet, while also being a sprite
     with a texture, position, rotation, and other visual properties.
+
+    Example:
+
+    The paths are relative to the project root,
+    unless an animation directory is set in `AssetLoader`.
+    See `Animation` for more options when loading.
+
+    ```python
+    from charz import AnimatedSprite, AnimationSet, Animation
+
+    class MyAnimatedGoblin(AnimatedSprite):
+        animations = AnimationSet(
+            Idle=Animation("path/to/idle-animation-folder"),
+            Attack=Animation("goblin/attack"),
+            AttackLeft=Animation("goblin/attack", flip_h=True),
+            Flee=Animation("goblin/attack", reverse=True),
+        )
+    ```
     """
 
     def __init__(

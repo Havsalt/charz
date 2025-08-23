@@ -14,9 +14,17 @@ class Clock:
     If you don't want the clock to sleep, set `fps` to `0`.
 
     Example:
-    >>> from charz import Engine, Clock
-    >>> class MyGame(Engine):
-    ...     clock = Clock(fps=12)
+
+    ```python
+    from charz import Engine, Clock
+
+    class MyGame(Engine):
+        clock = Clock(fps=12)
+    ```
+    TEMPORARY THING:
+    ```python
+    from os import cool_stuff
+    ```
 
     Attributes:
         `fps`: `NonNegative[float]` - Frames per second. If `0`, it will not sleep.

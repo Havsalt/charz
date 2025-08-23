@@ -13,10 +13,14 @@ class NonNegative(Generic[Number]):
     `NOTE` This is only tested on class level attributes, not instance attributes.
 
     Example:
-    >>> class Clock:
-    ...     # This ensures that `delta` is always a non-negative float
-    ...     # and raises an error if a negative value is assigned
-    ...     delta = NonNegative[float](0)
+
+    This ensures that `delta` is always a non-negative float,
+    and raises an error if a negative value is assigned.
+
+    ```python
+    class Clock:
+        delta = NonNegative[float](0)
+    ```
 
     Raises:
         TypeError: If the value is not `int` or `float`.

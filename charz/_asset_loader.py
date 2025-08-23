@@ -33,7 +33,7 @@ class AssetLoaderClassProperties(type):
 
 @final
 class AssetLoader(metaclass=AssetLoaderClassProperties):
-    """Configuration namespace for loading assets.
+    """`AssetLoader` is a configuration namespace for loading assets.
 
     Paths fields is of type `pathlib.Path`,
     and use setters that allow passing either `pathlib.Path` or `str` paths.
@@ -44,10 +44,17 @@ class AssetLoader(metaclass=AssetLoaderClassProperties):
     which means these configuration variables has to be set before being used.
 
     Example:
-    >>> from charz import ..., AssetLoader, ...
-    >>> AssetLoader.texture_root = "src/sprites"
-    >>> AssetLoader.animation_root = "src/animations"
-    >>> from .local_file import ...
+
+    Configuring `AssetLoader` attributes the correct way:
+
+    ```python
+    from charz import ..., AssetLoader, ...
+
+    AssetLoader.texture_root = "src/sprites"
+    AssetLoader.animation_root = "src/animations"
+
+    from .my_custom_node import ...
+    ```
 
     Attributes:
         `texture_root`: `Path` - Relative path to texture/sprites folder.

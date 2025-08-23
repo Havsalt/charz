@@ -1,6 +1,6 @@
 """
 Custom Annotations for `charz`
-===================================
+------------------------------
 
 This file contains private annotations used across this package.
 

@@ -21,16 +21,21 @@ class Engine(charz_core.Engine):
         screen (Screen): The screen instance for rendering output.
 
     Example:
-        >>> from charz import Engine, Screen, Clock
-        >>> class MyGame(Engine):
-        ...     clock = Clock(fps=8)  # Set frames per second
-        ...     screen = Screen(
-        ...         width=80,
-        ...         height=24,
-        ...         initial_clear=True,
-        ...     )
-        ...     # Could also use a custom `Screen` subclass,
-        ...     # implemented in `Rust` for better performance
+
+    ```python
+    from charz import Engine, Screen, Clock
+
+    class MyGame(Engine):
+        clock = Clock(fps=8)  # Set frames per second
+        screen = Screen(
+            width=80,
+            height=24,
+            initial_clear=True,
+        )
+    ```
+
+    Could also use a custom `Screen` subclass,
+    that could be implemented in `Rust` for better performance
     """
 
     clock: Clock = Clock(fps=16)

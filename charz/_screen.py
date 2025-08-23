@@ -51,13 +51,17 @@ class Screen(metaclass=ScreenClassProperties):
     unless explicitly overridden.
 
     Example:
-    >>> from charz import Engine, Screen
-    >>> class MyGame(Engine):
-    ...     screen = Screen(
-    ...         width=80,
-    ...         height=24,
-    ...         color_choice=Screen.COLOR_CHOICE_AUTO,
-    ...     )
+
+    ```python
+    from charz import Engine, Screen
+
+    class MyGame(Engine):
+        screen = Screen(
+            width=80,
+            height=24,
+            color_choice=Screen.COLOR_CHOICE_AUTO,
+        )
+    ```
 
     Attributes:
         `stream`: `FileLike[str]` - Output stream written to.
@@ -181,7 +185,7 @@ class Screen(metaclass=ScreenClassProperties):
 
         Called when the screen is being deactivated.
         The logic is seperated into this method,
-        as only 1 screen (which normally uses `stdout`) can be active at a time.
+        as only 1 screen (which normally uses `sys.stdout`) can be active at a time.
         """
         if self.hide_cursor and self.is_using_ansi():
             self.stream.write(CursorCode.SHOW)
@@ -297,7 +301,7 @@ class Screen(metaclass=ScreenClassProperties):
         It also takes into account the right and bottom margins,
         which are nice if jittering occurs because of not accurate values
         reported by `os.get_terminal_size(...)`.
-        If `stream` is not set to `stdout`, it will return `width` and `height`.
+        If `stream` is not set to `sys.stdout`, it will return `width` and `height`.
 
         Returns:
             Vec2i: Actual size of the screen, adjusted for terminal size and margins.
@@ -432,7 +436,7 @@ class Screen(metaclass=ScreenClassProperties):
         """Show content of screen buffer.
 
         This will print the formatted frame to the terminal,
-        if `stream` is set to `stdout`.
+        if `stream` is set to `sys.stdout`.
         """
         actual_size = self.get_actual_size()
         # Construct frame from screen buffer
