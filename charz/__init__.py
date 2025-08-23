@@ -178,7 +178,7 @@ _lazy_loaded_objects: dict[str, _Any] = {}
 # Lazy load to properly load optional dependencies along the standard exports
 # NOTE: Using "type: ignore" since it takes multiple branches to work properly
 @_overload
-def __getattr__(name: _Literal["SimpleMovementComponent"]): ...  # type: ignore
+def __getattr__(name: _Literal["SimpleMovementComponent"]): ...  # type: ignore  # noqa: ANN202
 # @_overload
 # def __getattr__(name: _Literal["ExampleLazyObject"]): ...
 def __getattr__(name: _LazyNames):
