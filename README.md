@@ -176,7 +176,8 @@ Tests for `charz` are currently manual and only somewhat implemented. The plan i
 
 ## Versioning
 
-This project will use `semantic versioning` after reaching release `0.1.0`. Consider any dev increment to be a breaking change. It is adviced to pin `charz` using `==` in your `pyproject.toml`, until release `0.1.0`.
+`charz` follows [SemVer](https://semver.org), like specified in [The Cargo Book](https://doc.rust-lang.org/cargo/reference/semver.html).
+
 
 ## License
 
