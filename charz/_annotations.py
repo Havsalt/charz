@@ -18,7 +18,10 @@ from typing import (
     TYPE_CHECKING as _TYPE_CHECKING,
 )
 
-from charz_core import Vec2i as _Vec2i
+from charz_core import (
+    Vec2 as _Vec2,
+    Vec2i as _Vec2i,
+)
 from charz_core._annotations import (
     Node,
     TransformComponent,
@@ -143,6 +146,7 @@ class ColliderComponent(_Protocol):
 
     def with_hitbox(self, hitbox: _Hitbox, /) -> _Self: ...
     def get_colliders(self) -> list[ColliderNode]: ...
+    def get_corners(self) -> tuple[_Vec2, _Vec2, _Vec2, _Vec2]: ...
     def is_colliding_with(self, colldier_node: ColliderNode, /) -> bool: ...
     def is_colliding(self) -> bool: ...
 

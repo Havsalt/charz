@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from copy import deepcopy
 from typing import Any
 
-from charz_core import Scene, Vec2, Self, group
+from charz_core import Scene, TransformComponent, Vec2, Self, group
 
 from .._grouping import Group
 from .._annotations import ColliderNode
@@ -128,8 +128,8 @@ class ColliderComponent:  # Component (mixin class)
         if self.hitbox.disabled or collider_node.hitbox.disabled:
             return False
 
-        corners_a = self._get_corners(self)  # type: ignore
-        corners_b = self._get_corners(collider_node)
+        corners_a = self.get_corners()
+        corners_b = collider_node.get_corners()
 
         # Axes to test: x and y
         axes = [Vec2(1, 0), Vec2(0, 1)]
@@ -147,23 +147,25 @@ class ColliderComponent:  # Component (mixin class)
 
         return True  # No separating axis found, collision detected
 
-    @staticmethod
-    def _get_corners(node: ColliderNode) -> list[Vec2]:
-        global_position = node.global_position
-        global_rotation = node.global_rotation
-        hitbox_size = node.hitbox.size
+    def get_corners(self) -> tuple[Vec2, Vec2, Vec2, Vec2]:
+        assert isinstance(self, TransformComponent), (
+            f"Node {self} missing `TransformComponent`"
+        )
+        global_position = self.global_position
+        global_rotation = self.global_rotation
+        hitbox_size = self.hitbox.size
 
         # Center the hitbox if needed
-        if node.hitbox.centered:
+        if self.hitbox.centered:
             global_position = global_position - hitbox_size / 2
 
         # Define corners relative to position
-        corners = [
+        corners = (
             Vec2.ZERO,
             Vec2(hitbox_size.x, 0),
             hitbox_size,
             Vec2(0, hitbox_size.y),
-        ]
+        )
 
         # Rotate corners around the hitbox center
         if global_rotation != 0.0:
@@ -181,11 +183,19 @@ class ColliderComponent:  # Component (mixin class)
                     + center
                 )
                 rotated.append(rotated_corner)
-            return rotated
+            return tuple(rotated)
         else:
-            return [global_position + corner for corner in corners]
+            return (  # Expanded to pass type checking
+                global_position + corners[0],
+                global_position + corners[1],
+                global_position + corners[2],
+                global_position + corners[3],
+            )
 
     @staticmethod
-    def _get_projection_range(corners: list[Vec2], axis: Vec2) -> tuple[float, float]:
+    def _get_projection_range(
+        corners: tuple[Vec2, Vec2, Vec2, Vec2],
+        axis: Vec2,
+    ) -> tuple[float, float]:
         projections = [corner.dot(axis) for corner in corners]
-        return min(projections), max(projections)
+        return (min(projections), max(projections))
