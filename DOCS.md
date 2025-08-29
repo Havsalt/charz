@@ -29,46 +29,46 @@
     * [\_\_init\_\_](#charz._clock.Clock.__init__)
     * [delta](#charz._clock.Clock.delta)
     * [tick](#charz._clock.Clock.tick)
-* [charz.\_components.\_animated](#charz._components._animated)
-  * [AnimatedComponent](#charz._components._animated.AnimatedComponent)
-    * [with\_animations](#charz._components._animated.AnimatedComponent.with_animations)
-    * [with\_animation](#charz._components._animated.AnimatedComponent.with_animation)
-    * [with\_repeat](#charz._components._animated.AnimatedComponent.with_repeat)
-    * [add\_animation](#charz._components._animated.AnimatedComponent.add_animation)
-    * [play](#charz._components._animated.AnimatedComponent.play)
-    * [play\_backwards](#charz._components._animated.AnimatedComponent.play_backwards)
-    * [progress\_animation](#charz._components._animated.AnimatedComponent.progress_animation)
-* [charz.\_components.\_collision](#charz._components._collision)
-  * [Hitbox](#charz._components._collision.Hitbox)
-  * [ColliderComponent](#charz._components._collision.ColliderComponent)
-    * [with\_hitbox](#charz._components._collision.ColliderComponent.with_hitbox)
-    * [get\_colliders](#charz._components._collision.ColliderComponent.get_colliders)
-    * [is\_colliding](#charz._components._collision.ColliderComponent.is_colliding)
-    * [is\_colliding\_with](#charz._components._collision.ColliderComponent.is_colliding_with)
-* [charz.\_components.\_color](#charz._components._color)
-  * [ColorComponent](#charz._components._color.ColorComponent)
-* [charz.\_components.\_simple\_movement](#charz._components._simple_movement)
-  * [SimpleMovementComponent](#charz._components._simple_movement.SimpleMovementComponent)
-    * [is\_moving\_left](#charz._components._simple_movement.SimpleMovementComponent.is_moving_left)
-    * [is\_moving\_right](#charz._components._simple_movement.SimpleMovementComponent.is_moving_right)
-    * [is\_moving\_up](#charz._components._simple_movement.SimpleMovementComponent.is_moving_up)
-    * [is\_moving\_down](#charz._components._simple_movement.SimpleMovementComponent.is_moving_down)
-    * [get\_movement\_direction](#charz._components._simple_movement.SimpleMovementComponent.get_movement_direction)
-    * [update\_movement](#charz._components._simple_movement.SimpleMovementComponent.update_movement)
-  * [update\_moving\_nodes](#charz._components._simple_movement.update_moving_nodes)
-* [charz.\_components.\_texture](#charz._components._texture)
-  * [load\_texture](#charz._components._texture.load_texture)
-  * [TextureComponent](#charz._components._texture.TextureComponent)
-    * [with\_texture](#charz._components._texture.TextureComponent.with_texture)
-    * [with\_unique\_texture](#charz._components._texture.TextureComponent.with_unique_texture)
-    * [with\_visibility](#charz._components._texture.TextureComponent.with_visibility)
-    * [with\_centering](#charz._components._texture.TextureComponent.with_centering)
-    * [with\_z\_index](#charz._components._texture.TextureComponent.with_z_index)
-    * [with\_transparency](#charz._components._texture.TextureComponent.with_transparency)
-    * [hide](#charz._components._texture.TextureComponent.hide)
-    * [show](#charz._components._texture.TextureComponent.show)
-    * [is\_globally\_visible](#charz._components._texture.TextureComponent.is_globally_visible)
-    * [get\_texture\_size](#charz._components._texture.TextureComponent.get_texture_size)
+* [charz.\_components.animated](#charz._components.animated)
+  * [AnimatedComponent](#charz._components.animated.AnimatedComponent)
+    * [with\_animations](#charz._components.animated.AnimatedComponent.with_animations)
+    * [with\_animation](#charz._components.animated.AnimatedComponent.with_animation)
+    * [with\_repeat](#charz._components.animated.AnimatedComponent.with_repeat)
+    * [add\_animation](#charz._components.animated.AnimatedComponent.add_animation)
+    * [play](#charz._components.animated.AnimatedComponent.play)
+    * [play\_backwards](#charz._components.animated.AnimatedComponent.play_backwards)
+    * [progress\_animation](#charz._components.animated.AnimatedComponent.progress_animation)
+* [charz.\_components.collision](#charz._components.collision)
+  * [Hitbox](#charz._components.collision.Hitbox)
+  * [ColliderComponent](#charz._components.collision.ColliderComponent)
+    * [with\_hitbox](#charz._components.collision.ColliderComponent.with_hitbox)
+    * [get\_colliders](#charz._components.collision.ColliderComponent.get_colliders)
+    * [is\_colliding](#charz._components.collision.ColliderComponent.is_colliding)
+    * [is\_colliding\_with](#charz._components.collision.ColliderComponent.is_colliding_with)
+* [charz.\_components.color](#charz._components.color)
+  * [ColorComponent](#charz._components.color.ColorComponent)
+* [charz.\_components.simple\_movement](#charz._components.simple_movement)
+  * [SimpleMovementComponent](#charz._components.simple_movement.SimpleMovementComponent)
+    * [is\_moving\_left](#charz._components.simple_movement.SimpleMovementComponent.is_moving_left)
+    * [is\_moving\_right](#charz._components.simple_movement.SimpleMovementComponent.is_moving_right)
+    * [is\_moving\_up](#charz._components.simple_movement.SimpleMovementComponent.is_moving_up)
+    * [is\_moving\_down](#charz._components.simple_movement.SimpleMovementComponent.is_moving_down)
+    * [get\_movement\_direction](#charz._components.simple_movement.SimpleMovementComponent.get_movement_direction)
+    * [update\_movement](#charz._components.simple_movement.SimpleMovementComponent.update_movement)
+  * [update\_moving\_nodes](#charz._components.simple_movement.update_moving_nodes)
+* [charz.\_components.texture](#charz._components.texture)
+  * [load\_texture](#charz._components.texture.load_texture)
+  * [TextureComponent](#charz._components.texture.TextureComponent)
+    * [with\_texture](#charz._components.texture.TextureComponent.with_texture)
+    * [with\_unique\_texture](#charz._components.texture.TextureComponent.with_unique_texture)
+    * [with\_visibility](#charz._components.texture.TextureComponent.with_visibility)
+    * [with\_centering](#charz._components.texture.TextureComponent.with_centering)
+    * [with\_z\_index](#charz._components.texture.TextureComponent.with_z_index)
+    * [with\_transparency](#charz._components.texture.TextureComponent.with_transparency)
+    * [hide](#charz._components.texture.TextureComponent.hide)
+    * [show](#charz._components.texture.TextureComponent.show)
+    * [is\_globally\_visible](#charz._components.texture.TextureComponent.is_globally_visible)
+    * [get\_texture\_size](#charz._components.texture.TextureComponent.get_texture_size)
 * [charz.\_engine](#charz._engine)
   * [Engine](#charz._engine.Engine)
     * [run](#charz._engine.Engine.run)
@@ -78,19 +78,19 @@
 * [charz.\_non\_negative](#charz._non_negative)
   * [NonNegative](#charz._non_negative.NonNegative)
     * [\_\_init\_\_](#charz._non_negative.NonNegative.__init__)
-* [charz.\_prefabs.\_animated\_sprite](#charz._prefabs._animated_sprite)
-  * [AnimatedSprite](#charz._prefabs._animated_sprite.AnimatedSprite)
-* [charz.\_prefabs.\_label](#charz._prefabs._label)
-  * [Label](#charz._prefabs._label.Label)
-    * [with\_newline](#charz._prefabs._label.Label.with_newline)
-    * [with\_tab\_size](#charz._prefabs._label.Label.with_tab_size)
-    * [with\_tab\_char](#charz._prefabs._label.Label.with_tab_char)
-    * [with\_tab\_fill](#charz._prefabs._label.Label.with_tab_fill)
-    * [with\_text](#charz._prefabs._label.Label.with_text)
-    * [text](#charz._prefabs._label.Label.text)
-    * [text](#charz._prefabs._label.Label.text)
-* [charz.\_prefabs.\_sprite](#charz._prefabs._sprite)
-  * [Sprite](#charz._prefabs._sprite.Sprite)
+* [charz.\_prefabs.animated\_sprite](#charz._prefabs.animated_sprite)
+  * [AnimatedSprite](#charz._prefabs.animated_sprite.AnimatedSprite)
+* [charz.\_prefabs.label](#charz._prefabs.label)
+  * [Label](#charz._prefabs.label.Label)
+    * [with\_newline](#charz._prefabs.label.Label.with_newline)
+    * [with\_tab\_size](#charz._prefabs.label.Label.with_tab_size)
+    * [with\_tab\_char](#charz._prefabs.label.Label.with_tab_char)
+    * [with\_tab\_fill](#charz._prefabs.label.Label.with_tab_fill)
+    * [with\_text](#charz._prefabs.label.Label.with_text)
+    * [text](#charz._prefabs.label.Label.text)
+    * [text](#charz._prefabs.label.Label.text)
+* [charz.\_prefabs.sprite](#charz._prefabs.sprite)
+  * [Sprite](#charz._prefabs.sprite.Sprite)
 * [charz.\_scene\_tasks](#charz._scene_tasks)
   * [progress\_animations](#charz._scene_tasks.progress_animations)
 * [charz.\_screen](#charz._screen)
@@ -692,11 +692,11 @@ def tick() -> None
 
 Sleeps for the remaining time to maintain desired `fps`.
 
-<a id="charz._components._animated"></a>
+<a id="charz._components.animated"></a>
 
-# Module `charz._components._animated`
+# Module `charz._components.animated`
 
-<a id="charz._components._animated.AnimatedComponent"></a>
+<a id="charz._components.animated.AnimatedComponent"></a>
 
 ## Class `AnimatedComponent`
 
@@ -725,7 +725,7 @@ and enables the node to manage and play animations defined in `AnimationSet`.
   `play_backwards`
   `progress_animation`
 
-<a id="charz._components._animated.AnimatedComponent.with_animations"></a>
+<a id="charz._components.animated.AnimatedComponent.with_animations"></a>
 
 ### `AnimatedComponent.with_animations`
 
@@ -744,7 +744,7 @@ Chained method to add multiple animations.
 
 - `Self` - Same node instance.
 
-<a id="charz._components._animated.AnimatedComponent.with_animation"></a>
+<a id="charz._components.animated.AnimatedComponent.with_animation"></a>
 
 ### `AnimatedComponent.with_animation`
 
@@ -767,7 +767,7 @@ Chained method to add a single animation.
 
 - `Self` - Same node instance.
 
-<a id="charz._components._animated.AnimatedComponent.with_repeat"></a>
+<a id="charz._components.animated.AnimatedComponent.with_repeat"></a>
 
 ### `AnimatedComponent.with_repeat`
 
@@ -781,7 +781,7 @@ Chained method to set the repeat state of the animation.
 
 - `state` _bool_ - Whether the animation should repeat. Defaults to `True`.
 
-<a id="charz._components._animated.AnimatedComponent.add_animation"></a>
+<a id="charz._components.animated.AnimatedComponent.add_animation"></a>
 
 ### `AnimatedComponent.add_animation`
 
@@ -799,7 +799,7 @@ Add an animation to the node.
 - `animation_name` _str_ - Name of the animation.
 - `animation` _Animation_ - Animation instance to add.
 
-<a id="charz._components._animated.AnimatedComponent.play"></a>
+<a id="charz._components.animated.AnimatedComponent.play"></a>
 
 ### `AnimatedComponent.play`
 
@@ -818,7 +818,7 @@ Play an animation by its name.
 
 - `ValueError` - If the animation with the given name does not exist.
 
-<a id="charz._components._animated.AnimatedComponent.play_backwards"></a>
+<a id="charz._components.animated.AnimatedComponent.play_backwards"></a>
 
 ### `AnimatedComponent.play_backwards`
 
@@ -837,7 +837,7 @@ Play an animation in reverse by its name.
 
 - `ValueError` - If the animation with the given name does not exist.
 
-<a id="charz._components._animated.AnimatedComponent.progress_animation"></a>
+<a id="charz._components.animated.AnimatedComponent.progress_animation"></a>
 
 ### `AnimatedComponent.progress_animation`
 
@@ -849,11 +849,11 @@ Progress `1` frame of current animation.
 
 Called by a frame task, which is found in `Scene.frame_tasks`.
 
-<a id="charz._components._collision"></a>
+<a id="charz._components.collision"></a>
 
-# Module `charz._components._collision`
+# Module `charz._components.collision`
 
-<a id="charz._components._collision.Hitbox"></a>
+<a id="charz._components.collision.Hitbox"></a>
 
 ## Class `Hitbox`
 
@@ -898,7 +898,7 @@ class CollisionBox(Sprite, CollisionComponent):
 - ``margin`` - `float` - Inverse margin around the hitbox for collision detection.
   Defaults to `1`, and should not be smaller than `1e-2`.
 
-<a id="charz._components._collision.ColliderComponent"></a>
+<a id="charz._components.collision.ColliderComponent"></a>
 
 ## Class `ColliderComponent`
 
@@ -985,7 +985,7 @@ for collider in box.get_colliders():
   `is_colliding`
   `is_colliding_with`
 
-<a id="charz._components._collision.ColliderComponent.with_hitbox"></a>
+<a id="charz._components.collision.ColliderComponent.with_hitbox"></a>
 
 ### `ColliderComponent.with_hitbox`
 
@@ -1004,7 +1004,7 @@ Chained method to set the hitbox.
 
 - `Self` - Same node instance.
 
-<a id="charz._components._collision.ColliderComponent.get_colliders"></a>
+<a id="charz._components.collision.ColliderComponent.get_colliders"></a>
 
 ### `ColliderComponent.get_colliders`
 
@@ -1021,7 +1021,7 @@ if this node is colliding with any of them.
 
 - `list[ColliderNode]` - List of colliders that this node is colliding with.
 
-<a id="charz._components._collision.ColliderComponent.is_colliding"></a>
+<a id="charz._components.collision.ColliderComponent.is_colliding"></a>
 
 ### `ColliderComponent.is_colliding`
 
@@ -1038,7 +1038,7 @@ if this node is colliding with any of them.
 
 - `bool` - Whether this node is colliding with any other collider node.
 
-<a id="charz._components._collision.ColliderComponent.is_colliding_with"></a>
+<a id="charz._components.collision.ColliderComponent.is_colliding_with"></a>
 
 ### `ColliderComponent.is_colliding_with`
 
@@ -1061,11 +1061,11 @@ Uses SAT (Separating Axis Theorem).
 
 - `bool` - Whether this node is colliding with the other collider node.
 
-<a id="charz._components._color"></a>
+<a id="charz._components.color"></a>
 
-# Module `charz._components._color`
+# Module `charz._components.color`
 
-<a id="charz._components._color.ColorComponent"></a>
+<a id="charz._components.color.ColorComponent"></a>
 
 ## Class `ColorComponent`
 
@@ -1100,11 +1100,11 @@ class PurpleMonster(Sprite):
 
 - ``color`` - `ColorValue | None` - Optional color value for the node.
 
-<a id="charz._components._simple_movement"></a>
+<a id="charz._components.simple_movement"></a>
 
-# Module `charz._components._simple_movement`
+# Module `charz._components.simple_movement`
 
-<a id="charz._components._simple_movement.SimpleMovementComponent"></a>
+<a id="charz._components.simple_movement.SimpleMovementComponent"></a>
 
 ## Class `SimpleMovementComponent`
 
@@ -1154,7 +1154,7 @@ class Player(Sprite, SimpleMovementComponent):
   `is_moving_down`
   `get_movement_direction`
 
-<a id="charz._components._simple_movement.SimpleMovementComponent.is_moving_left"></a>
+<a id="charz._components.simple_movement.SimpleMovementComponent.is_moving_left"></a>
 
 ### `SimpleMovementComponent.is_moving_left`
 
@@ -1170,7 +1170,7 @@ Override implementation to change the key used for moving left.
 
 - ``bool`` - `True` if the node is moving left, `False` otherwise.
 
-<a id="charz._components._simple_movement.SimpleMovementComponent.is_moving_right"></a>
+<a id="charz._components.simple_movement.SimpleMovementComponent.is_moving_right"></a>
 
 ### `SimpleMovementComponent.is_moving_right`
 
@@ -1186,7 +1186,7 @@ Override implementation to change the key used for moving right.
 
 - ``bool`` - `True` if the node is moving right, `False` otherwise.
 
-<a id="charz._components._simple_movement.SimpleMovementComponent.is_moving_up"></a>
+<a id="charz._components.simple_movement.SimpleMovementComponent.is_moving_up"></a>
 
 ### `SimpleMovementComponent.is_moving_up`
 
@@ -1202,7 +1202,7 @@ Override implementation to change the key used for moving up.
 
 - ``bool`` - `True` if the node is moving up, `False` otherwise.
 
-<a id="charz._components._simple_movement.SimpleMovementComponent.is_moving_down"></a>
+<a id="charz._components.simple_movement.SimpleMovementComponent.is_moving_down"></a>
 
 ### `SimpleMovementComponent.is_moving_down`
 
@@ -1218,7 +1218,7 @@ Override implementation to change the key used for moving down.
 
 - ``bool`` - `True` if the node is moving down, `False` otherwise.
 
-<a id="charz._components._simple_movement.SimpleMovementComponent.get_movement_direction"></a>
+<a id="charz._components.simple_movement.SimpleMovementComponent.get_movement_direction"></a>
 
 ### `SimpleMovementComponent.get_movement_direction`
 
@@ -1238,7 +1238,7 @@ meaning it can have a length greater than `1`.
 
 - ``Vec2`` - Raw direction vector.
 
-<a id="charz._components._simple_movement.SimpleMovementComponent.update_movement"></a>
+<a id="charz._components.simple_movement.SimpleMovementComponent.update_movement"></a>
 
 ### `SimpleMovementComponent.update_movement`
 
@@ -1251,7 +1251,7 @@ Custom update method for the node.
 Automatically handles checking for movement input,
 and moving the node accordingly.
 
-<a id="charz._components._simple_movement.update_moving_nodes"></a>
+<a id="charz._components.simple_movement.update_moving_nodes"></a>
 
 ## `update_moving_nodes`
 
@@ -1261,11 +1261,11 @@ def update_moving_nodes(current_scene: Scene) -> None
 
 Update moving nodes in the current scene.
 
-<a id="charz._components._texture"></a>
+<a id="charz._components.texture"></a>
 
-# Module `charz._components._texture`
+# Module `charz._components.texture`
 
-<a id="charz._components._texture.load_texture"></a>
+<a id="charz._components.texture.load_texture"></a>
 
 ## `load_texture`
 
@@ -1302,7 +1302,7 @@ Load texture from file.
 
 - `ValueError` - If `fill_char` is not of length `1`.
 
-<a id="charz._components._texture.TextureComponent"></a>
+<a id="charz._components.texture.TextureComponent"></a>
 
 ## Class `TextureComponent`
 
@@ -1330,7 +1330,7 @@ class TextureComponent()
   `is_globally_visible`
   `get_texture_size`
 
-<a id="charz._components._texture.TextureComponent.with_texture"></a>
+<a id="charz._components.texture.TextureComponent.with_texture"></a>
 
 ### `TextureComponent.with_texture`
 
@@ -1352,7 +1352,7 @@ If a string is provided, it is treated as a single line texture.
 
 - `Self` - Same node instance.
 
-<a id="charz._components._texture.TextureComponent.with_unique_texture"></a>
+<a id="charz._components.texture.TextureComponent.with_unique_texture"></a>
 
 ### `TextureComponent.with_unique_texture`
 
@@ -1368,7 +1368,7 @@ Uses `deepcopy` to create the copy.
 
 - `Self` - Same node instance with a unique texture copy.
 
-<a id="charz._components._texture.TextureComponent.with_visibility"></a>
+<a id="charz._components.texture.TextureComponent.with_visibility"></a>
 
 ### `TextureComponent.with_visibility`
 
@@ -1387,7 +1387,7 @@ Chained method to set the visibility of the node.
 
 - `Self` - Same node instance.
 
-<a id="charz._components._texture.TextureComponent.with_centering"></a>
+<a id="charz._components.texture.TextureComponent.with_centering"></a>
 
 ### `TextureComponent.with_centering`
 
@@ -1406,7 +1406,7 @@ Chained method to set whether the texture is centered.
 
 - `Self` - Same node instance.
 
-<a id="charz._components._texture.TextureComponent.with_z_index"></a>
+<a id="charz._components.texture.TextureComponent.with_z_index"></a>
 
 ### `TextureComponent.with_z_index`
 
@@ -1425,7 +1425,7 @@ Chained method to set the z-index for rendering.
 
 - `Self` - Same node instance.
 
-<a id="charz._components._texture.TextureComponent.with_transparency"></a>
+<a id="charz._components.texture.TextureComponent.with_transparency"></a>
 
 ### `TextureComponent.with_transparency`
 
@@ -1450,7 +1450,7 @@ of other nodes with texture
 
 - `Self` - Same node instance.
 
-<a id="charz._components._texture.TextureComponent.hide"></a>
+<a id="charz._components.texture.TextureComponent.hide"></a>
 
 ### `TextureComponent.hide`
 
@@ -1460,7 +1460,7 @@ def hide() -> None
 
 Set the node to be hidden.
 
-<a id="charz._components._texture.TextureComponent.show"></a>
+<a id="charz._components.texture.TextureComponent.show"></a>
 
 ### `TextureComponent.show`
 
@@ -1470,7 +1470,7 @@ def show() -> None
 
 Set the node to be visible.
 
-<a id="charz._components._texture.TextureComponent.is_globally_visible"></a>
+<a id="charz._components.texture.TextureComponent.is_globally_visible"></a>
 
 ### `TextureComponent.is_globally_visible`
 
@@ -1484,7 +1484,7 @@ Check whether the node and its ancestors are visible.
 
 - `bool` - Global visibility.
 
-<a id="charz._components._texture.TextureComponent.get_texture_size"></a>
+<a id="charz._components.texture.TextureComponent.get_texture_size"></a>
 
 ### `TextureComponent.get_texture_size`
 
@@ -1633,11 +1633,11 @@ Initialize the descriptor with a non-negative value.
 
 - `value` _Number_ - The initial value, must be non-negative.
 
-<a id="charz._prefabs._animated_sprite"></a>
+<a id="charz._prefabs.animated_sprite"></a>
 
-# Module `charz._prefabs._animated_sprite`
+# Module `charz._prefabs.animated_sprite`
 
-<a id="charz._prefabs._animated_sprite.AnimatedSprite"></a>
+<a id="charz._prefabs.animated_sprite.AnimatedSprite"></a>
 
 ## Class `AnimatedSprite`
 
@@ -1684,11 +1684,11 @@ class AnimatedGoblin(AnimatedSprite):
   
   `NOTE` See `Animation.__init__` for more options when loading animations.
 
-<a id="charz._prefabs._label"></a>
+<a id="charz._prefabs.label"></a>
 
-# Module `charz._prefabs._label`
+# Module `charz._prefabs.label`
 
-<a id="charz._prefabs._label.Label"></a>
+<a id="charz._prefabs.label.Label"></a>
 
 ## Class `Label`
 
@@ -1749,7 +1749,7 @@ game = MyGame()
 game.run()
 ```
 
-<a id="charz._prefabs._label.Label.with_newline"></a>
+<a id="charz._prefabs.label.Label.with_newline"></a>
 
 ### `Label.with_newline`
 
@@ -1768,7 +1768,7 @@ Chained method to set the newline character.
 
 - `Self` - Same node instance.
 
-<a id="charz._prefabs._label.Label.with_tab_size"></a>
+<a id="charz._prefabs.label.Label.with_tab_size"></a>
 
 ### `Label.with_tab_size`
 
@@ -1787,7 +1787,7 @@ Chained method to set the tab size.
 
 - `Self` - Same node instance.
 
-<a id="charz._prefabs._label.Label.with_tab_char"></a>
+<a id="charz._prefabs.label.Label.with_tab_char"></a>
 
 ### `Label.with_tab_char`
 
@@ -1806,7 +1806,7 @@ Chained method to set the tab character.
 
 - `Self` - Same node instance.
 
-<a id="charz._prefabs._label.Label.with_tab_fill"></a>
+<a id="charz._prefabs.label.Label.with_tab_fill"></a>
 
 ### `Label.with_tab_fill`
 
@@ -1825,7 +1825,7 @@ Chained method to set the tab fill character.
 
 - `Self` - Same node instance.
 
-<a id="charz._prefabs._label.Label.with_text"></a>
+<a id="charz._prefabs.label.Label.with_text"></a>
 
 ### `Label.with_text`
 
@@ -1844,7 +1844,7 @@ Chained method to set the text of the label.
 
 - `Self` - Same node instance.
 
-<a id="charz._prefabs._label.Label.text"></a>
+<a id="charz._prefabs.label.Label.text"></a>
 
 ### `Label.text`
 
@@ -1861,7 +1861,7 @@ This replaces tabs with the node's fill character.
 
 - `str` - The text of the label with tabs replaced by the fill character.
 
-<a id="charz._prefabs._label.Label.text"></a>
+<a id="charz._prefabs.label.Label.text"></a>
 
 ### `Label.text`
 
@@ -1878,11 +1878,11 @@ This splits the text into lines and replaces tabs with the node's fill character
 
 - `value` _str_ - The text to set as the label's texture.
 
-<a id="charz._prefabs._sprite"></a>
+<a id="charz._prefabs.sprite"></a>
 
-# Module `charz._prefabs._sprite`
+# Module `charz._prefabs.sprite`
 
-<a id="charz._prefabs._sprite.Sprite"></a>
+<a id="charz._prefabs.sprite.Sprite"></a>
 
 ## Class `Sprite`
 
