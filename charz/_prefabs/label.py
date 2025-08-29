@@ -3,7 +3,7 @@ from __future__ import annotations
 from colex import ColorValue
 from charz_core import Node, Vec2, Self
 
-from ._sprite import Sprite
+from .sprite import Sprite
 from .._annotations import Char
 
 

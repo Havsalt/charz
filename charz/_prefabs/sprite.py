@@ -4,8 +4,8 @@ import charz_core
 from charz_core import Node, Vec2
 from colex import ColorValue
 
-from .._components._texture import TextureComponent
-from .._components._color import ColorComponent
+from .._components.texture import TextureComponent
+from .._components.color import ColorComponent
 from .._annotations import Char
 
 

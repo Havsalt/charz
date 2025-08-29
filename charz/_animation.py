@@ -8,7 +8,7 @@ from typing import Iterator
 
 from charz_core import Vec2i, Self
 
-from ._components._texture import load_texture
+from ._components.texture import load_texture
 from ._asset_loader import AssetLoader
 from . import text
 from ._annotations import Char

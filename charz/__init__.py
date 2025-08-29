@@ -149,13 +149,13 @@ from ._time import Time
 from ._asset_loader import AssetLoader
 from ._grouping import Group
 from ._animation import Animation, AnimationSet
-from ._components._texture import load_texture, TextureComponent
-from ._components._color import ColorComponent
-from ._components._animated import AnimatedComponent
-from ._components._collision import ColliderComponent, Hitbox
-from ._prefabs._sprite import Sprite
-from ._prefabs._label import Label
-from ._prefabs._animated_sprite import AnimatedSprite
+from ._components.texture import load_texture, TextureComponent
+from ._components.color import ColorComponent
+from ._components.animated import AnimatedComponent
+from ._components.collision import ColliderComponent, Hitbox
+from ._prefabs.sprite import Sprite
+from ._prefabs.label import Label
+from ._prefabs.animated_sprite import AnimatedSprite
 from . import text
 
 # Import to add scene frame tasks
@@ -164,7 +164,7 @@ from . import _scene_tasks
 
 # Provide correct completion help - Even if the required feature is not active
 if _TYPE_CHECKING:
-    from ._components._simple_movement import SimpleMovementComponent
+    from ._components.simple_movement import SimpleMovementComponent
 
 # Lazy exports
 # NOTE: Literals and `__getattr__` case branches has to be implemented manually
@@ -188,7 +188,7 @@ def __getattr__(name: _LazyNames):
         # NOTE: Manually add each case branch
         match name:
             case "SimpleMovementComponent":
-                from ._components._simple_movement import SimpleMovementComponent  # noqa: PLC0415
+                from ._components.simple_movement import SimpleMovementComponent  # noqa: PLC0415
 
                 _lazy_loaded_objects[name] = SimpleMovementComponent
                 return _lazy_loaded_objects[name]

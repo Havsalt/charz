@@ -10,7 +10,7 @@ from colex import ColorValue, RESET
 from charz_core import Scene, Camera, TransformComponent, Vec2i
 
 from . import text
-from ._components._texture import TextureComponent
+from ._components.texture import TextureComponent
 from ._grouping import Group
 from ._annotations import TextureNode, FileLike, Renderable, Char
 

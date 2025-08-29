@@ -4,8 +4,8 @@ from colex import ColorValue
 from charz_core import Node, Vec2
 
 from .._animation import AnimationSet
-from .._components._animated import AnimatedComponent
-from ._sprite import Sprite
+from .._components.animated import AnimatedComponent
+from .sprite import Sprite
 from .._annotations import Char
 
 

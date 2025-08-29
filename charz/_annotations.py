@@ -34,7 +34,7 @@ if _TYPE_CHECKING:
     from charz_core import Self as _Self
     from ._clock import Clock as _Clock
     from ._screen import Screen as _Screen
-    from ._components._collision import Hitbox as _Hitbox
+    from ._components.collision import Hitbox as _Hitbox
     from ._animation import (
         Animation as _Animation,
         AnimationSet as _AnimationSet,
