@@ -2273,11 +2273,12 @@ class Time()
 `Time` is a class namespace used to store delta time.
 
 `Time.delta` is computed by `Clock`, handled by `Engine` frame task.
-`Time.delta` is usually used in `Node.update`,
-for syncing movement with real time seconds.
 
 **Example**:
 
+  
+  `Time.delta` is usually used in `Node.update`,
+  for syncing movement with real time seconds:
   
 ```python
 from charz import Sprite, Time
