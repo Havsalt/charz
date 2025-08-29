@@ -128,8 +128,8 @@ class ColliderComponent:  # Component (mixin class)
         if self.hitbox.disabled or collider_node.hitbox.disabled:
             return False
 
-        corners_a = self.get_corners()
-        corners_b = collider_node.get_corners()
+        corners_a = self.get_corner_points()
+        corners_b = collider_node.get_corner_points()
 
         # Axes to test: x and y
         axes = [Vec2(1, 0), Vec2(0, 1)]
@@ -147,7 +147,7 @@ class ColliderComponent:  # Component (mixin class)
 
         return True  # No separating axis found, collision detected
 
-    def get_corners(self) -> tuple[Vec2, Vec2, Vec2, Vec2]:
+    def get_corner_points(self) -> tuple[Vec2, Vec2, Vec2, Vec2]:
         assert isinstance(self, TransformComponent), (
             f"Node {self} missing `TransformComponent`"
         )
