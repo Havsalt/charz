@@ -10,20 +10,25 @@ class Clock:
 
     Used to sleep for the remaining time of the current frame,
     until a new frame should be processed.
-    An instance of `Clock` is used by the active `Engine`.
-    If you don't want the clock to sleep, set `fps` to `0`.
 
-    Example:
+    Examples:
+
+    An instance of `Clock` used by the active `Engine`:
 
     ```python
     from charz import Engine, Clock
 
-    class MyGame(Engine):
-        clock = Clock(fps=12)
+    class DeltaSyncedGame(Engine):
+        clock = Clock(fps=12)  # Set frames per second to 12
     ```
-    TEMPORARY THING:
+
+    If you don't want the clock to sleep, set `fps` to `0`:
+
     ```python
-    from os import cool_stuff
+    from charz import Engine, Clock
+
+    class SimulatedGame(Engine):
+        clock = Clock(fps=0)  # Updates as fast as possible
     ```
 
     Attributes:

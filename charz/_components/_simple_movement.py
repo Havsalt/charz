@@ -23,7 +23,7 @@ def __getattr__(name: str) -> type[SimpleMovementComponent] | NoReturn:
     global keyboard  # noqa: PLW0603
     if keyboard is None:
         try:
-            import keyboard as _keyboard
+            import keyboard as _keyboard  # noqa: PLC0415
 
             keyboard = _keyboard
         except ModuleNotFoundError as error:
@@ -51,7 +51,19 @@ class SimpleMovementComponent:  # Component (mixin class)
     """`SimpleMovementComponent` mixin class for node.
 
     It provides basic movement functionality for a node,
-    and allows the node to move in 2D space using the WASD keys.
+    and allows the node to move in 2D space using the `WASD` keys.
+
+    Example:
+
+    Player class with the ability to move using `WASD`:
+
+    ```python
+    from charz import Sprite
+    from charz import SimpleMovementComponent
+
+    class Player(Sprite, SimpleMovementComponent):
+        texture = ["@"]
+    ```
 
     Attributes:
         `speed`: `float` - The speed of the node's movement per second (`units/s`).

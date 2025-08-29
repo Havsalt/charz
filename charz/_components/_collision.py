@@ -15,6 +15,27 @@ from .._annotations import ColliderNode
 class Hitbox:
     """Hitbox dataclass for collision shape data.
 
+    Example:
+
+    Creating and centering `Hitbox` to a new collision node:
+
+    ```python
+    # collision_box.py
+    from charz import Sprite, CollisionComponent, Hitbox, Vec2
+
+    class CollisionBox(Sprite, CollisionComponent):
+        hitbox = Hitbox(
+            size=Vec2(5, 3),
+            centered=True,  # Centering of collision hitbox
+        )
+        centered = True  # Centering of texture
+        texture = [
+            "#####",
+            "#####",
+            "#####",
+        ]
+    ```
+
     Attributes:
         `size`: `Vec2` - Width and height of the hitbox.
         `centered`: `bool` - Whether hitbox is centered around the node's global position.
@@ -39,6 +60,64 @@ class ColliderComponent:  # Component (mixin class)
     Assign this component to a node to enable collision detection.
     All other collider components will then do collision detection against this node,
     when `is_colliding` and `get_colliders` is called.
+
+    You can also use `is_colliding_with` for more fine-grained control.
+    *Custom collision checks* can therefore be implemented by **overriding
+    this method in a subclass**.
+
+    Examples:
+
+    Creating a boxes with collision, then printing the ones that collide:
+
+    ```python
+    # collision_box.py
+    import colex
+    from charz import Sprite, CollisionComponent, Hitbox, Vec2
+
+    class CollisionBox(Sprite, CollisionComponent):
+        hitbox = Hitbox(size=Vec2(5, 3))  # Usually matches the size of `texture`
+        texture = [
+            "#####",
+            "#####",
+            "#####",
+        ]
+
+    # main.py
+    from charz import Engine
+    from .collision_box import CollisionBox
+
+    class MyGame(Engine):
+        def __init__(self) -> None:
+            self.box1 = CollisionBox(position=Vec2(2, 5), color=colex.RED)
+            self.box2 = CollisionBox(position=Vec2(4, 7), color=colex.BLUE)
+            self.box3 = CollisionBox(position=Vec2(5, 9), color=colex.GREEN)
+            print(self.box2.get_colliders())
+
+    # Prints out
+    >>> ['CollisionBox(#0:Vec2(2, 5):0R:5x3:None)',
+         'CollisionBox(#2:Vec2(5, 9):0R:5x3:None)']
+    ```
+
+    Filtering collision results, and deleting if collision occurs:
+
+    ```python
+    # Extending the last example...
+
+    class Lethal: ...  # This works as a "tag" that can be detected using `isinstance`
+
+    class LethalBox(Lethal, CollisionBox): ...
+
+    box = CollisionBox(position=Vec2(4, 7))
+    LethalBox(position=Vec2(3, 6))  # Remember: Reference not needed to create node
+
+    for collider in box.get_colliders():
+        if isinstance(collider, Lethal):
+            print("Killed by", collider)
+            box.queue_free()
+
+    # Prints out
+    >>> 'Killed by LethalBox(#1:Vec2(3, 6):0R:5x3:None)'
+    ```
 
     Attributes:
         `hitbox`: `Hitbox` - The hitbox data for collision detection.

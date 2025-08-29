@@ -12,6 +12,27 @@ class Time:
     `Time.delta` is computed by `Clock`, handled by `Engine` frame task.
     `Time.delta` is usually used in `Node.update`,
     for syncing movement with real time seconds.
+
+    Example:
+
+    ```python
+    from charz import Sprite, Time
+
+    class GravityBox(Sprite):
+        _GRAVITY_STRENGTH: float = 20  # Positive value means falling down
+        _speed_y: float = 0
+        texture = [
+            "####",
+            "####",
+            "####",
+        ]
+
+        def update(self) -> None:
+            # m/s^2 * s = m/s
+            self._speed_y += self.GRAVITY_STRENGTH * Time.delta
+            # m/s * s = m
+            self.position.y += self._speed_y * Time.delta
+    ```
     """
 
     delta = NonNegative[float](0)

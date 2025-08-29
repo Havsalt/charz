@@ -19,20 +19,34 @@ class AnimatedSprite(AnimatedComponent, Sprite):
     Example:
 
     The paths are relative to the project root,
-    unless an animation directory is set in `AssetLoader`.
-    See `Animation` for more options when loading.
+    unless an animation directory is set in `AssetLoader`:
 
     ```python
     from charz import AnimatedSprite, AnimationSet, Animation
 
-    class MyAnimatedGoblin(AnimatedSprite):
+    class AnimatedGoblin(AnimatedSprite):
         animations = AnimationSet(
-            Idle=Animation("path/to/idle-animation-folder"),
+            Idle=Animation("path/to/animation_folder/goblin/idle"),
             Attack=Animation("goblin/attack"),
             AttackLeft=Animation("goblin/attack", flip_h=True),
             Flee=Animation("goblin/attack", reverse=True),
         )
+        texture = animations.Idle.frames[0]  # Initial texture
+        health: int = 10
+        damage: int = 2
+
+        def on_attack(self, attacker: Player) -> None:
+            self.health -= attacker.sword.damage
+            if self.health > 4:
+                self.play("Attack")  # Attack back
+                attacker.health -= self.damage
+            elif self.health > 0
+                self.play("Flee")  # Flee on low health
+            else:
+                self.queue_free()  # Killed
     ```
+
+    `NOTE` See `Animation.__init__` for more options when loading animations.
     """
 
     def __init__(

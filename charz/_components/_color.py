@@ -5,7 +5,26 @@ from charz_core import Self
 
 
 class ColorComponent:  # Component (mixin class)
-    """`ColorComponent` mixin class for node.
+    r"""`ColorComponent` mixin class for node.
+
+    Example:
+
+    Setting color of node. Since `Sprite` is composed using
+    `ColorComponent`, `TextureComponent` and `Node2D`,
+    the easiest will be to use a `Sprite` as a base:
+
+    ```python
+    import colex  # Color library used
+    from charz import Sprite
+
+    class PurpleMonster(Sprite):
+        color = colex.PURPLE
+        texture = [
+            "   %",
+            "~' | '~",
+            "  / \\",
+        ]
+    ```
 
     Attributes:
         `color`: `ColorValue | None` - Optional color value for the node.

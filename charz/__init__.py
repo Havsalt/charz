@@ -188,7 +188,7 @@ def __getattr__(name: _LazyNames):
         # NOTE: Manually add each case branch
         match name:
             case "SimpleMovementComponent":
-                from ._components._simple_movement import SimpleMovementComponent
+                from ._components._simple_movement import SimpleMovementComponent  # noqa: PLC0415
 
                 _lazy_loaded_objects[name] = SimpleMovementComponent
                 return _lazy_loaded_objects[name]

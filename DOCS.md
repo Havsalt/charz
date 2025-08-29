@@ -369,12 +369,53 @@ class Animation()
 
 `Animation` dataclass to represent an animation consisting of multiple frames.
 
-This class allows you to create an animation from a list of frames
-using `Animation.from_frames`,
-which are lists of strings representing each frame's texture.
+**Examples**:
 
-It is possible to subclass this dataclass, but its not easy to say
-what more functionality should be added to it.
+  
+  The most common way to create an `Animation`,
+  is to load it from disk using the constructor (`__init__`):
+  
+```python
+from charz import AnimatedSprite, Animation, AnimationSet
+
+class AnimatedPlayer(AnimatedSprite):
+    animations = AnimationSet(
+        TestAnimation=Animation("relative/path/to/animation_folder"),
+        Run=Animation(
+            "animations/player/run",
+            fill=True,
+            flip_h=True
+        ),
+    )
+    # Setting texture to first frame in animation `Run`
+    texture = animations.Run.frames[0]
+```
+  
+  Creating an animation from a list of frames
+  using `Animation.from_frames`,
+  which are lists of strings representing each frame's texture:
+  
+```python
+# Extending the previous example...
+
+class AnimatedPlayer(AnimatedSprite):
+    animations = AnimationSet(...)
+    ...
+    ...
+    custom_frames = [
+        [
+            "  O",
+            "/ | \\",
+            " / \\",
+        ],
+        [
+            "\\ O /",
+            "  |",
+            " / \\",
+        ],
+    ]
+    animations.CustomAnimation = Animation.from_frames(custom_frames)
+```
 
 <a id="charz._animation.Animation.from_frames"></a>
 
@@ -579,21 +620,26 @@ class Clock()
 
 Used to sleep for the remaining time of the current frame,
 until a new frame should be processed.
-An instance of `Clock` is used by the active `Engine`.
-If you don't want the clock to sleep, set `fps` to `0`.
 
-**Example**:
+**Examples**:
 
+  
+  An instance of `Clock` used by the active `Engine`:
   
 ```python
 from charz import Engine, Clock
 
-class MyGame(Engine):
-    clock = Clock(fps=12)
+class DeltaSyncedGame(Engine):
+    clock = Clock(fps=12)  # Set frames per second to 12
 ```
-  TEMPORARY THING:
+  
+  If you don't want the clock to sleep, set `fps` to `0`:
+  
 ```python
-from os import cool_stuff
+from charz import Engine, Clock
+
+class SimulatedGame(Engine):
+    clock = Clock(fps=0)  # Updates as fast as possible
 ```
   
 
@@ -818,6 +864,29 @@ class Hitbox()
 
 Hitbox dataclass for collision shape data.
 
+**Example**:
+
+  
+  Creating and centering `Hitbox` to a new collision node:
+  
+```python
+# collision_box.py
+from charz import Sprite, CollisionComponent, Hitbox, Vec2
+
+class CollisionBox(Sprite, CollisionComponent):
+    hitbox = Hitbox(
+        size=Vec2(5, 3),
+        centered=True,  # Centering of collision hitbox
+    )
+    centered = True  # Centering of texture
+    texture = [
+        "#####",
+        "#####",
+        "#####",
+    ]
+```
+  
+
 **Attributes**:
 
 - ``size`` - `Vec2` - Width and height of the hitbox.
@@ -843,6 +912,66 @@ class ColliderComponent()
 Assign this component to a node to enable collision detection.
 All other collider components will then do collision detection against this node,
 when `is_colliding` and `get_colliders` is called.
+
+You can also use `is_colliding_with` for more fine-grained control.
+*Custom collision checks* can therefore be implemented by **overriding
+this method in a subclass**.
+
+**Examples**:
+
+  
+  Creating a boxes with collision, then printing the ones that collide:
+  
+```python
+# collision_box.py
+import colex
+from charz import Sprite, CollisionComponent, Hitbox, Vec2
+
+class CollisionBox(Sprite, CollisionComponent):
+    hitbox = Hitbox(size=Vec2(5, 3))  # Usually matches the size of `texture`
+    texture = [
+        "#####",
+        "#####",
+        "#####",
+    ]
+
+# main.py
+from charz import Engine
+from .collision_box import CollisionBox
+
+class MyGame(Engine):
+    def __init__(self) -> None:
+        self.box1 = CollisionBox(position=Vec2(2, 5), color=colex.RED)
+        self.box2 = CollisionBox(position=Vec2(4, 7), color=colex.BLUE)
+        self.box3 = CollisionBox(position=Vec2(5, 9), color=colex.GREEN)
+        print(self.box2.get_colliders())
+
+# Prints out
+>>> ['CollisionBox(#0:Vec2(2, 5):0R:5x3:None)',
+     'CollisionBox(#2:Vec2(5, 9):0R:5x3:None)']
+```
+  
+  Filtering collision results, and deleting if collision occurs:
+  
+```python
+# Extending the last example...
+
+class Lethal: ...  # This works as a "tag" that can be detected using `isinstance`
+
+class LethalBox(Lethal, CollisionBox): ...
+
+box = CollisionBox(position=Vec2(4, 7))
+LethalBox(position=Vec2(3, 6))  # Remember: Reference not needed to create node
+
+for collider in box.get_colliders():
+    if isinstance(collider, Lethal):
+        print("Killed by", collider)
+        box.queue_free()
+
+# Prints out
+>>> 'Killed by LethalBox(#1:Vec2(3, 6):0R:5x3:None)'
+```
+  
 
 **Attributes**:
 
@@ -946,6 +1075,27 @@ class ColorComponent()
 
 `ColorComponent` mixin class for node.
 
+**Example**:
+
+  
+  Setting color of node. Since `Sprite` is composed using
+  `ColorComponent`, `TextureComponent` and `Node2D`,
+  the easiest will be to use a `Sprite` as a base:
+  
+```python
+import colex  # Color library used
+from charz import Sprite
+
+class PurpleMonster(Sprite):
+    color = colex.PURPLE
+    texture = [
+        "   %",
+        "~' | '~",
+        "  / \\",
+    ]
+```
+  
+
 **Attributes**:
 
 - ``color`` - `ColorValue | None` - Optional color value for the node.
@@ -966,7 +1116,21 @@ class SimpleMovementComponent()
 `SimpleMovementComponent` mixin class for node.
 
 It provides basic movement functionality for a node,
-and allows the node to move in 2D space using the WASD keys.
+and allows the node to move in 2D space using the `WASD` keys.
+
+**Example**:
+
+  
+  Player class with the ability to move using `WASD`:
+  
+```python
+from charz import Sprite
+from charz import SimpleMovementComponent
+
+class Player(Sprite, SimpleMovementComponent):
+    texture = ["@"]
+```
+  
 
 **Attributes**:
 
@@ -1378,8 +1542,8 @@ class MyGame(Engine):
     )
 ```
   
-  Could also use a custom `Screen` subclass,
-  that could be implemented in `Rust` for better performance
+  Could also use a custom `Screen` subclass (`charz_rust.RustScreen`),
+  that was implemented in `Rust` for better performance
 
 <a id="charz._engine.Engine.run"></a>
 
@@ -1491,20 +1655,34 @@ with a texture, position, rotation, and other visual properties.
 
   
   The paths are relative to the project root,
-  unless an animation directory is set in `AssetLoader`.
-  See `Animation` for more options when loading.
+  unless an animation directory is set in `AssetLoader`:
   
 ```python
 from charz import AnimatedSprite, AnimationSet, Animation
 
-class MyAnimatedGoblin(AnimatedSprite):
+class AnimatedGoblin(AnimatedSprite):
     animations = AnimationSet(
-        Idle=Animation("path/to/idle-animation-folder"),
+        Idle=Animation("path/to/animation_folder/goblin/idle"),
         Attack=Animation("goblin/attack"),
         AttackLeft=Animation("goblin/attack", flip_h=True),
         Flee=Animation("goblin/attack", reverse=True),
     )
+    texture = animations.Idle.frames[0]  # Initial texture
+    health: int = 10
+    damage: int = 2
+
+    def on_attack(self, attacker: Player) -> None:
+        self.health -= attacker.sword.damage
+        if self.health > 4:
+            self.play("Attack")  # Attack back
+            attacker.health -= self.damage
+        elif self.health > 0
+            self.play("Flee")  # Flee on low health
+        else:
+            self.queue_free()  # Killed
 ```
+  
+  `NOTE` See `Animation.__init__` for more options when loading animations.
 
 <a id="charz._prefabs._label"></a>
 
@@ -2097,4 +2275,26 @@ class Time()
 `Time.delta` is computed by `Clock`, handled by `Engine` frame task.
 `Time.delta` is usually used in `Node.update`,
 for syncing movement with real time seconds.
+
+**Example**:
+
+  
+```python
+from charz import Sprite, Time
+
+class GravityBox(Sprite):
+    _GRAVITY_STRENGTH: float = 20  # Positive value means falling down
+    _speed_y: float = 0
+    texture = [
+        "####",
+        "####",
+        "####",
+    ]
+
+    def update(self) -> None:
+        # m/s^2 * s = m/s
+        self._speed_y += self.GRAVITY_STRENGTH * Time.delta
+        # m/s * s = m
+        self.position.y += self._speed_y * Time.delta
+```
 

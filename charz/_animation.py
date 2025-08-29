@@ -15,14 +15,54 @@ from ._annotations import Char
 
 
 class Animation:
-    """`Animation` dataclass to represent an animation consisting of multiple frames.
+    r"""`Animation` dataclass to represent an animation consisting of multiple frames.
 
-    This class allows you to create an animation from a list of frames
+    Examples:
+
+    The most common way to create an `Animation`,
+    is to load it from disk using the constructor (`__init__`):
+
+    ```python
+    from charz import AnimatedSprite, Animation, AnimationSet
+
+    class AnimatedPlayer(AnimatedSprite):
+        animations = AnimationSet(
+            TestAnimation=Animation("relative/path/to/animation_folder"),
+            Run=Animation(
+                "animations/player/run",
+                fill=True,
+                flip_h=True
+            ),
+        )
+        # Setting texture to first frame in animation `Run`
+        texture = animations.Run.frames[0]
+    ```
+
+    Creating an animation from a list of frames
     using `Animation.from_frames`,
-    which are lists of strings representing each frame's texture.
+    which are lists of strings representing each frame's texture:
 
-    It is possible to subclass this dataclass, but its not easy to say
-    what more functionality should be added to it.
+    ```python
+    # Extending the previous example...
+
+    class AnimatedPlayer(AnimatedSprite):
+        animations = AnimationSet(...)
+        ...
+        ...
+        custom_frames = [
+            [
+                "  O",
+                "/ | \\",
+                " / \\",
+            ],
+            [
+                "\\ O /",
+                "  |",
+                " / \\",
+            ],
+        ]
+        animations.CustomAnimation = Animation.from_frames(custom_frames)
+    ```
     """
 
     __slots__ = ("frames",)

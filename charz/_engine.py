@@ -34,8 +34,8 @@ class Engine(charz_core.Engine):
         )
     ```
 
-    Could also use a custom `Screen` subclass,
-    that could be implemented in `Rust` for better performance
+    Could also use a custom `Screen` subclass (`charz_rust.RustScreen`),
+    that was implemented in `Rust` for better performance
     """
 
     clock: Clock = Clock(fps=16)
