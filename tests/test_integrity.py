@@ -1,2 +1,2 @@
 def test_integrity() -> None:
-    import charz
+    import charz  # noqa: PLC0415
