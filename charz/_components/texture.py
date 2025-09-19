@@ -60,6 +60,26 @@ def load_texture(
     return texture
 
 
+def get_texture_size(texture: list[str]) -> Vec2i:
+    """Get the size of a texture.
+
+    Computed in O(n*m), where n is the number of lines
+    and m is the length of the longest line.
+
+    Args:
+        texture (list[str]): Texture data as a list of lines.
+
+    Returns:
+        Vec2i: Texture size.
+    """
+    if not texture:
+        return Vec2i.ZERO
+    return Vec2i(
+        len(max(texture, key=len)),  # Length of longest line
+        len(texture),  # Line count
+    )
+
+
 @group(Group.TEXTURE)
 class TextureComponent:  # Component (mixin class)
     """`TextureComponent` mixin class for node.
@@ -88,6 +108,21 @@ class TextureComponent:  # Component (mixin class)
                 instance.texture = class_texture
         else:
             instance.texture = []
+        return instance
+
+    @classmethod
+    def from_file(cls, texture_path: Path | str, /) -> Self:
+        """Load texture from file and create instance.
+
+        Args:
+            texture_path (Path | str): Path to the texture file.
+
+        Returns:
+            Self: New instance with loaded texture.
+        """
+        texture = load_texture(texture_path)
+        instance = cls()
+        instance.texture = texture
         return instance
 
     texture: list[str]
@@ -214,9 +249,4 @@ class TextureComponent:  # Component (mixin class)
         Returns:
             Vec2i: Texture size.
         """
-        if not self.texture:
-            return Vec2i.ZERO
-        return Vec2i(
-            len(max(self.texture, key=len)),  # Length of longest line
-            len(self.texture),  # Line count
-        )
+        return get_texture_size(self.texture)

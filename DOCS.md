@@ -58,7 +58,9 @@
   * [update\_moving\_nodes](#charz._components.simple_movement.update_moving_nodes)
 * [charz.\_components.texture](#charz._components.texture)
   * [load\_texture](#charz._components.texture.load_texture)
+  * [get\_texture\_size](#charz._components.texture.get_texture_size)
   * [TextureComponent](#charz._components.texture.TextureComponent)
+    * [from\_file](#charz._components.texture.TextureComponent.from_file)
     * [with\_texture](#charz._components.texture.TextureComponent.with_texture)
     * [with\_unique\_texture](#charz._components.texture.TextureComponent.with_unique_texture)
     * [with\_visibility](#charz._components.texture.TextureComponent.with_visibility)
@@ -155,6 +157,7 @@ Includes
 - `Hitbox`
 - Functions
 - `load_texture`
+- `get_texture_size`
 - Decorators
 - `group`
 - Enums
@@ -1302,6 +1305,28 @@ Load texture from file.
 
 - `ValueError` - If `fill_char` is not of length `1`.
 
+<a id="charz._components.texture.get_texture_size"></a>
+
+## `get_texture_size`
+
+```python
+def get_texture_size(texture: list[str]) -> Vec2i
+```
+
+Get the size of a texture.
+
+Computed in O(n*m), where n is the number of lines
+and m is the length of the longest line.
+
+**Arguments**:
+
+- `texture` _list[str]_ - Texture data as a list of lines.
+  
+
+**Returns**:
+
+- `Vec2i` - Texture size.
+
 <a id="charz._components.texture.TextureComponent"></a>
 
 ## Class `TextureComponent`
@@ -1329,6 +1354,26 @@ class TextureComponent()
   `show`
   `is_globally_visible`
   `get_texture_size`
+
+<a id="charz._components.texture.TextureComponent.from_file"></a>
+
+### `TextureComponent.from_file`
+
+```python
+@classmethod
+def from_file(texture_path: Path | str) -> Self
+```
+
+Load texture from file and create instance.
+
+**Arguments**:
+
+- `texture_path` _Path | str_ - Path to the texture file.
+  
+
+**Returns**:
+
+- `Self` - New instance with loaded texture.
 
 <a id="charz._components.texture.TextureComponent.with_texture"></a>
 

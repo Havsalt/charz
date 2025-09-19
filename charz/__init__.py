@@ -38,6 +38,7 @@ Includes
   - `Hitbox`
 - Functions
   - `load_texture`
+  - `get_texture_size`
 - Decorators
   - `group`
 - Enums
@@ -87,6 +88,7 @@ __all__ = [
     "Hitbox",
     # Functions
     "load_texture",
+    "get_texture_size",
     # Decorators
     "group",
     # Enums
@@ -149,7 +151,7 @@ from ._time import Time
 from ._asset_loader import AssetLoader
 from ._grouping import Group
 from ._animation import Animation, AnimationSet
-from ._components.texture import load_texture, TextureComponent
+from ._components.texture import load_texture, get_texture_size, TextureComponent
 from ._components.color import ColorComponent
 from ._components.animated import AnimatedComponent
 from ._components.collision import ColliderComponent, Hitbox
