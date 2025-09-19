@@ -154,7 +154,7 @@ class ColliderComponent:  # Component (mixin class)
     def get_colliders(self) -> list[ColliderNode]:
         """Get a list of colliders that this node is colliding with.
 
-        This method iterates through all nodes in the `Group.Collider` group and checks
+        This method iterates through all nodes in the `Group.COLLIDER` group and checks
         if this node is colliding with any of them.
 
         Returns:
@@ -166,7 +166,7 @@ class ColliderComponent:  # Component (mixin class)
         for node in Scene.current.groups[Group.COLLIDER].values():
             if self is node:
                 continue
-            # Ignoring incorrect type because group `Group.Collider`
+            # Ignoring incorrect type because group `Group.COLLIDER`
             # should only contain `ColliderNode` instances
             if self.is_colliding_with(node):  # type: ignore
                 nodes_collided_with.append(node)  # type: ignore
@@ -175,7 +175,7 @@ class ColliderComponent:  # Component (mixin class)
     def is_colliding(self) -> bool:
         """Check if this node is colliding with any other collider node.
 
-        This method iterates through all nodes in the `Group.Collider` group and checks
+        This method iterates through all nodes in the `Group.COLLIDER` group and checks
         if this node is colliding with any of them.
 
         Returns:
@@ -185,7 +185,7 @@ class ColliderComponent:  # Component (mixin class)
         for node in Scene.current.groups[Group.COLLIDER].values():
             if self is node:
                 continue
-            # Ignoring incorrect type because group `Group.Collider`
+            # Ignoring incorrect type because group `Group.COLLIDER`
             # should only contain `ColliderNode` instances
             if self.is_colliding_with(node):  # type: ignore
                 return True
