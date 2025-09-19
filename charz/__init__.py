@@ -33,6 +33,7 @@ Includes
   - `Screen`
   - `Scene`
 - Datastructures
+  - `PanelStyle`,
   - `Animation`
   - `AnimationSet`
   - `Hitbox`
@@ -55,6 +56,7 @@ Includes
   - `Camera`
   - `Sprite`
   - `Label`
+  - `Panel`
   - `AnimatedSprite`
 - Feature dependent
   - `SimpleMovementComponent` (when using feature `keyboard`/`all`)
@@ -83,6 +85,7 @@ __all__ = [
     "Scene",
     "AssetLoader",
     # Datastructures
+    "PanelStyle",
     "Animation",
     "AnimationSet",
     "Hitbox",
@@ -108,6 +111,7 @@ __all__ = [
     "Camera",
     "Sprite",
     "Label",
+    "Panel",
     "AnimatedSprite",
 ]
 
@@ -157,6 +161,7 @@ from ._components.animated import AnimatedComponent
 from ._components.collision import ColliderComponent, Hitbox
 from ._prefabs.sprite import Sprite
 from ._prefabs.label import Label
+from ._prefabs.panel import Panel, PanelStyle
 from ._prefabs.animated_sprite import AnimatedSprite
 from . import text
 
