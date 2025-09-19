@@ -10,13 +10,45 @@ from .._annotations import Char
 
 
 class PanelStyle(NamedTuple):
+    """`PanelStyle` used to customize the appearance of a `Panel`.
+
+    Example:
+
+    Customizing the appearance of a `Panel` using `PanelStyle`:
+
+    ```python
+    from charz import Panel, PanelStyle
+
+    class MyPanel(Panel):
+        style = PanelStyle(
+            upper_left_corner="╔",
+            upper_right_corner="╗",
+            bottom_left_corner="╚",
+            bottom_right_corner="╝",
+            left_border="║",
+            right_border="║",
+            top_border="═",
+            bottom_border="═",
+        )
+    ```
+
+    ↳ Results in panel looking like:
+    
+    ```bash
+    ╔════════╗
+    ║        ║
+    ║        ║
+    ╚════════╝
+    ```
+    """
+
     upper_left_corner: Char = "+"
     upper_right_corner: Char = "+"
     bottom_left_corner: Char = "+"
     bottom_right_corner: Char = "+"
 
-    right_border: Char = "|"
     left_border: Char = "|"
+    right_border: Char = "|"
     top_border: Char = "-"
     bottom_border: Char = "-"
 

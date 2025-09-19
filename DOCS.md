@@ -91,6 +91,8 @@
     * [with\_text](#charz._prefabs.label.Label.with_text)
     * [text](#charz._prefabs.label.Label.text)
     * [text](#charz._prefabs.label.Label.text)
+* [charz.\_prefabs.panel](#charz._prefabs.panel)
+  * [PanelStyle](#charz._prefabs.panel.PanelStyle)
 * [charz.\_prefabs.sprite](#charz._prefabs.sprite)
   * [Sprite](#charz._prefabs.sprite.Sprite)
 * [charz.\_scene\_tasks](#charz._scene_tasks)
@@ -152,6 +154,7 @@ Includes
 - `Screen`
 - `Scene`
 - Datastructures
+- `PanelStyle`,
 - `Animation`
 - `AnimationSet`
 - `Hitbox`
@@ -174,6 +177,7 @@ Includes
 - `Camera`
 - `Sprite`
 - `Label`
+- `Panel`
 - `AnimatedSprite`
 - Feature dependent
 - `SimpleMovementComponent` (when using feature `keyboard`/`all`)
@@ -1017,7 +1021,7 @@ def get_colliders() -> list[ColliderNode]
 
 Get a list of colliders that this node is colliding with.
 
-This method iterates through all nodes in the `Group.Collider` group and checks
+This method iterates through all nodes in the `Group.COLLIDER` group and checks
 if this node is colliding with any of them.
 
 **Returns**:
@@ -1034,7 +1038,7 @@ def is_colliding() -> bool
 
 Check if this node is colliding with any other collider node.
 
-This method iterates through all nodes in the `Group.Collider` group and checks
+This method iterates through all nodes in the `Group.COLLIDER` group and checks
 if this node is colliding with any of them.
 
 **Returns**:
@@ -1922,6 +1926,50 @@ This splits the text into lines and replaces tabs with the node's fill character
 **Arguments**:
 
 - `value` _str_ - The text to set as the label's texture.
+
+<a id="charz._prefabs.panel"></a>
+
+# Module `charz._prefabs.panel`
+
+<a id="charz._prefabs.panel.PanelStyle"></a>
+
+## Class `PanelStyle`
+
+```python
+class PanelStyle(NamedTuple)
+```
+
+`PanelStyle` used to customize the appearance of a `Panel`.
+
+**Example**:
+
+  
+  Customizing the appearance of a `Panel` using `PanelStyle`:
+  
+```python
+from charz import Panel, PanelStyle
+
+class MyPanel(Panel):
+    style = PanelStyle(
+        upper_left_corner="╔",
+        upper_right_corner="╗",
+        bottom_left_corner="╚",
+        bottom_right_corner="╝",
+        left_border="║",
+        right_border="║",
+        top_border="═",
+        bottom_border="═",
+    )
+```
+  
+  ↳ Results in panel looking like:
+  
+```bash
+╔════════╗
+║        ║
+║        ║
+╚════════╝
+```
 
 <a id="charz._prefabs.sprite"></a>
 
