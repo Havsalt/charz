@@ -10,12 +10,12 @@
 #   universal: false
 
 -e file:.
-charz-core==0.1.1
+charz-core==0.1.2
     # via charz
 colex==0.3.1
     # via charz
 linflex==0.3.1
     # via charz-core
-typing-extensions==4.14.0
+typing-extensions==4.15.0
     # via charz-core
     # via linflex

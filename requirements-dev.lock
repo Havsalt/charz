@@ -12,13 +12,13 @@
 -e file:.
 black==23.12.1
     # via docspec-python
-certifi==2025.7.14
+certifi==2025.8.3
     # via requests
-charset-normalizer==3.4.2
+charset-normalizer==3.4.3
     # via requests
-charz-core==0.1.1
+charz-core==0.1.2
     # via charz
-click==8.2.1
+click==8.3.0
     # via black
     # via pydoc-markdown
 colex==0.3.1
@@ -73,18 +73,20 @@ packaging==25.0
     # via pytest
 pathspec==0.12.1
     # via black
-platformdirs==4.3.8
+platformdirs==4.4.0
     # via black
     # via yapf
 pluggy==1.6.0
     # via pytest
 pydoc-markdown==4.8.2
     # via pydoc-markdown-havsalt
-pydoc-markdown-havsalt==0.1.0
-pytest==8.3.5
+pydoc-markdown-havsalt==0.1.1
+pygments==2.19.2
+    # via pytest
+pytest==8.4.2
 pyyaml==6.0.2
     # via pydoc-markdown
-requests==2.32.4
+requests==2.32.5
     # via pydoc-markdown
 tomli==2.2.1
     # via black
@@ -95,7 +97,7 @@ tomli-w==1.2.0
     # via pydoc-markdown
 typeapi==2.2.4
     # via databind
-typing-extensions==4.13.2
+typing-extensions==4.15.0
     # via black
     # via charz-core
     # via databind
@@ -107,7 +109,7 @@ urllib3==2.5.0
     # via requests
 watchdog==6.0.0
     # via pydoc-markdown
-wrapt==1.17.2
+wrapt==1.17.3
     # via deprecated
 yapf==0.43.0
     # via pydoc-markdown
