@@ -68,7 +68,7 @@ documented_only = true
 
 [tool.pydoc-markdown.renderer]
 type = "pydoc_markdown_havsalt.RuffMarkdownRenderer"
-filename = "DOCS.md"
+filename = "Docs.md"
 page_title = 'Documentation for `charz`'
 render_page_title = true
 render_toc = true
