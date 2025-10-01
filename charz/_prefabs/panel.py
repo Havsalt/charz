@@ -12,7 +12,7 @@ from .._annotations import Char
 class Panel(Sprite):
     """`Panel` node for making a pretty frame.
 
-    You can assign a `PanelStyle` to `.style` for customizing the style.
+    You can assign a `PanelStyle` to `style` for customizing the style.
 
     To have content be rendered above a `<Panel>`, do one of:
         - Content have a greater `z_index` than `<Panel>`
@@ -22,9 +22,9 @@ class Panel(Sprite):
     so it does **not** cutoff at border.
     """
 
-    style: PanelStyle
     _width: int = 12
     _height: int = 8
+    style: PanelStyle
 
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         instance = super().__new__(cls, *args, **kwargs)
@@ -48,6 +48,7 @@ class Panel(Sprite):
         color: ColorValue | None = None,
         width: int | None = None,
         height: int | None = None,
+        style: PanelStyle | None = None,
     ) -> None:
         Sprite.__init__(
             self,
@@ -65,6 +66,8 @@ class Panel(Sprite):
             self.width = width
         if height is not None:
             self.height = height
+        if style is not None:
+            self.style = style
 
     def _update_panel_texture(self) -> None:
         self.texture = [
@@ -101,6 +104,42 @@ class Panel(Sprite):
             raise ValueError(f"Height must be at least 2, got {value}")
         self._height = value
         self._update_panel_texture()
+
+    def with_width(self, width: int, /) -> Self:
+        """Chained method to set `width`.
+
+        Args:
+            width (int): Size of width.
+
+        Returns:
+            Self: Same node instance.
+        """
+        self.width = width
+        return self
+
+    def with_height(self, height: int, /) -> Self:
+        """Chained method to set height.
+
+        Args:
+            height (int): Size of height.
+
+        Returns:
+            Self: Same node instance.
+        """
+        self.height = height
+        return self
+
+    def with_style(self, style: PanelStyle, /) -> Self:
+        """Chained method to set style.
+
+        Args:
+            style (PanelStyle): Style for customizing border look.
+
+        Returns:
+            Self: Same node instance.
+        """
+        self.style = style
+        return self
 
 
 class PanelStyle(NamedTuple):
