@@ -88,6 +88,9 @@ class AnimatedComponent:  # Component (mixin class)
 
         Args:
             state (bool): Whether the animation should repeat. Defaults to `True`.
+
+        Returns:
+            Self: Same node instance.
         """
         self.repeat = state
         return self
