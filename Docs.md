@@ -93,6 +93,9 @@
     * [text](#charz._prefabs.label.Label.text)
 * [charz.\_prefabs.panel](#charz._prefabs.panel)
   * [Panel](#charz._prefabs.panel.Panel)
+    * [with\_width](#charz._prefabs.panel.Panel.with_width)
+    * [with\_height](#charz._prefabs.panel.Panel.with_height)
+    * [with\_style](#charz._prefabs.panel.Panel.with_style)
   * [PanelStyle](#charz._prefabs.panel.PanelStyle)
 * [charz.\_prefabs.sprite](#charz._prefabs.sprite)
   * [Sprite](#charz._prefabs.sprite.Sprite)
@@ -788,6 +791,11 @@ Chained method to set the repeat state of the animation.
 **Arguments**:
 
 - `state` _bool_ - Whether the animation should repeat. Defaults to `True`.
+  
+
+**Returns**:
+
+- `Self` - Same node instance.
 
 <a id="charz._components.animated.AnimatedComponent.add_animation"></a>
 
@@ -1942,7 +1950,7 @@ class Panel(Sprite)
 
 `Panel` node for making a pretty frame.
 
-You can assign a `PanelStyle` to `.style` for customizing the style.
+You can assign a `PanelStyle` to `style` for customizing the style.
 
 To have content be rendered above a `<Panel>`, do one of:
 - Content have a greater `z_index` than `<Panel>`
@@ -1950,6 +1958,63 @@ To have content be rendered above a `<Panel>`, do one of:
 
 `NOTE` Content **can** be rendered outside the panel,
 so it does **not** cutoff at border.
+
+<a id="charz._prefabs.panel.Panel.with_width"></a>
+
+### `Panel.with_width`
+
+```python
+def with_width(width: int) -> Self
+```
+
+Chained method to set `width`.
+
+**Arguments**:
+
+- `width` _int_ - Size of width.
+  
+
+**Returns**:
+
+- `Self` - Same node instance.
+
+<a id="charz._prefabs.panel.Panel.with_height"></a>
+
+### `Panel.with_height`
+
+```python
+def with_height(height: int) -> Self
+```
+
+Chained method to set height.
+
+**Arguments**:
+
+- `height` _int_ - Size of height.
+  
+
+**Returns**:
+
+- `Self` - Same node instance.
+
+<a id="charz._prefabs.panel.Panel.with_style"></a>
+
+### `Panel.with_style`
+
+```python
+def with_style(style: PanelStyle) -> Self
+```
+
+Chained method to set style.
+
+**Arguments**:
+
+- `style` _PanelStyle_ - Style for customizing border look.
+  
+
+**Returns**:
+
+- `Self` - Same node instance.
 
 <a id="charz._prefabs.panel.PanelStyle"></a>
 
