@@ -92,6 +92,7 @@
     * [text](#charz._prefabs.label.Label.text)
     * [text](#charz._prefabs.label.Label.text)
 * [charz.\_prefabs.panel](#charz._prefabs.panel)
+  * [Panel](#charz._prefabs.panel.Panel)
   * [PanelStyle](#charz._prefabs.panel.PanelStyle)
 * [charz.\_prefabs.sprite](#charz._prefabs.sprite)
   * [Sprite](#charz._prefabs.sprite.Sprite)
@@ -1931,6 +1932,25 @@ This splits the text into lines and replaces tabs with the node's fill character
 
 # Module `charz._prefabs.panel`
 
+<a id="charz._prefabs.panel.Panel"></a>
+
+## Class `Panel`
+
+```python
+class Panel(Sprite)
+```
+
+`Panel` node for making a pretty frame.
+
+You can assign a `PanelStyle` to `.style` for customizing the style.
+
+To have content be rendered above a `<Panel>`, do one of:
+- Content have a greater `z_index` than `<Panel>`
+- Content is created after `<Panel>` instance
+
+`NOTE` Content **can** be rendered outside the panel,
+so it does **not** cutoff at border.
+
 <a id="charz._prefabs.panel.PanelStyle"></a>
 
 ## Class `PanelStyle`
@@ -1940,6 +1960,18 @@ class PanelStyle(NamedTuple)
 ```
 
 `PanelStyle` used to customize the appearance of a `Panel`.
+
+**Attributes**:
+
+  - `upper_left_corner` - `Char`
+  - `upper_right_corner` - `Char`
+  - `bottom_left_corner` - `Char`
+  - `bottom_right_corner` - `Char`
+  - `left_border` - `Char`
+  - `right_border` - `Char`
+  - `top_border` - `Char`
+  - `bottom_border` - `Char`
+  
 
 **Example**:
 

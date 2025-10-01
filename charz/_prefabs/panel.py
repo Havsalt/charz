@@ -9,51 +9,19 @@ from .sprite import Sprite
 from .._annotations import Char
 
 
-class PanelStyle(NamedTuple):
-    """`PanelStyle` used to customize the appearance of a `Panel`.
+class Panel(Sprite):
+    """`Panel` node for making a pretty frame.
 
-    Example:
+    You can assign a `PanelStyle` to `.style` for customizing the style.
 
-    Customizing the appearance of a `Panel` using `PanelStyle`:
+    To have content be rendered above a `<Panel>`, do one of:
+        - Content have a greater `z_index` than `<Panel>`
+        - Content is created after `<Panel>` instance
 
-    ```python
-    from charz import Panel, PanelStyle
-
-    class MyPanel(Panel):
-        style = PanelStyle(
-            upper_left_corner="╔",
-            upper_right_corner="╗",
-            bottom_left_corner="╚",
-            bottom_right_corner="╝",
-            left_border="║",
-            right_border="║",
-            top_border="═",
-            bottom_border="═",
-        )
-    ```
-
-    ↳ Results in panel looking like:
-    
-    ```bash
-    ╔════════╗
-    ║        ║
-    ║        ║
-    ╚════════╝
-    ```
+    `NOTE` Content **can** be rendered outside the panel,
+    so it does **not** cutoff at border.
     """
 
-    upper_left_corner: Char = "+"
-    upper_right_corner: Char = "+"
-    bottom_left_corner: Char = "+"
-    bottom_right_corner: Char = "+"
-
-    left_border: Char = "|"
-    right_border: Char = "|"
-    top_border: Char = "-"
-    bottom_border: Char = "-"
-
-
-class Panel(Sprite):
     style: PanelStyle
     _width: int = 12
     _height: int = 8
@@ -133,3 +101,57 @@ class Panel(Sprite):
             raise ValueError(f"Height must be at least 2, got {value}")
         self._height = value
         self._update_panel_texture()
+
+
+class PanelStyle(NamedTuple):
+    """`PanelStyle` used to customize the appearance of a `Panel`.
+
+    Attributes:
+        - `upper_left_corner` - `Char`
+        - `upper_right_corner` - `Char`
+        - `bottom_left_corner` - `Char`
+        - `bottom_right_corner` - `Char`
+        - `left_border` - `Char`
+        - `right_border` - `Char`
+        - `top_border` - `Char`
+        - `bottom_border` - `Char`
+
+    Example:
+
+    Customizing the appearance of a `Panel` using `PanelStyle`:
+
+    ```python
+    from charz import Panel, PanelStyle
+
+    class MyPanel(Panel):
+        style = PanelStyle(
+            upper_left_corner="╔",
+            upper_right_corner="╗",
+            bottom_left_corner="╚",
+            bottom_right_corner="╝",
+            left_border="║",
+            right_border="║",
+            top_border="═",
+            bottom_border="═",
+        )
+    ```
+
+    ↳ Results in panel looking like:
+
+    ```bash
+    ╔════════╗
+    ║        ║
+    ║        ║
+    ╚════════╝
+    ```
+    """
+
+    upper_left_corner: Char = "+"
+    upper_right_corner: Char = "+"
+    bottom_left_corner: Char = "+"
+    bottom_right_corner: Char = "+"
+
+    left_border: Char = "|"
+    right_border: Char = "|"
+    top_border: Char = "-"
+    bottom_border: Char = "-"
