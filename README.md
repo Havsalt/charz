@@ -176,7 +176,7 @@ Tests for `charz` are currently manual and only somewhat implemented. The plan i
 
 ## Versioning
 
-`charz` follows [SemVer](https://semver.org), like specified in [The Cargo Book](https://doc.rust-lang.org/cargo/reference/semver.html).
+`charz` uses [SemVer](https://semver.org), according to [The Cargo Book](https://doc.rust-lang.org/cargo/reference/semver.html).
 
 ## License
 
